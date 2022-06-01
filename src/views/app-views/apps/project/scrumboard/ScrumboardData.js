@@ -23,91 +23,91 @@ export const membersDetail = [
     id: "eileenHorton-1153",
     name: "Eileen Horton",
     email: "eileen_h@hotmail.com",
-    img: "/img/avatars/thumb-1.jpg"
+    img: "/admin/img/avatars/thumb-1.jpg"
   },
   {
     id: "terranceMoreno-1322",
     name: "Terrance Moreno",
     email: "",
-    img: "/img/avatars/thumb-2.jpg"
+    img: "/admin/img/avatars/thumb-2.jpg"
   },
   {
     id: "ronVargas7653",
     name: "Ron Vargas",
     email: "ronnie_vergas@infotech.io",
-    img: "/img/avatars/thumb-3.jpg"
+    img: "/admin/img/avatars/thumb-3.jpg"
   },
   {
     id: "lukeCook4721",
     name: "Luke Cook",
     email: "cookie_lukie@hotmail.com",
-    img: "/img/avatars/thumb-4.jpg"
+    img: "/admin/img/avatars/thumb-4.jpg"
   },
   {
     id: "joyceFreeman1384",
     name: "Joyce Freeman",
     email: "joyce991@infotech.io",
-    img: "/img/avatars/thumb-5.jpg"
+    img: "/admin/img/avatars/thumb-5.jpg"
   },
   {
     id: "samanthaPhillips8493",
     name: "Samantha Phillips",
     email: "samanthaphil@infotech.io",
-    img: "/img/avatars/thumb-6.jpg"
+    img: "/admin/img/avatars/thumb-6.jpg"
   },
   {
     id: "taraFletcher1263",
     name: "Tara Fletcher",
     email: "taratarara@imaze.edu.du",
-    img: "/img/avatars/thumb-7.jpg"
+    img: "/admin/img/avatars/thumb-7.jpg"
   },
   {
     id: "frederickAdams6532",
     name: "Frederick Adams",
     email: "iamfred@imaze.infotech.io",
-    img: "/img/avatars/thumb-8.jpg"
+    img: "/admin/img/avatars/thumb-8.jpg"
   },
   {
     id: "carolynHanson7953",
     name: "Carolyn Hanson",
     email: "carolyn_h@gmail.com",
-    img: "/img/avatars/thumb-9.jpg"
+    img: "/admin/img/avatars/thumb-9.jpg"
   },
   {
     id: "brittanyHale3683",
     name: "Brittany Hale",
     email: "brittany1134@gmail.com",
-    img: "/img/avatars/thumb-10.jpg"
+    img: "/admin/img/avatars/thumb-10.jpg"
   },
   {
     id: "lloydObrien1564",
     name: "Lloyd Obrien",
     email: "handsome-obrien@hotmail.com",
-    img: "/img/avatars/thumb-11.jpg"
+    img: "/admin/img/avatars/thumb-11.jpg"
   },
   {
     id: "gabriellaMay2850",
     name: "Gabriella May",
     email: "maymaymay12@infotech.io",
-    img: "/img/avatars/thumb-12.jpg"
+    img: "/admin/img/avatars/thumb-12.jpg"
   },
   {
     id: "leeWheeler1941",
     name: "Lee Wheeler",
     email: "",
-    img: "/img/avatars/thumb-13.jpg"
+    img: "/admin/img/avatars/thumb-13.jpg"
   },
   {
     id: "gailBarnes7615",
     name: "Gail Barnes",
     email: "gailby0116@infotech.io",
-    img: "/img/avatars/thumb-14.jpg"
+    img: "/admin/img/avatars/thumb-14.jpg"
   },
   {
     id: "ellaRobinson1093",
     name: "Ella Robinson",
     email: "ella_robinson@infotech.io",
-    img: "/img/avatars/thumb-15.jpg"
+    img: "/admin/img/avatars/thumb-15.jpg"
   }
 ]
 
@@ -136,20 +136,20 @@ const toBeProcessCards = [
 		id: 'zb7zxtjctd',
 		name: 'Unable to upload file',
 		description: 'Scenester hashtag sustainable art party 3 wolf moon live-edge portland offal master cleanse disrupt viral palo santo tacos. Offal sriracha you probably havent heard of them vaporware glossier.',
-		cover: '/img/others/img-13.jpg',
+		cover: '/admin/img/others/img-13.jpg',
 		members: ['eileenHorton-1153', 'terranceMoreno-1322', 'ronVargas7653'],
 		labels: ['Task', 'Live issue'],
 		attachments: [
 			{
 				'id': 'jubuK7XGp3',
 				'name': 'mail.jpg',
-				'src': '/img/others/img-13.jpg',
+				'src': '/admin/img/others/img-13.jpg',
 				'size': '36.1kb'
 			},
 			{
 				'id': 'xsb3HCejCM',
 				'name': 'mail.jpg',
-				'src': '/img/others/img-14.jpg',
+				'src': '/admin/img/others/img-14.jpg',
 				'size': '55.9kb'
 			}
 		],
@@ -157,7 +157,7 @@ const toBeProcessCards = [
 			{
 				id: 'R22TqMkACm',
 				name: 'Carolyn Hanson',
-				src: "/img/avatars/thumb-9.jpg",
+				src: "/admin/img/avatars/thumb-9.jpg",
 				message: 'I am baby kitsch plaid mustache, williamsburg butcher gluten-free 3 wolf moon authentic quinoa selvage knausgaard unicorn. Palo santo viral everyday carry, heirloom tumblr raw denim yr iceland wayfarers single-origin coffee tote bag shoreditch cloud bread poke.',
 				date: new Date(y, 4, 20)
 			}
@@ -176,14 +176,14 @@ const toBeProcessCards = [
 			{
 				id: 'Wx8FDSsVTg',
 				name: 'Samantha Phillips',
-				src: "/img/avatars/thumb-6.jpg",
+				src: "/admin/img/avatars/thumb-6.jpg",
 				message: 'Helvetica 8-bit photo booth tumblr food truck. Enamel pin wolf tousled sartorial, brunch shoreditch skateboard beard helvetica. Plaid typewriter gastropub bespoke.',
 				date: new Date(y, 4, 20)
 			},
 			{
 				id: '3AhkqqSFFr',
 				name: 'Ron Vargas',
-				src: "/img/avatars/thumb-3.jpg",
+				src: "/admin/img/avatars/thumb-3.jpg",
 				message: 'Af trust fund meggings, meditation chicharrones brunch wolf narwhal shoreditch whatever bicycle rights ramps. ',
 				date: new Date(y, 4, 20)
 			}
@@ -202,7 +202,7 @@ const toBeProcessCards = [
 			{
 				id: 'bAvBdtKHNC',
 				name: 'Lloyd Obrien',
-				src: "/img/avatars/thumb-11.jpg",
+				src: "/admin/img/avatars/thumb-11.jpg",
 				message: 'Helvetica 8-bit photo booth tumblr food truck. Enamel pin wolf tousled sartorial, brunch shoreditch skateboard beard helvetica. Plaid typewriter gastropub bespoke.',
 				date: new Date(y, 4, 20)
 			}
@@ -224,7 +224,7 @@ const processingCards = [
 			{
 				id: 'afPugkEmkp',
 				name: 'Eileen Horton',
-				src: "/img/avatars/thumb-1.jpg",
+				src: "/admin/img/avatars/thumb-1.jpg",
 				message: '',
 				date: new Date(y, 5, 16)
 			}
@@ -242,7 +242,7 @@ const processingCards = [
 			{
 				'id': 'NjHJhHeWrG',
 				'name': 'issue.jpg',
-				'src': '/img/others/img-16.jpg',
+				'src': '/admin/img/others/img-16.jpg',
 				'size': '46.1kb'
 			}
 		],
@@ -250,7 +250,7 @@ const processingCards = [
 			{
 				id: 'MAsPDzGwnA',
 				name: 'Ron Vargas',
-				src: "/img/avatars/thumb-3.jpg",
+				src: "/admin/img/avatars/thumb-3.jpg",
 				message: 'Af trust fund meggings, meditation chicharrones brunch wolf narwhal shoreditch whatever bicycle rights ramps. ',
 				date: new Date(y, 4, 20)
 			}
@@ -283,7 +283,7 @@ const submittedCards = [
 			{
 				id: 'nBAGhJqe9v',
 				name: 'Ron Vargas',
-				src: "/img/avatars/thumb-3.jpg",
+				src: "/admin/img/avatars/thumb-3.jpg",
 				message: '',
 				date: new Date(y, 1, 8)
 			}
@@ -294,14 +294,14 @@ const submittedCards = [
 		id: 'ZFQDPmscwA',
 		name: 'Remove user data',
 		description: 'Crucifix polaroid hot chicken asymmetrical wolf helvetica keytar fashion axe ramps YOLO wayfarers 90s.',
-		cover: '/img/others/img-15.jpg',
+		cover: '/admin/img/others/img-15.jpg',
 		members: ['carolynHanson7953', 'brittanyHale3683'],
 		labels: ['Live issue'],
 		attachments: [
 			{
 				'id': 'NjHJhHeWrG',
 				'name': 'issue.jpg',
-				'src': '/img/others/img-15.jpg',
+				'src': '/admin/img/others/img-15.jpg',
 				'size': '42.6kb'
 			}
 		],
@@ -309,7 +309,7 @@ const submittedCards = [
 			{
 				id: 'nBAGhJqe9v',
 				name: 'Ron Vargas',
-				src: "/img/avatars/thumb-3.jpg",
+				src: "/admin/img/avatars/thumb-3.jpg",
 				message: '',
 				date: new Date(y, 1, 8)
 			}
@@ -331,7 +331,7 @@ const completedCards = [
 			{
 				id: 'yxc5gwrXUZ',
 				name: 'Ron Vargas',
-				src: "/img/avatars/thumb-3.jpg",
+				src: "/admin/img/avatars/thumb-3.jpg",
 				message: '',
 				date: new Date(y, 3, 4)
 			}
@@ -372,14 +372,14 @@ const completedCards = [
 			{
 				id: 'dNskbPFeQD',
 				name: 'Ron Vargas',
-				src: "/img/avatars/thumb-3.jpg",
+				src: "/admin/img/avatars/thumb-3.jpg",
 				message: 'Af trust fund meggings, meditation chicharrones brunch wolf narwhal shoreditch whatever bicycle rights ramps. ',
 				date: new Date(y, 4, 20)
 			},
 			{
 				id: 'qNzkmRZiTO',
 				name: 'Terrance Moreno',
-				src: "/img/avatars/thumb-2.jpg",
+				src: "/admin/img/avatars/thumb-2.jpg",
 				message: 'Noted!',
 				date: new Date(y, 4, 20)
 			}

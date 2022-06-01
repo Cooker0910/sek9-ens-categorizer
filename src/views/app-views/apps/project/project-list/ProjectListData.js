@@ -12,12 +12,12 @@ const ProjectListData = [
 		member: [
 			{
 				name: 'Frederick Adams',
-				img: "/img/avatars/thumb-8.jpg",
+				img: "/admin/img/avatars/thumb-8.jpg",
 				avatarColor: ""
 			},
 			{
 				name: 'Joyce Freeman',
-				img: "/img/avatars/thumb-5.jpg",
+				img: "/admin/img/avatars/thumb-5.jpg",
 				avatarColor: ""
 			},
 			{
@@ -45,7 +45,7 @@ const ProjectListData = [
 		member: [
 			{
 				name: 'Eileen Horton',
-				img: "/img/avatars/thumb-1.jpg",
+				img: "/admin/img/avatars/thumb-1.jpg",
 				avatarColor: ""
 			},
 			{
@@ -78,21 +78,21 @@ const ProjectListData = [
 			},
 			{
 				name: 'Ron Vargas',
-				img: "/img/avatars/thumb-3.jpg",
+				img: "/admin/img/avatars/thumb-3.jpg",
 				avatarColor: ""
 			},
 			{
 				name: 'Ron Vargas',
-				img: "/img/avatars/thumb-3.jpg",
+				img: "/admin/img/avatars/thumb-3.jpg",
 				avatarColor: ""
 			},
 			{
 				name: 'Ron Vargas',
-				img: "/img/avatars/thumb-3.jpg",
+				img: "/admin/img/avatars/thumb-3.jpg",
 				avatarColor: ""
 			},{
 				name: 'Ron Vargas',
-				img: "/img/avatars/thumb-3.jpg",
+				img: "/admin/img/avatars/thumb-3.jpg",
 				avatarColor: ""
 			},
 		]
@@ -115,7 +115,7 @@ const ProjectListData = [
 			},
 			{
 				name: 'Lloyd Obrien',
-				img: "/img/avatars/thumb-11.jpg",
+				img: "/admin/img/avatars/thumb-11.jpg",
 				avatarColor: ""
 			},
 		]
@@ -133,27 +133,27 @@ const ProjectListData = [
 		member: [
 			{
 				name: 'Brittany Hale',
-				img: "/img/avatars/thumb-10.jpg",
+				img: "/admin/img/avatars/thumb-10.jpg",
 				avatarColor: ""
 			},
 			{
 				name: 'Frederick Adams',
-				img: "/img/avatars/thumb-8.jpg",
+				img: "/admin/img/avatars/thumb-8.jpg",
 				avatarColor: ""
 			},
 			{
 				name: 'Samantha Phillips',
-				img: "/img/avatars/thumb-6.jpg",
+				img: "/admin/img/avatars/thumb-6.jpg",
 				avatarColor: ""
 			},
 			{
 				name: 'Samantha Phillips',
-				img: "/img/avatars/thumb-6.jpg",
+				img: "/admin/img/avatars/thumb-6.jpg",
 				avatarColor: ""
 			},
 			{
 				name: 'Samantha Phillips',
-				img: "/img/avatars/thumb-6.jpg",
+				img: "/admin/img/avatars/thumb-6.jpg",
 				avatarColor: ""
 			},
 		]
@@ -171,7 +171,7 @@ const ProjectListData = [
 		member: [
 			{
 				name: 'Gabriella May',
-				img: "/img/avatars/thumb-12.jpg",
+				img: "/admin/img/avatars/thumb-12.jpg",
 				avatarColor: ""
 			},
 			{
@@ -199,12 +199,12 @@ const ProjectListData = [
 		member: [
 			{
 				name: 'Lee Wheeler',
-				img: "/img/avatars/thumb-13.jpg",
+				img: "/admin/img/avatars/thumb-13.jpg",
 				avatarColor: ""
 			},
 			{
 				name: 'Ella Robinson',
-				img: "/img/avatars/thumb-15.jpg",
+				img: "/admin/img/avatars/thumb-15.jpg",
 				avatarColor: ""
 			}
 		]

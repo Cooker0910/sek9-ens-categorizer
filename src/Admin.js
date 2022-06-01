@@ -17,17 +17,11 @@ function App() {
   return (
     <div className="App">
       <Provider store={store}>
-        <ThemeSwitcherProvider
-          themeMap={themes}
-          defaultTheme={THEME_CONFIG.currentTheme}
-          insertionPoint="styles-insertion-point"
-        >
           <Router basename="/admin">
             <Switch>
               <Route path="/" component={Views} />
             </Switch>
           </Router>
-        </ThemeSwitcherProvider>
       </Provider>
     </div>
   )

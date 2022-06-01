@@ -166,6 +166,16 @@ function SideNav({ match, isMenuOpen, toggleMenu }) {
         <li>
           <NavLink
             onClick={toggleMenu}
+            active={url === '/categories' ? 1 : 0}
+            to="/categories"
+          >
+            <Heart active={url === '/categories'} />
+            <span>{t('c.category')}</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            onClick={toggleMenu}
             active={url === '/favourites' ? 1 : 0}
             to="/favourites"
           >

@@ -113,14 +113,14 @@ export class Billing extends Component {
       {
         key: 'card-1',
         cardType: 'Visa',
-        cardTypeImg: '/img/others/img-8.png',
+        cardTypeImg: '/admin/img/others/img-8.png',
         cardNumber: '•••• •••• •••• 7260',
         exp: '06/22'
       },
       {
         key: 'card-2',
         cardType: 'Master',
-        cardTypeImg: '/img/others/img-9.png',
+        cardTypeImg: '/admin/img/others/img-9.png',
         cardNumber: '•••• •••• •••• 1272',
         exp: '04/21'
       }
@@ -153,11 +153,11 @@ export class Billing extends Component {
     const { cardNumber, exp } = values
     const cardType = [
       {
-        img: '/img/others/img-8.png',
+        img: '/admin/img/others/img-8.png',
         type: 'Visa'
       },
       {
-        img: '/img/others/img-9.png',
+        img: '/admin/img/others/img-9.png',
         type: 'Master'
       }
     ]
@@ -191,7 +191,7 @@ export class Billing extends Component {
     const locale = {
       emptyText: (
         <div className="text-center my-4">
-          <img src="/img/others/img-7.png" alt="Add credit card" style={{maxWidth: '90px'}}/>
+          <img src="/admin/img/others/img-7.png" alt="Add credit card" style={{maxWidth: '90px'}}/>
           <h3 className="mt-3 font-weight-light">Please add a credit card!</h3>
         </div>
       )

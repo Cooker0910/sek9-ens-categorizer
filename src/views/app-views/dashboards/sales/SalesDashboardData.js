@@ -21,35 +21,35 @@ export const weeklyRevenueData = {
 export const topProductData = [
 	{
 		name: 'Blue Jacket',
-		image: '/img/thumbs/thumb-7.jpg',
+		image: '/admin/img/thumbs/thumb-7.jpg',
 		category: 'Cloths',
 		sales: 5930,
 		status: 'up'
 	},
 	{
 		name: 'White Sneaker',
-		image: '/img/thumbs/thumb-12.jpg',
+		image: '/admin/img/thumbs/thumb-12.jpg',
 		category: 'Cloths',
 		sales: 5177,
 		status: 'up'
 	},
 	{
 		name: 'Red Beat Headphone',
-		image: '/img/thumbs/thumb-14.jpg',
+		image: '/admin/img/thumbs/thumb-14.jpg',
 		category: 'Devices',
 		sales: 4701,
 		status: 'down'
 	},
 	{
 		name: 'Apple Watch',
-		image: '/img/thumbs/thumb-17.jpg',
+		image: '/admin/img/thumbs/thumb-17.jpg',
 		category: 'Devices',
 		sales: 2833,
 		status: 'up'
 	},
 	{
 		name: 'Blue Backpack',
-		image: '/img/thumbs/thumb-11.jpg',
+		image: '/admin/img/thumbs/thumb-11.jpg',
 		category: 'Bags',
 		sales: 1692,
 		status: 'down'
@@ -90,7 +90,7 @@ export const recentOrderData = [
 	{
 		id: '#5331',
 		name: 'Eileen Horton',
-		image: '/img/avatars/thumb-1.jpg',
+		image: '/admin/img/avatars/thumb-1.jpg',
 		date: 1573430400,
 		amount: 677,
 		paymentStatus: 'Paid',
@@ -99,7 +99,7 @@ export const recentOrderData = [
 	{
 		id: '#5328',
 		name: 'Terrance Moreno',
-		image: '/img/avatars/thumb-2.jpg',
+		image: '/admin/img/avatars/thumb-2.jpg',
 		date: 1572393600,
 		amount: 1328.35,
 		paymentStatus: 'Paid',
@@ -108,7 +108,7 @@ export const recentOrderData = [
 	{
 		id: '#5321',
 		name: 'Ron Vargas',
-		image: '/img/avatars/thumb-3.jpg',
+		image: '/admin/img/avatars/thumb-3.jpg',
 		date: 1593949805,
 		amount: 629,
 		paymentStatus: 'Paid',
@@ -117,7 +117,7 @@ export const recentOrderData = [
 	{
 		id: '#5287',
 		name: 'Luke Cook',
-		image: '/img/avatars/thumb-4.jpg',
+		image: '/admin/img/avatars/thumb-4.jpg',
 		date: 1579132800,
 		amount: 25.9,
 		paymentStatus: 'Paid',
@@ -126,7 +126,7 @@ export const recentOrderData = [
 	{
 		id: '#5351',
 		name: 'Joyce Freeman',
-		image: '/img/avatars/thumb-5.jpg',
+		image: '/admin/img/avatars/thumb-5.jpg',
 		date: 1591286400,
 		amount: 817.5,
 		paymentStatus: 'Pending',

@@ -95,7 +95,7 @@ export const createCommentObject = () => {
 	return {
 		id: createUID(10),
 		name: 'Eileen Horton',
-		src: "/img/avatars/thumb-1.jpg",
+		src: "/admin/img/avatars/thumb-1.jpg",
 		message: '',
 		date: new Date()
 	}

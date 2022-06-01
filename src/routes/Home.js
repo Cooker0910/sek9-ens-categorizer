@@ -338,6 +338,7 @@ export default ({ match }) => {
               {t('c.mynames')}
             </NavLink>
           )}
+          <NavLink to="/categories">{t('c.category')}</NavLink>
           <NavLink to="/favourites">{t('c.favourites')}</NavLink>
           <ExternalLink href={aboutPageURL()}>{t('c.about')}</ExternalLink>
         </Nav>

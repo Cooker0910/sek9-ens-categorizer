@@ -15,7 +15,7 @@ const ErrorTwo = () => {
 				</div>
 				<div className="container">
 					<div className="text-center mb-5">
-						<img className="img-fluid" src="/img/others/img-21.png" alt="" />
+						<img className="img-fluid" src="/admin/img/others/img-21.png" alt="" />
 						<h1 className="font-weight-bold mb-4">Sorry, something goes wrong</h1>
 						<Link to='/app'>
 							<Button type="primary">Back to Home</Button>

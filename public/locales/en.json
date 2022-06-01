@@ -38,6 +38,7 @@
     "addresses": "Addresses",
     "cancel": "Cancel",
     "cannotclaimDns": "You cannot claim names under .{{ name }} on this site.",
+    "category": "Category",
     "claim": "Claim",
     "connect": "Connect",
     "disconnect": "Disconnect",
@@ -69,6 +70,18 @@
     "warning": "Warning",
     "year": "year",
     "year_plural": "years"
+  },
+  "category": {
+    "categoryTitle": "Categories",
+    "noCategories": {
+      "text": "To add names to favourites, click the heart icon next to any desired name.",
+      "title": "No categories have been saved."
+    },
+    "nofavouritesSubdomains": {
+      "text": "To add names to favourites, click the heart icon next to any desired name.",
+      "title": "No Subdomains have been saved."
+    },
+    "subdomainFavouriteTitle": "Favourite Subdomains"
   },
   "certificate": {
     "button": "Request SSL certificate",
@@ -242,6 +255,10 @@
   "search": {
     "button": "Search",
     "placeholder": "Search names or addresses"
+  },
+  "searchCategory": {
+    "button": "Search",
+    "placeholder": "Search category"
   },
   "searchErrors": {
     "domainMalformed": {

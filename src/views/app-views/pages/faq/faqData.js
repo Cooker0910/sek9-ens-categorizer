@@ -1,17 +1,17 @@
 export const faqCategories = [
 	{
 		key: "faq-1",
-		image: "/img/others/img-4.png",
+		image: "/admin/img/others/img-4.png",
 		title: "Navigation",
 	},
 	{
 		key: "faq-2",
-		image: "/img/others/img-5.png",
+		image: "/admin/img/others/img-5.png",
 		title: "Style Guide",
 	},
 	{
 		key: "faq-3",
-		image: "/img/others/img-6.png",
+		image: "/admin/img/others/img-6.png",
 		title: "System",
 	},
 ]

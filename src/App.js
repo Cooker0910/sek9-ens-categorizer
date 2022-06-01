@@ -6,6 +6,15 @@ import {
   Switch
 } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
+import 'antd/dist/antd.css'
+import { ThemeSwitcherProvider } from 'react-css-theme-switcher'
+import { THEME_CONFIG } from './configs/AppConfig'
+
+const themes = {
+  dark: `${process.env.PUBLIC_URL}/css/dark-theme.css`,
+  light: `${process.env.PUBLIC_URL}/css/light-theme.css`
+}
+
 
 const TestRegistrar = lazy(() =>
   import(
@@ -32,6 +41,20 @@ const SingleName = lazy(() =>
   import(
     /* webpackChunkName: "SingleName", webpackPrefetch:true */
     './routes/SingleName'
+  )
+)
+
+const Category = lazy(() =>
+  import(
+    /* webpackChunkName: "SingleName", webpackPrefetch:true */
+    './routes/Category'
+  )
+)
+
+const SingleCategory = lazy(() =>
+  import(
+    /* webpackChunkName: "SingleName", webpackPrefetch:true */
+    './routes/SingleCategory'
   )
 )
 
@@ -124,23 +147,31 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={Home} layout={HomePageLayout} />
-        <Route path="/test-registrar" component={TestRegistrar} />
-        <Route path="/favourites" component={Favourites} />
-        <Route path="/faq" component={Faq} />
-        <Route path="/my-bids" component={SearchResults} />
-        <Route path="/how-it-works" component={SearchResults} />
-        <Route path="/search/:searchTerm" component={SearchResults} />
-        <Route path="/name/:name" component={SingleName} />
-        <Route path="/address/:address/:domainType" component={Address} />
-        <Route path="/address/:address" component={Address} />
-        <Route path="/renew" component={Renew} />
-        <DefaultRoute path="/admin" component={Admin} />
-        <Route path="*" component={Error404} />
-      </Switch>
-    </Router>
+    <ThemeSwitcherProvider
+      themeMap={themes}
+      defaultTheme={THEME_CONFIG.currentTheme}
+      insertionPoint="styles-insertion-point"
+    >
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Home} layout={HomePageLayout} />
+          <Route path="/test-registrar" component={TestRegistrar} />
+          <Route path="/favourites" component={Favourites} />
+          <Route path="/categories" component={Category} />
+          <Route path="/category/:category" component={SingleCategory} />
+          <Route path="/faq" component={Faq} />
+          <Route path="/my-bids" component={SearchResults} />
+          <Route path="/how-it-works" component={SearchResults} />
+          <Route path="/search/:searchTerm" component={SearchResults} />
+          <Route path="/name/:name" component={SingleName} />
+          <Route path="/address/:address/:domainType" component={Address} />
+          <Route path="/address/:address" component={Address} />
+          <Route path="/renew" component={Renew} />
+          <DefaultRoute path="/admin" component={Admin} />
+          <Route path="*" component={Error404} />
+        </Switch>
+      </Router>
+    </ThemeSwitcherProvider>
   )
 }
 export default App

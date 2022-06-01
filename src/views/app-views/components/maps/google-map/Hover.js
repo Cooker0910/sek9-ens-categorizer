@@ -4,7 +4,7 @@ import { Tooltip } from 'antd';
 
 const Marker = ({text}) => (
 	<Tooltip title={`Location ${text}`}>
-		<img className="cursor-pointer" src="/img/others/marker.png" alt="" />
+		<img className="cursor-pointer" src="/admin/img/others/marker.png" alt="" />
 	</Tooltip>
 );
 

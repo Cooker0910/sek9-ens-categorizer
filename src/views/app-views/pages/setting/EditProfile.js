@@ -9,7 +9,7 @@ export class EditProfile extends Component {
 	avatarEndpoint = 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
 
 	state= {
-		avatarUrl: '/img/avatars/thumb-6.jpg',
+		avatarUrl: '/admin/img/avatars/thumb-6.jpg',
 		name: 'Charlie Howard',
 		email: 'charlie.howard@themenate.com',
 		userName: 'Charlie',

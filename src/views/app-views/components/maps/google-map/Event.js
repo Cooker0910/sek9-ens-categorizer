@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import GoogleMap  from 'google-map-react';
 
 const Marker = ({text}) => (
-	<img className="cursor-pointer" src="/img/others/marker.png" alt="" />
+	<img className="cursor-pointer" src="/admin/img/others/marker.png" alt="" />
 );
 
 export class Event extends Component {
