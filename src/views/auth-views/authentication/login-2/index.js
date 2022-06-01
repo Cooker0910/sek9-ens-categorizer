@@ -3,7 +3,7 @@ import LoginForm from '../../components/LoginForm'
 import { Row, Col } from "antd";
 import { useSelector } from 'react-redux';
 
-const backgroundURL = '/admin/img/others/img-17.jpg'
+const backgroundURL = '/img/others/img-17.jpg'
 const backgroundStyle = {
 	backgroundImage: `url(${backgroundURL})`,
 	backgroundRepeat: 'no-repeat',
@@ -32,11 +32,11 @@ const LoginTwo = props => {
 				<Col xs={0} sm={0} md={0} lg={8}>
 					<div className="d-flex flex-column justify-content-between h-100 px-4" style={backgroundStyle}>
 						<div className="text-right">
-							<img src="/admin/img/logo-white1.png" alt="logo"/>
+							<img src="/img/logo-white1.png" alt="logo"/>
 						</div>
 						<Row justify="center">
 							<Col xs={0} sm={0} md={0} lg={20}>
-								<img className="img-fluid mb-5" src="/admin/img/others/img-18.png" alt=""/>
+								<img className="img-fluid mb-5" src="/img/others/img-18.png" alt=""/>
 								<h1 className="text-white">Welcome to emilus</h1>
 								<p className="text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ullamcorper nisl erat, vel convallis elit fermentum pellentesque.</p>
 							</Col>

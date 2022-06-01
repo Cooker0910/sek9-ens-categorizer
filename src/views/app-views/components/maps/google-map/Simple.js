@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import GoogleMapReact  from 'google-map-react';
 
 const Marker = () => (
-	<img src="/admin/img/others/marker.png" alt="" />
+	<img src="/img/others/marker.png" alt="" />
 );
 
 export class Simple extends Component {

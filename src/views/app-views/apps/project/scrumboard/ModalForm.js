@@ -298,7 +298,7 @@ const UpdateCardForm = ({onSubmit, cardData, listId}) => {
 							)
 						}
 						<div className="mb-3 d-flex">
-							<Avatar src="/admin/img/avatars/thumb-1.jpg"/>
+							<Avatar src="/img/avatars/thumb-1.jpg"/>
 							<div className="ml-2 bg-gray-lightest p-3 rounded w-100">
 								<Input
 									ref={commentInput}

@@ -124,7 +124,7 @@ const CategoryList = props => {
           <Space align="center" size={2}>
             <Image
               height={13}
-              src={'/admin/img/icons/ethereum-icon-28.png'}
+              src={'/img/icons/ethereum-icon-28.png'}
               name={`${floorprice_decimal / Math.pow(10, 18)}`}
             />
             <NumberFormat

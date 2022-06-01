@@ -148,7 +148,7 @@ export class MailItem extends Component {
 		const locale = {
 			emptyText: (
 				<div className="text-center my-5">
-					<img src="/admin/img/others/img-10.png" alt="Add credit card"/>
+					<img src="/img/others/img-10.png" alt="Add credit card"/>
 					<h3 className="mt-3 font-weight-light">There is no mail!</h3>
 				</div>
 			)

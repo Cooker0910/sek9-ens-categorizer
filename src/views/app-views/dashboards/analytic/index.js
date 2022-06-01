@@ -44,7 +44,7 @@ const { Option } = Select;
 const rederRegionTopEntrance = (
   <div className="mb-4">
     <div className="d-flex align-items-center">
-      <Avatar size={20} src="/admin/img/flags/us.png"/>
+      <Avatar size={20} src="/img/flags/us.png"/>
       <h2 className="mb-0 ml-2 font-weight-bold">37.61%</h2>
     </div>
     <span className="text-muted">Top entrance region</span>

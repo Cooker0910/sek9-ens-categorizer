@@ -18,7 +18,7 @@ const ProfileInfo = props => (
 			<Col sm={24} md={23}>
 				<div className="d-md-flex">
 					<div className="rounded p-2 bg-white shadow-sm mx-auto" style={{'marginTop': '-3.5rem', 'maxWidth': `${props.avatarSize + 16}px`}}>
-						<Avatar shape="square" size={props.avatarSize} src="/admin/img/avatars/thumb-15.jpg" />
+						<Avatar shape="square" size={props.avatarSize} src="/img/avatars/thumb-15.jpg" />
 					</div>
 					<div className="ml-md-4 w-100">
 						<Flex alignItems="center" mobileFlex={false} className="mb-3 text-md-left text-center">
@@ -161,7 +161,7 @@ export class Profile extends Component {
 		const avatarSize = 150;
 		return (
 			<>
-				<PageHeaderAlt background="/admin/img/others/img-12.jpg" cssClass="bg-primary" overlap>
+				<PageHeaderAlt background="/img/others/img-12.jpg" cssClass="bg-primary" overlap>
 					<div className="container text-center">
 						<div className="py-5 my-md-5">
 						</div>

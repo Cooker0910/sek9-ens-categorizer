@@ -22,7 +22,7 @@ export class Invoice extends Component {
 				<Card>
 					<div className="d-md-flex justify-content-md-between">
 						<div>
-							<img src="/admin/img/logo1.png" alt=""/>
+							<img src="/img/logo1.png" alt=""/>
 							<address>
 								<p>
 									<span className="font-weight-semibold text-dark font-size-md">SEK9, Inc.</span><br />

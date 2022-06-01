@@ -52,27 +52,27 @@ export const ActiveMembersData = [{
 }]
 
 export const NewMembersData = [{
-	img: "/admin/img/avatars/thumb-2.jpg",
+	img: "/img/avatars/thumb-2.jpg",
 	title: "Software Engineer",
 	name: "Terrance Moreno",
 },
 {
-	img: "/admin/img/avatars/thumb-3.jpg",
+	img: "/img/avatars/thumb-3.jpg",
 	title: "UI/UX Designer",
 	name: "Ron Vargas",
 },
 {
-	img: "/admin/img/avatars/thumb-4.jpg",
+	img: "/img/avatars/thumb-4.jpg",
 	title: "HR Executive",
 	name: "Luke Cook",
 },
 {
-	img: "/admin/img/avatars/thumb-5.jpg",
+	img: "/img/avatars/thumb-5.jpg",
 	title: "Frontend Developer",
 	name: "Joyce Freeman",
 },
 {
-	img: "/admin/img/avatars/thumb-6.jpg",
+	img: "/img/avatars/thumb-6.jpg",
 	title: "Compliance Manager",
 	name: "Samantha Phillips",
 }]

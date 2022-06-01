@@ -32,7 +32,7 @@ const ItemHeader = ({ name }) => (
       <AvatarStatus
         size={18}
         type="circle"
-        src={'/admin/img/icons/ens-144x144.png'}
+        src={'/img/icons/ens-144x144.png'}
         name={name}
       />
     </div>
@@ -48,7 +48,7 @@ const ItemInfo = ({ price, statusColor }) => (
     >
       <Image
         height={13}
-        src={'/admin/img/icons/ethereum-icon-28.png'}
+        src={'/img/icons/ethereum-icon-28.png'}
         name={'price'}
       />
       <NumberFormat
@@ -68,7 +68,7 @@ const ItemMember = ({ data }) => (
       <Avatar
         size={20}
         className={`ml-1 cursor-pointer`}
-        src={'/admin/img/icons/opensea-disabled.png'}
+        src={'/img/icons/opensea-disabled.png'}
         style={{ backgroundColor: 'gray' }}
       />
     </Tooltip>

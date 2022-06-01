@@ -1,6 +1,6 @@
 export const pricingData = [
     {
-        image: "/admin/img/others/img-1.png",
+        image: "/img/others/img-1.png",
         price: "0",
         duration: "/ forever",
         plan: "Startup",
@@ -15,7 +15,7 @@ export const pricingData = [
         ]
     },
     {
-        image: "/admin/img/others/img-2.png",
+        image: "/img/others/img-2.png",
         price: "20",
         duration: "/ per month",
         plan: "Standard",
@@ -30,7 +30,7 @@ export const pricingData = [
         ]
     },
     {
-        image: "/admin/img/others/img-3.png",
+        image: "/img/others/img-3.png",
         price: "48",
         duration: "/ per month",
         plan: "Premium",
