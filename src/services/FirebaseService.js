@@ -100,14 +100,16 @@ FirebaseService.getEthereums = (
     const data = snapshot.val()
     console.log('==== getEthereums: ', data)
     // Convert object data to list
-    if (!data) return []
-    const jsonData = JSON.parse(JSON.stringify(data))
-    const arrayData = Object.keys(jsonData).map((key, index) => {
-      return {
-        id: index,
-        ...jsonData[key]
-      }
-    })
+    let arrayData = [];
+    if (data) {
+      const jsonData = JSON.parse(JSON.stringify(data))
+      arrayData = Object.keys(jsonData).map((key, index) => {
+        return {
+          id: index,
+          ...jsonData[key]
+        }
+      });
+    }
     console.log('==== arrayData: ', arrayData)
     if (callback) callback(arrayData)
   })
