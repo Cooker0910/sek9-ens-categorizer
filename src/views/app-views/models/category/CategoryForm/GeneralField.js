@@ -280,11 +280,8 @@ const GeneralField = props => {
             accept=".txt, .csv"
             multiple={true}
             {...fileListProps}
-            // fileList={props.uploadedFiles}
-            // beforeUpload={beforeCsvUpload}
             onChange={e => props.handleCsvUploadChange(e)}
-            customRequest={e => props.customCsvUpload(e)}
-            onRemove={e => props.handleCsvRemove(e)}
+            customRequest={e => props.handleCsvCustomUpload(e)}
           >
             <Button icon={<UploadOutlined />}>Upload</Button>
           </Upload>

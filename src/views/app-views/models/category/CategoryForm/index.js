@@ -56,26 +56,27 @@ const CategoryForm = props => {
     }
   }
 
-  const customCsvUpload = async ({ onError, onSuccess, file }) => {
+  const handleCsvCustomUpload = async ({ onError, onSuccess, file }) => {
     const metadata = {
       contentType: file.type
     }
     const categoryName = category
       ? category.name
       : momenttz.tz('America/New_York').format('x')
-    console.log('==== file: ', file)
+    let existFile = uploadedFiles.find(uf => uf.name == file.name)
+    if (existFile && existFile.status == 'done') {
+      onError && onError('File already exist')
+      message.error('File already exist. Please upload other file.')
+      return
+    }
     try {
-      let existFile = uploadedFiles.find(uf => uf.name == file.name)
-      if (existFile) {
-        console.log('==== The file already exist. Please upload other file.')
-        onError && onError('The file already exist. Please upload other file.')
-      }
       const csvUrl = await FirebaseService.uploadCsvFile(
         categoryName,
         file.name,
         file,
         metadata
       )
+      console.log('==== csvUrl: ', csvUrl)
       onSuccess && onSuccess(null, csvUrl)
     } catch (e) {
       onError && onError(e)
@@ -84,11 +85,11 @@ const CategoryForm = props => {
 
   const handleCsvUploadChange = info => {
     const file = info.file
-    let tempFiles = uploadedFiles
-    let existFile = uploadedFiles.find(uf => uf.name == file.name)
+    let tmpFiles = [...uploadedFiles]
+    let existFile = tmpFiles.find(uf => uf.name == file.name)
     if (file.status === 'uploading') {
       if (!existFile) {
-        tempFiles.push({
+        tmpFiles.push({
           name: file.name,
           url: '',
           type: file.type,
@@ -96,30 +97,29 @@ const CategoryForm = props => {
           uid: file.uid,
           status: 'uploading'
         })
-        setFiles(tempFiles)
+        setFiles(tmpFiles)
         setUploadLoading(true)
       }
       return
     }
     if (file.status === 'done') {
       // Check the status of all files.
-      if (!existFile) {
-        tmpFile.status = file.status
+      if (existFile) {
+        existFile.status = file.status
         setFiles(tmpUploadedFiles)
+      }
+    }
+    if (file.status === 'removed') {
+      let tmpFiles = [...uploadedFiles]
+      let index = tmpFiles.findIndex(uf => uf.name == file.name)
+      if (index >= 0) {
+        tmpFiles.splice(index, 1)
+        setFiles(tmpFiles)
+        return true
       }
     }
   }
 
-  const handleCsvRemove = file => {
-    console.log('==== handleCsvRemove: ', file)
-    let tmpFiles = uploadedFiles
-    let index = tmpFiles.findIndex(uf => uf.name == file.name)
-    if (index >= 0) {
-      tmpFiles.splice(index, 1)
-      console.log('===')
-      setFiles(tmpFiles)
-    }
-  }
   const onFinish = () => {
     setSubmitLoading(true)
     form
@@ -181,6 +181,8 @@ const CategoryForm = props => {
           updatedValue.updatedAt = `${moment().format(
             'YYYY-mm-DDTHH:MM:SS'
           )}.00Z`
+          updatedValue.communityDiscord = updatedValue.communityDiscord || ''
+          updatedValue.communityTwitter = updatedValue.communityTwitter || ''
           updatedValue.wikiUrl = updatedValue.wikiUrl || ''
           updatedValue.regularExpression = updatedValue.regularExpression || ''
           if (!!uploadedImg) {
@@ -257,8 +259,7 @@ const CategoryForm = props => {
                 uploadLoading={uploadLoading}
                 handleUploadChange={handleUploadChange}
                 handleCsvUploadChange={handleCsvUploadChange}
-                customCsvUpload={customCsvUpload}
-                handleCsvRemove={handleCsvRemove}
+                handleCsvCustomUpload={handleCsvCustomUpload}
               />
             </TabPane>
             <TabPane tab="ETH" key="2">
