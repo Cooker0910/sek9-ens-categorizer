@@ -106,6 +106,7 @@ const CategoryForm = props => {
       // Check the status of all files.
       if (existFile) {
         existFile.status = file.status
+        existFile.url = file.xhr
         setFiles(tmpUploadedFiles)
       }
     }
@@ -188,7 +189,7 @@ const CategoryForm = props => {
           if (!!uploadedImg) {
             updatedValue.imageUrl = uploadedImg
           }
-          if (uploadedFiles && uploadedFiles.length > 0) {
+          if (uploadedFiles && uploadedFiles.length >= 0) {
             updatedValue.files = uploadedFiles
           }
           console.log('==== updatedValue: ', updatedValue)
