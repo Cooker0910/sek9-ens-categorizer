@@ -100,7 +100,7 @@ FirebaseService.getEthereums = (
     const data = snapshot.val()
     console.log('==== getEthereums: ', data)
     // Convert object data to list
-    let arrayData = [];
+    let arrayData = []
     if (data) {
       const jsonData = JSON.parse(JSON.stringify(data))
       arrayData = Object.keys(jsonData).map((key, index) => {
@@ -108,7 +108,7 @@ FirebaseService.getEthereums = (
           id: index,
           ...jsonData[key]
         }
-      });
+      })
     }
     console.log('==== arrayData: ', arrayData)
     if (callback) callback(arrayData)
@@ -128,6 +128,18 @@ FirebaseService.addEthereum = data => {
 
 FirebaseService.uploadFile = async (name, file, metadata) => {
   const imageRef = storageRef(storage, '/assets/imgs/clubs/' + name)
+  // 'file' comes from the Blob or File API
+  const snapshot = await uploadBytes(imageRef, file, metadata)
+  console.log('Uploaded a blob or file!', snapshot)
+  const imageUrl = getDownloadURL(imageRef)
+  return imageUrl
+}
+
+FirebaseService.uploadCsvFile = async (category, name, file, metadata) => {
+  const imageRef = storageRef(
+    storage,
+    `/assets/categories/${category}/list_file/${name}`
+  )
   // 'file' comes from the Blob or File API
   const snapshot = await uploadBytes(imageRef, file, metadata)
   console.log('Uploaded a blob or file!', snapshot)

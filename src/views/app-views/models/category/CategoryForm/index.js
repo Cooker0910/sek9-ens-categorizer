@@ -19,6 +19,7 @@ const CategoryForm = props => {
 
   const [form] = Form.useForm()
   const [uploadedImg, setImage] = useState('')
+  const [uploadedFiles, setFiles] = useState([])
   const [uploadLoading, setUploadLoading] = useState(false)
   const [submitLoading, setSubmitLoading] = useState(false)
   const [category, setCategory] = useState(null)
@@ -40,6 +41,7 @@ const CategoryForm = props => {
         floorprice_decimal: cat.floorprice_decimal / Math.pow(10, 18)
       })
       setImage(cat.imageUrl)
+      setFiles(cat.files ? cat.files : [])
       setCategory(cat)
     }
   }, [form, mode, param, props])
@@ -54,6 +56,70 @@ const CategoryForm = props => {
     }
   }
 
+  const customCsvUpload = async ({ onError, onSuccess, file }) => {
+    const metadata = {
+      contentType: file.type
+    }
+    const categoryName = category
+      ? category.name
+      : momenttz.tz('America/New_York').format('x')
+    console.log('==== file: ', file)
+    try {
+      let existFile = uploadedFiles.find(uf => uf.name == file.name)
+      if (existFile) {
+        console.log('==== The file already exist. Please upload other file.')
+        onError && onError('The file already exist. Please upload other file.')
+      }
+      const csvUrl = await FirebaseService.uploadCsvFile(
+        categoryName,
+        file.name,
+        file,
+        metadata
+      )
+      onSuccess && onSuccess(null, csvUrl)
+    } catch (e) {
+      onError && onError(e)
+    }
+  }
+
+  const handleCsvUploadChange = info => {
+    const file = info.file
+    let tempFiles = uploadedFiles
+    let existFile = uploadedFiles.find(uf => uf.name == file.name)
+    if (file.status === 'uploading') {
+      if (!existFile) {
+        tempFiles.push({
+          name: file.name,
+          url: '',
+          type: file.type,
+          size: file.size,
+          uid: file.uid,
+          status: 'uploading'
+        })
+        setFiles(tempFiles)
+        setUploadLoading(true)
+      }
+      return
+    }
+    if (file.status === 'done') {
+      // Check the status of all files.
+      if (!existFile) {
+        tmpFile.status = file.status
+        setFiles(tmpUploadedFiles)
+      }
+    }
+  }
+
+  const handleCsvRemove = file => {
+    console.log('==== handleCsvRemove: ', file)
+    let tmpFiles = uploadedFiles
+    let index = tmpFiles.findIndex(uf => uf.name == file.name)
+    if (index >= 0) {
+      tmpFiles.splice(index, 1)
+      console.log('===')
+      setFiles(tmpFiles)
+    }
+  }
   const onFinish = () => {
     setSubmitLoading(true)
     form
@@ -81,6 +147,8 @@ const CategoryForm = props => {
             communityTwitter: '',
             floorprice: '',
             floorprice_decimal: 0,
+            regularExpression: '',
+            wikiUrl: '',
             ...values
           }
           newValue.floorprice_decimal =
@@ -90,6 +158,9 @@ const CategoryForm = props => {
           newValue.updatedAt = newValue.createdAt
           if (!!uploadedImg) {
             newValue.imageUrl = uploadedImg
+          }
+          if (uploadedFiles && uploadedFiles.length > 0) {
+            newValue.files = uploadedFiles
           }
           FirebaseService.addCategory(newValue)
         }
@@ -110,9 +181,15 @@ const CategoryForm = props => {
           updatedValue.updatedAt = `${moment().format(
             'YYYY-mm-DDTHH:MM:SS'
           )}.00Z`
+          updatedValue.wikiUrl = updatedValue.wikiUrl || ''
+          updatedValue.regularExpression = updatedValue.regularExpression || ''
           if (!!uploadedImg) {
             updatedValue.imageUrl = uploadedImg
           }
+          if (uploadedFiles && uploadedFiles.length > 0) {
+            updatedValue.files = uploadedFiles
+          }
+          console.log('==== updatedValue: ', updatedValue)
           FirebaseService.updateCategory(updatedValue)
         }
 
@@ -176,8 +253,12 @@ const CategoryForm = props => {
             <TabPane tab="General" key="1">
               <GeneralField
                 uploadedImg={uploadedImg}
+                uploadedFiles={uploadedFiles}
                 uploadLoading={uploadLoading}
                 handleUploadChange={handleUploadChange}
+                handleCsvUploadChange={handleCsvUploadChange}
+                customCsvUpload={customCsvUpload}
+                handleCsvRemove={handleCsvRemove}
               />
             </TabPane>
             <TabPane tab="ETH" key="2">
