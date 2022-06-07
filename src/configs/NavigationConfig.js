@@ -972,11 +972,11 @@ const docsNavTree = [
 
 const navigationConfig = [
   ...dashBoardNavTree,
-  ...modelsNavTree,
-  ...appsNavTree,
-  ...componentsNavTree,
-  ...extraNavTree,
-  ...docsNavTree
+  ...modelsNavTree
+  // ...appsNavTree,
+  // ...componentsNavTree,
+  // ...extraNavTree,
+  // ...docsNavTree
 ]
 
 export default navigationConfig
