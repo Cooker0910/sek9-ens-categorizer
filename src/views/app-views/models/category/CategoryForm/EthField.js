@@ -83,44 +83,51 @@ const ItemMember = ({ data }) => (
 )
 
 const ListItem = ({ data }) => (
-  <div className="bg-white rounded p-3 mb-3 border">
-    <Row align="middle">
-      <Col xs={24} sm={24} md={8}>
-        <ItemHeader
-          name={`${data.name}.eth`}
-          category={`${data.startingPrice_decimal / Math.pow(10, 18)}`}
-        />
-      </Col>
-      <Col xs={24} sm={24} md={6}>
+  <a href={`/name/${data.name}.eth/details`} target="_blank">
+    <div
+      className="bg-white rounded p-3 mb-3 border"
+      style={{ backgroundColor: data.labelHash ? 'white' : '#8080803b' }}
+    >
+      <Row align="middle">
+        <Col xs={24} sm={24} md={8}>
+          <ItemHeader
+            name={`${data.name}.eth`}
+            category={`${data.startingPrice_decimal / Math.pow(10, 18)}`}
+          />
+        </Col>
+        <Col xs={24} sm={24} md={6}>
+          <ItemInfo
+            price={`${data.startingPrice_decimal / Math.pow(10, 18)}`}
+            statusColor={'orange'}
+          />
+        </Col>
+        <Col xs={24} sm={24} md={5} />
+        <Col xs={24} sm={24} md={3} />
+        <Col xs={24} sm={24} md={2}>
+          <div className="text-right">
+            <ItemMember eth={data} />
+          </div>
+        </Col>
+      </Row>
+    </div>
+  </a>
+)
+
+const GridItem = ({ data }) => (
+  <a href={`/name/${data.name}.eth/details`} target="_blank">
+    <Card style={{ backgroundColor: data.labelHash ? 'white' : '#8080803b' }}>
+      <Flex alignItems="center" justifyContent="between">
+        <ItemHeader name={`${data.name}.eth`} />
         <ItemInfo
           price={`${data.startingPrice_decimal / Math.pow(10, 18)}`}
           statusColor={'orange'}
         />
-      </Col>
-      <Col xs={24} sm={24} md={5} />
-      <Col xs={24} sm={24} md={3} />
-      <Col xs={24} sm={24} md={2}>
-        <div className="text-right">
-          <ItemMember eth={data} />
-        </div>
-      </Col>
-    </Row>
-  </div>
-)
-
-const GridItem = ({ data }) => (
-  <Card>
-    <Flex alignItems="center" justifyContent="between">
-      <ItemHeader name={`${data.name}.eth`} />
-      <ItemInfo
-        price={`${data.startingPrice_decimal / Math.pow(10, 18)}`}
-        statusColor={'orange'}
-      />
-    </Flex>
-    <div className="mt-2 text-right">
-      <ItemMember eth={data} />
-    </div>
-  </Card>
+      </Flex>
+      <div className="mt-2 text-right">
+        <ItemMember eth={data} />
+      </div>
+    </Card>
+  </a>
 )
 
 const EthFeild = props => {

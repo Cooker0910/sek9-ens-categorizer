@@ -12,7 +12,7 @@ import bg from '../assets/heroBG.jpg'
 import TextBubbleDefault from '../components/Icons/TextBubble'
 import QuestionMarkDefault from '../components/Icons/QuestionMark'
 import HowToUseDefault from '../components/HowToUse/HowToUse'
-import ENSLogo from '../components/HomePage/images/ENSLogo.svg'
+import ENSLogo from '../components/HomePage/images/seck9-full-logo.jpg'
 import { aboutPageURL } from '../utils/utils'
 import { connectProvider, disconnectProvider } from '../utils/providerUtils'
 import { gql } from '@apollo/client'
@@ -352,7 +352,7 @@ export default ({ match }) => {
             initial={animation.initial}
             animate={animation.animate}
             src={ENSLogo}
-            alt="ENS logo"
+            alt="SEK9 logo"
           />
           <PermanentRegistrarLogo
             initial={animation.initial}

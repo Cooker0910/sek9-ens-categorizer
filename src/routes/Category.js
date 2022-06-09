@@ -69,17 +69,17 @@ const NoDomains = () => {
 function Category() {
   const { t } = useTranslation()
   useEffect(() => {
-    document.title = 'ENS Category'
+    document.title = 'SEK9'
   }, [])
 
   const [categories, setCategories] = useState([])
 
   useEffect(() => {
-		// showCategoryLoading();
+    // showCategoryLoading();
     FirebaseService.getCategories(setCategories)
   }, [])
 
-  if (!categories || categories.length === 0 ) {
+  if (!categories || categories.length === 0) {
     return (
       <CategoryContainer data-testid="favourites-container">
         <H2>{t('category.categoryTitle')}</H2>
@@ -99,12 +99,13 @@ function Category() {
       </NonMainPageBannerContainer>
       <H2>{t('category.categoryTitle')}</H2>
       <Row>
-      {categories && categories.length>0 &&
-        categories.map(category => 
-          <Col span={8}>
-            <CategoryItem category={category} />
-          </Col>
-      )}
+        {categories &&
+          categories.length > 0 &&
+          categories.map(category => (
+            <Col span={8}>
+              <CategoryItem category={category} />
+            </Col>
+          ))}
       </Row>
     </CategoryContainer>
   )
