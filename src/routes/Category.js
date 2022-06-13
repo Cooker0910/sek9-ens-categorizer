@@ -13,7 +13,9 @@ import {
   DAOBannerContent
 } from '../components/Banner/DAOBanner'
 import CategoryItem from 'components/CategoryItem'
-import { Row, Col } from 'antd'
+import { Row, Col, Button, Pagination } from 'antd'
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
+import { first, last } from 'lodash-es'
 
 const NoDomainsContainer = styled('div')`
   display: flex;
@@ -73,7 +75,39 @@ function Category() {
   }, [])
 
   const [categories, setCategories] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(12)
 
+  // const handlePagination=(currentPage)=>{
+  //   setPagination({...pagination, currentPage})
+  // }
+
+  const handleNext = () => {
+    FirebaseService.getCategories(setCategories, last(categories).objectId)
+  }
+
+  const handlePrev = () => {
+    FirebaseService.getCategories(
+      setCategories,
+      null,
+      first(categories).objectId
+    )
+  }
+
+  const handlePagination = value => {
+    setCurrentPage(value)
+  }
+  const handleSizeChange = (current, pageSize) => {
+    setCurrentPage(current)
+    setPageSize(pageSize)
+    console.log(current, pageSize)
+  }
+  const currentCategories = categories.filter(
+    (_, index) =>
+      index >= (currentPage - 1) * pageSize && index < currentPage * pageSize
+  )
+
+  console.log('current categories---', currentCategories)
   useEffect(() => {
     // showCategoryLoading();
     FirebaseService.getCategories(setCategories)
@@ -99,14 +133,27 @@ function Category() {
       </NonMainPageBannerContainer>
       <H2>{t('category.categoryTitle')}</H2>
       <Row>
-        {categories &&
-          categories.length > 0 &&
-          categories.map(category => (
+        {currentCategories &&
+          currentCategories.length > 0 &&
+          currentCategories.map(category => (
             <Col span={8}>
               <CategoryItem category={category} />
             </Col>
           ))}
       </Row>
+      <Pagination
+        defaultCurrent={1}
+        total={categories.length}
+        current={currentPage}
+        pageSize={pageSize}
+        showSizeChanger
+        pageSizeOptions={[12, 15, 18]}
+        onShowSizeChange={handleSizeChange}
+        onChange={handlePagination}
+      />
+      {/*       
+      <Button type="primary" onClick={handlePrev} icon={<LeftOutlined />}/>
+      <Button type="primary" onClick={handleNext} icon={<RightOutlined />}/> */}
     </CategoryContainer>
   )
 }

@@ -5,7 +5,21 @@ import {
   db,
   storage
 } from 'auth/FirebaseAuth'
-import { ref, onValue, push, update, remove } from 'firebase/database'
+import {
+  ref,
+  onValue,
+  push,
+  update,
+  startAfter,
+  limitToLast,
+  endAt,
+  endBefore,
+  remove,
+  startAt,
+  query,
+  orderByKey,
+  limitToFirst
+} from 'firebase/database'
 import {
   signInWithPopup,
   signInWithEmailAndPassword,
@@ -45,10 +59,23 @@ FirebaseService.signUpEmailRequest = async (email, password) =>
     .then(user => user)
     .catch(err => err)
 
-FirebaseService.getCategories = callback => {
+FirebaseService.getCategories = (callback, start, end, count) => {
   const catRef = ref(db, 'categories')
+  // let queryRef= query(catRef);
+  // if(count){
+  //   queryRef = query(catRef,orderByKey('objectId'), limitToFirst(count));
+  // }
+  // if(start){
+  //   queryRef = query(catRef,orderByKey('objectId'), startAfter(start), limitToFirst(count));
+  // }
+
+  // if(end){
+  //   queryRef = query(catRef,orderByKey('objectId'), endBefore(end), limitToLast(count));
+  // }
+
   onValue(catRef, snapshot => {
     const data = snapshot.val()
+    console.log('data===', data)
     // Convert object data to list
     if (!data) return []
     const cats = JSON.parse(JSON.stringify(data))
@@ -95,7 +122,7 @@ FirebaseService.getEthereums = (
   callback = null
 ) => {
   const ethRef = ref(db, `domains/eth/${category}`)
-  // const queryRef = query(ethRef, startAt(start), endAt(start + count));
+  const queryRef = query(ethRef, startAt(start), endAt(start + count))
   onValue(ethRef, snapshot => {
     const data = snapshot.val()
     console.log('==== getEthereums: ', data)
