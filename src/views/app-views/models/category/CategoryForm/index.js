@@ -30,9 +30,9 @@ const CategoryForm = props => {
     if (mode === EDIT) {
       console.log('is edit')
       const { id } = param
-      const produtId = parseInt(id)
+      const objectId = id
       const categoryData = propsCategories.categories.filter(
-        category => category.id === produtId
+        category => category.objectId === objectId
       )
       const cat = categoryData[0]
       if (!cat) return
@@ -167,9 +167,9 @@ const CategoryForm = props => {
         }
         if (mode === EDIT) {
           const { id } = param
-          const produtId = parseInt(id)
+          const objectId = id
           const categoryData = propsCategories.categories.filter(
-            cat => cat.id === produtId
+            cat => cat.objectId === objectId
           )
           const cat = categoryData[0]
           let updatedValue = {

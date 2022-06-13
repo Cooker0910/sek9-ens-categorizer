@@ -75,7 +75,7 @@ const CategoryList = props => {
   }
 
   const viewDetails = row => {
-    history.push(`/app/models/category/edit-category/${row.id}`)
+    history.push(`/app/models/category/edit-category/${row.objectId}`)
   }
 
   const deleteRow = row => {
@@ -238,7 +238,7 @@ const CategoryList = props => {
           <Table
             columns={tableColumns}
             dataSource={list}
-            rowKey="id"
+            rowKey="objectId"
             rowSelection={{
               selectedRowKeys: selectedRowKeys,
               type: 'checkbox',
