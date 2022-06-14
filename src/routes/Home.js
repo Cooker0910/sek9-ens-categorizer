@@ -1,18 +1,21 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { Link } from 'react-router-dom'
 import styled from '@emotion/styled/macro'
 import { motion } from 'framer-motion'
+import FirebaseService from 'services/FirebaseService'
 import { useTranslation } from 'react-i18next'
+import { Row, Col, Card, List, Avatar, Layout, Menu, Button } from 'antd'
 import mq from '../mediaQuery'
 
-import SearchDefault from '../components/SearchName/Search'
+import SearchInput from '../components/SearchName/SearchInput'
+import Search from '../components/SearchName/Search'
 import NoAccountsDefault from '../components/NoAccounts/NoAccountsModal'
 import bg from '../assets/heroBG.jpg'
 import TextBubbleDefault from '../components/Icons/TextBubble'
 import QuestionMarkDefault from '../components/Icons/QuestionMark'
 import HowToUseDefault from '../components/HowToUse/HowToUse'
-import ENSLogo from '../components/HomePage/images/seck9-full-logo.jpg'
+import ENSLogo from '../components/HomePage/images/sek9-white-logo.png'
 import { aboutPageURL } from '../utils/utils'
 import { connectProvider, disconnectProvider } from '../utils/providerUtils'
 import { gql } from '@apollo/client'
@@ -20,18 +23,11 @@ import {
   MainPageBannerContainer,
   DAOBannerContent
 } from '../components/Banner/DAOBanner'
+import EthCard from 'components/EthCard'
 
-const HeroTop = styled('div')`
-  display: grid;
+const HeroTop = styled(Layout.Header)`
   padding: 20px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  grid-template-columns: 1fr;
-  ${mq.small`
-     grid-template-columns: 1fr 1fr;
-  `}
+  position: fixed;
 `
 
 const NoAccounts = styled(NoAccountsDefault)``
@@ -50,6 +46,7 @@ const NetworkStatus = styled('div')`
   color: white;
   font-weight: 200;
   text-transform: capitalize;
+  margin-bottom: 20px;
   display: none;
   ${mq.small`
     display: block;
@@ -72,8 +69,9 @@ const NetworkStatus = styled('div')`
   }
 `
 
-const Nav = styled('div')`
+const Nav = styled('nav')`
   display: flex;
+  margin-left: 20px;
   justify-content: center;
   ${mq.small`
     justify-content: flex-end;
@@ -126,27 +124,21 @@ const HowToUse = styled(HowToUseDefault)`
   padding: 70px;
 `
 
-const Hero = styled('section')`
+const Hero = styled(Layout)`
   background: url(${bg});
   background-size: cover;
-  padding: 60px 20px 20px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  ${mq.medium`
-    padding: 0 20px 0;
-  `}
+  min-height: 100vh !important;
+  background-attachment: fixed;
 `
 
-const SearchContainer = styled('div')`
+const Content = styled(Layout.Content)`
   margin: 0 auto 0;
   display: flex;
   flex-direction: column;
   min-width: 100%;
   ${mq.medium`
-    min-width: 60%;
+    min-width: auto;
+    max-width: 90%;
   `}
   > h2 {
     color: white;
@@ -163,25 +155,35 @@ const SearchContainer = styled('div')`
   }
 `
 
-const Search = styled(SearchDefault)`
-  min-width: 90%;
-  ${mq.medium`
-    min-width: 780px;
-  `}
+// const Search = styled(SearchDefault)`
+//   min-width: 250;
+//   ${mq.medium`
+//     min-width: 150px;
+//   `}
 
-  input {
-    width: 100%;
-    border-radius: 0px;
-    ${mq.medium`
-      border-radius: 6px 0 0 6px;
-      font-size: 28px;
-    `}
-  }
+//   input {
+//     width: 100%;
+//     border-radius: 0px;
+//     padding: 5px 0 5px 25px;
+//     ${mq.medium`
+//       border-radius: 6px 0 0 6px;
+//       font-size: 14px;
+//     `}
+//   }
 
-  button {
-    border-radius: 0 6px 6px 0;
-  }
-`
+//   &:before {
+//     content: '';
+//     position: absolute;
+//     left: 5px;
+//     width: 15px;
+//     height: 15px;
+//   }
+
+//   button {
+//     border-radius: 0 6px 6px 0;
+//     height: auto;
+//   }
+// `
 
 const Explanation = styled('div')`
   display: grid;
@@ -246,10 +248,10 @@ const QuestionMark = styled(QuestionMarkDefault)`
 `
 
 const LogoLarge = styled(motion.img)`
-  width: 50%;
-  margin: 0 auto 0;
+  width: 200px;
+  object-fit: cover;
   ${mq.medium`
-    width: 223px;
+    width: 150px;
   `}
 `
 
@@ -297,9 +299,59 @@ const animation = {
   }
 }
 
-export default ({ match }) => {
+const MAIN_CATEGORIES = [
+  {
+    key: 'general',
+    label: 'General'
+  },
+  {
+    key: 'art/culture',
+    label: 'Art/Culture'
+  },
+  {
+    key: 'geography/places',
+    label: 'Geography/Places'
+  },
+  {
+    key: 'history',
+    label: 'History'
+  },
+  {
+    key: 'math',
+    label: 'Math'
+  },
+  {
+    key: 'science',
+    label: 'Science'
+  },
+  {
+    key: 'people',
+    label: 'People'
+  },
+  {
+    key: 'Religion',
+    label: 'Religion'
+  },
+  {
+    key: 'society',
+    label: 'Society'
+  },
+  {
+    key: 'technology',
+    label: 'Technology'
+  },
+  {
+    key: 'misc',
+    label: 'Misc'
+  }
+]
+export default ({ match, history }) => {
   const { url } = match
   const { t } = useTranslation()
+  const [categories, setCategories] = useState([])
+  const [allCategories, setAllCategories] = useState([])
+  const [mainCaegories, setMainCategories] = useState(MAIN_CATEGORIES)
+  const [eths, setETHs] = useState([])
 
   const {
     data: { accounts }
@@ -311,24 +363,69 @@ export default ({ match }) => {
     variables: { address: accounts?.[0] }
   })
 
+  useEffect(() => {
+    // showCategoryLoading();
+    FirebaseService.getCategories(setAllCategories)
+    FirebaseService.getCategories(setCategories, 'createdAt')
+  }, [])
+
+  useEffect(() => {
+    const CATGORIES = MAIN_CATEGORIES.map((cat, index) => {
+      let children = allCategories.filter(
+        (_, _index) => _index >= (index - 1) * 3 && _index < index * 3
+      )
+      children = children.map(ele => ({
+        key: ele.name,
+        label: ele.name
+      }))
+      return {
+        ...cat,
+        children
+      }
+    })
+
+    setMainCategories(CATGORIES)
+  }, [allCategories.length])
+
+  const HEADER_MENUS = [
+    {
+      key: 'categories',
+      label: t('c.category')
+    },
+    {
+      key: 'favourites',
+      label: t('c.category')
+    },
+    {
+      key: 'aboutPageURL()',
+      label: t('c.category')
+    }
+  ]
+
+  const [current, setCurrent] = useState()
+  const handleClickMenu = e => {
+    console.log('click ', e.key)
+    setCurrent(e.key)
+    FirebaseService.getEthereums(e.key, 0, 24, setETHs)
+  }
+
+  const handleClickMore = () => {
+    history.push(`/category/${current}`)
+  }
+
   return (
     <Hero>
-      <HeroTop>
-        <NetworkStatus>
-          <Network>
-            {`${network} ${t('c.network')}`}
-            {isReadOnly && <ReadOnly>({t('c.readonly')})</ReadOnly>}
-            {!isReadOnly && displayName && (
-              <Name data-testid="display-name">({displayName})</Name>
-            )}
-          </Network>
-          {!isSafeApp && (
-            <NoAccounts
-              onClick={isReadOnly ? connectProvider : disconnectProvider}
-              buttonText={isReadOnly ? t('c.connect') : t('c.disconnect')}
-            />
-          )}
-        </NetworkStatus>
+      <Layout.Header
+        className="header"
+        style={{ background: 'transparent', alignItems: 'center', height: 90 }}
+      >
+        <LogoLarge
+          initial={animation.initial}
+          animate={animation.animate}
+          src={ENSLogo}
+          alt="SEK9 logo"
+        />
+        <SearchInput />
         <Nav>
           {accounts?.length > 0 && !isReadOnly && (
             <NavLink
@@ -342,25 +439,138 @@ export default ({ match }) => {
           <NavLink to="/favourites">{t('c.favourites')}</NavLink>
           <ExternalLink href={aboutPageURL()}>{t('c.about')}</ExternalLink>
         </Nav>
-        <MainPageBannerContainer>
+        {/* <MainPageBannerContainer>
           <DAOBannerContent />
-        </MainPageBannerContainer>
-      </HeroTop>
-      <SearchContainer>
-        <>
-          <LogoLarge
-            initial={animation.initial}
-            animate={animation.animate}
-            src={ENSLogo}
-            alt="SEK9 logo"
-          />
-          <PermanentRegistrarLogo
-            initial={animation.initial}
-            animate={animation.animate}
-          />
-          <Search />
-        </>
-      </SearchContainer>
+        </MainPageBannerContainer> */}
+      </Layout.Header>
+      <Content style={{ padding: 20 }}>
+        {/* <NetworkStatus>
+          <Network>
+            {`${network} ${t('c.network')}`}
+            {isReadOnly && <ReadOnly>({t('c.readonly')})</ReadOnly>}
+            {!isReadOnly && displayName && (
+              <Name data-testid="display-name">({displayName})</Name>
+            )}
+          </Network>
+          {!isSafeApp && (
+            <NoAccounts
+              onClick={isReadOnly ? connectProvider : disconnectProvider}
+              buttonText={isReadOnly ? t('c.connect') : t('c.disconnect')}
+            />
+          )}
+        </NetworkStatus> */}
+        <Row gutter={16}>
+          <Col span={6}>
+            <Card title="Newest Categories" bordered={false}>
+              <List
+                itemLayout="horizontal"
+                dataSource={categories}
+                renderItem={category => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar src={category.imageUrl} />}
+                      title={category.name}
+                    />
+                  </List.Item>
+                )}
+              />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card
+              title="Most Viewed Categories - Last 24 hours"
+              bordered={false}
+            >
+              <List
+                itemLayout="horizontal"
+                dataSource={categories}
+                renderItem={category => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar src={category.imageUrl} />}
+                      title={category.name}
+                    />
+                  </List.Item>
+                )}
+              />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card
+              title="Most Viewed Categories - Last 24 hours"
+              bordered={false}
+            >
+              <List
+                itemLayout="horizontal"
+                dataSource={categories}
+                renderItem={category => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar src={category.imageUrl} />}
+                      title={category.name}
+                    />
+                  </List.Item>
+                )}
+              />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card
+              title="Most Purchased Categories - Last 24 hours"
+              bordered={false}
+            >
+              <List
+                itemLayout="horizontal"
+                dataSource={categories}
+                renderItem={category => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar src={category.imageUrl} />}
+                      title={category.name}
+                    />
+                  </List.Item>
+                )}
+              />
+            </Card>
+          </Col>
+        </Row>
+        <PermanentRegistrarLogo
+          initial={animation.initial}
+          animate={animation.animate}
+        />
+        <Search />
+        <Menu mode="horizontal" style={{ marginTop: 20 }}>
+          {mainCaegories.map(category => (
+            <Menu.SubMenu key={category.key} title={category.label}>
+              {category.children &&
+                category.children.length > 0 &&
+                category.children.map(ecat => (
+                  <Menu.Item key={ecat.key} onClick={handleClickMenu}>
+                    {ecat.label}
+                  </Menu.Item>
+                ))}
+            </Menu.SubMenu>
+          ))}
+        </Menu>
+        <Row gutter={16} style={{ marginTop: 20 }}>
+          {eths &&
+            eths.length > 0 &&
+            eths.map(elm => (
+              <Col xs={12} sm={12} lg={6} xl={6} xxl={6} key={elm.id}>
+                <EthCard
+                  data={elm}
+                  hoverable
+                  onClick={() => history.push(`/name/${elm.name}.eth`)}
+                />
+              </Col>
+            ))}
+        </Row>
+        {eths.length > 0 && (
+          <Button onClick={handleClickMore} style={{ alignSelf: 'center' }}>
+            See more
+          </Button>
+        )}
+      </Content>
     </Hero>
   )
 }

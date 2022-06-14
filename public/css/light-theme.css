@@ -14287,7 +14287,8 @@ _:-ms-fullscreen
 }
 .ant-image-img {
   display: block;
-  width: 100%;
+  object-fit: cover;
+  width: auto;
   height: auto;
 }
 .ant-image-img-placeholder {
@@ -16003,7 +16004,6 @@ _:-ms-fullscreen
   flex: auto;
   flex-direction: column;
   min-height: 0;
-  background: 0 0;
 }
 .ant-layout,
 .ant-layout * {
@@ -16026,6 +16026,7 @@ _:-ms-fullscreen
   color: #455560;
   line-height: 70px;
   background: #283142;
+  display: inline-flex;
 }
 .ant-layout-footer {
   padding: 24px 50px;

@@ -1,13 +1,13 @@
-import React from "react";
-import { Route, Switch, Redirect, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import AppLayout from "layouts/app-layout";
-import AuthLayout from 'layouts/auth-layout';
-import AppLocale from "lang";
-import { IntlProvider } from "react-intl";
-import { ConfigProvider } from 'antd';
+import React from 'react'
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import AppLayout from 'layouts/app-layout'
+import AuthLayout from 'layouts/auth-layout'
+import AppLocale from 'lang'
+import { IntlProvider } from 'react-intl'
+import { ConfigProvider } from 'antd'
 import { APP_PREFIX_PATH, AUTH_PREFIX_PATH } from 'configs/AppConfig'
-import useBodyClass from 'hooks/useBodyClass';
+import useBodyClass from 'hooks/useBodyClass'
 
 function RouteInterceptor({ children, isAuthenticated, ...rest }) {
   return (
@@ -26,17 +26,18 @@ function RouteInterceptor({ children, isAuthenticated, ...rest }) {
         )
       }
     />
-  );
+  )
 }
 
-export const Views = (props) => {
-  const { locale, token, location, direction } = props;
-  const currentAppLocale = AppLocale[locale];
-  useBodyClass(`dir-${direction}`);
+export const Views = props => {
+  const { locale, token, location, direction } = props
+  const currentAppLocale = AppLocale[locale]
+  useBodyClass(`dir-${direction}`)
   return (
     <IntlProvider
       locale={currentAppLocale.locale}
-      messages={currentAppLocale.messages}>
+      messages={currentAppLocale.messages}
+    >
       <ConfigProvider locale={currentAppLocale.antd} direction={direction}>
         <Switch>
           <Route exact path="/">
@@ -46,7 +47,7 @@ export const Views = (props) => {
             <AuthLayout direction={direction} />
           </Route>
           <RouteInterceptor path={APP_PREFIX_PATH} isAuthenticated={token}>
-            <AppLayout direction={direction} location={location}/>
+            <AppLayout direction={direction} location={location} />
           </RouteInterceptor>
         </Switch>
       </ConfigProvider>
@@ -54,11 +55,10 @@ export const Views = (props) => {
   )
 }
 
-
 const mapStateToProps = ({ theme, auth }) => {
-  const { locale, direction } =  theme;
-  const { token } = auth;
+  const { locale, direction } = theme
+  const { token } = auth
   return { locale, direction, token }
-};
+}
 
-export default withRouter(connect(mapStateToProps)(Views));
+export default withRouter(connect(mapStateToProps)(Views))

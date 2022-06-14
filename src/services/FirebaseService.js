@@ -59,9 +59,12 @@ FirebaseService.signUpEmailRequest = async (email, password) =>
     .then(user => user)
     .catch(err => err)
 
-FirebaseService.getCategories = (callback, start, end, count) => {
+FirebaseService.getCategories = (callback, orderKey, start, end, count) => {
   const catRef = ref(db, 'categories')
-  // let queryRef= query(catRef);
+  let queryRef = query(catRef)
+  if (orderKey) {
+    queryRef = query(catRef, orderByKey(orderKey), limitToFirst(4))
+  }
   // if(count){
   //   queryRef = query(catRef,orderByKey('objectId'), limitToFirst(count));
   // }
@@ -73,7 +76,7 @@ FirebaseService.getCategories = (callback, start, end, count) => {
   //   queryRef = query(catRef,orderByKey('objectId'), endBefore(end), limitToLast(count));
   // }
 
-  onValue(catRef, snapshot => {
+  onValue(queryRef, snapshot => {
     const data = snapshot.val()
     console.log('data===', data)
     // Convert object data to list
@@ -115,15 +118,24 @@ FirebaseService.updateCategory = data => {
   return res
 }
 
-FirebaseService.getEthereums = (
-  category,
-  start = 0,
-  count = 5,
-  callback = null
-) => {
+FirebaseService.getEthereums = (category, start, count, callback = null) => {
   const ethRef = ref(db, `domains/eth/${category}`)
-  const queryRef = query(ethRef, startAt(start), endAt(start + count))
-  onValue(ethRef, snapshot => {
+  // const queryRef = query(ethRef, startAt(start), endAt(start + count))
+  let queryRef = query(ethRef)
+  if (count) {
+    queryRef = query(ethRef, orderByKey('objectId'), limitToFirst(count))
+  }
+  // if(count){
+  //   queryRef = query(catRef,orderByKey('objectId'), limitToFirst(count));
+  // }
+  // if(start){
+  //   queryRef = query(catRef,orderByKey('objectId'), startAfter(start), limitToFirst(count));
+  // }
+
+  // if(end){
+  //   queryRef = query(catRef,orderByKey('objectId'), endBefore(end), limitToLast(count));
+  // }
+  onValue(queryRef, snapshot => {
     const data = snapshot.val()
     console.log('==== getEthereums: ', data)
     // Convert object data to list

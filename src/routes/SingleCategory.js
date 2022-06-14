@@ -44,7 +44,7 @@ function SingleCategory({
   useEffect(() => {
     if (searchTerm) {
       setLoading(true)
-      FirebaseService.getEthereums(searchTerm, 0, 5, setEthereums)
+      FirebaseService.getEthereums(searchTerm, 0, '', setEthereums)
     }
   }, [searchTerm])
 

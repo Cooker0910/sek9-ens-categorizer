@@ -10,7 +10,8 @@ import {
   Avatar,
   Card,
   Image,
-  Spin
+  Spin,
+  Pagination
 } from 'antd'
 import {
   AppstoreOutlined,
@@ -134,11 +135,13 @@ const EthFeild = props => {
   const [view, setView] = useState(VIEW_GRID)
   const [list, setList] = useState([])
   const [loading, setLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(12)
 
   useEffect(() => {
     if (props.category) {
       setLoading(true)
-      FirebaseService.getEthereums(props.category, 0, 5, setEthereums)
+      FirebaseService.getEthereums(props.category, 0, '', setEthereums)
     }
   }, [props])
 
@@ -150,11 +153,23 @@ const EthFeild = props => {
     setView(e.target.value)
   }
 
+  const handleChangePage = value => {
+    setCurrentPage(value)
+  }
+  const handleSizeChange = (current, _pageSize) => {
+    setCurrentPage(current)
+    setPageSize(_pageSize)
+  }
+
   const deleteItem = id => {
     const data = list.filter(elm => elm.id !== id)
     setList(data)
   }
 
+  const currentDomains = list.filter(
+    (_, index) =>
+      index >= (currentPage - 1) * pageSize && index < currentPage * pageSize
+  )
   return (
     <>
       <PageHeaderAlt className="border-bottom">
@@ -189,16 +204,30 @@ const EthFeild = props => {
         {loading ? (
           <Spin />
         ) : view === VIEW_LIST ? (
-          list.map(elm => <ListItem data={elm} key={elm.id} />)
+          currentDomains &&
+          currentDomains.length > 0 &&
+          currentDomains.map(elm => <ListItem data={elm} key={elm.id} />)
         ) : (
           <Row gutter={16}>
-            {list.map(elm => (
-              <Col xs={24} sm={24} lg={8} xl={8} xxl={6} key={elm.id}>
-                <GridItem data={elm} removeId={id => deleteItem(id)} />
-              </Col>
-            ))}
+            {currentDomains &&
+              currentDomains.length > 0 &&
+              currentDomains.map(elm => (
+                <Col xs={24} sm={24} lg={8} xl={8} xxl={6} key={elm.id}>
+                  <GridItem data={elm} removeId={id => deleteItem(id)} />
+                </Col>
+              ))}
           </Row>
         )}
+        <Pagination
+          defaultCurrent={1}
+          total={list.length}
+          current={currentPage}
+          pageSize={pageSize}
+          showSizeChanger
+          pageSizeOptions={[15, 18, 24]}
+          onShowSizeChange={handleSizeChange}
+          onChange={handleChangePage}
+        />
       </div>
     </>
   )
