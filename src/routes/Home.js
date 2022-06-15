@@ -5,7 +5,20 @@ import styled from '@emotion/styled/macro'
 import { motion } from 'framer-motion'
 import FirebaseService from 'services/FirebaseService'
 import { useTranslation } from 'react-i18next'
-import { Row, Col, Card, List, Avatar, Layout, Menu, Button } from 'antd'
+import {
+  Row,
+  Col,
+  Card,
+  List,
+  Avatar,
+  Layout,
+  Menu,
+  Button,
+  Table,
+  Image,
+  Space,
+  Input
+} from 'antd'
 import mq from '../mediaQuery'
 
 import SearchInput from '../components/SearchName/SearchInput'
@@ -19,11 +32,16 @@ import ENSLogo from '../components/HomePage/images/sek9-white-logo.png'
 import { aboutPageURL } from '../utils/utils'
 import { connectProvider, disconnectProvider } from '../utils/providerUtils'
 import { gql } from '@apollo/client'
+import NumberFormat from 'react-number-format'
 import {
   MainPageBannerContainer,
   DAOBannerContent
 } from '../components/Banner/DAOBanner'
 import EthCard from 'components/EthCard'
+import AvatarStatus from 'components/shared-components/AvatarStatus'
+import { EyeOutlined } from '@ant-design/icons'
+
+import utils from 'utils'
 
 const HeroTop = styled(Layout.Header)`
   padding: 20px;
@@ -74,7 +92,7 @@ const Nav = styled('nav')`
   margin-left: 20px;
   justify-content: center;
   ${mq.small`
-    justify-content: flex-end;
+    justify-content: flex-start;
   `}
   a {
     font-weight: 300;
@@ -350,8 +368,7 @@ export default ({ match, history }) => {
   const { t } = useTranslation()
   const [categories, setCategories] = useState([])
   const [allCategories, setAllCategories] = useState([])
-  const [mainCaegories, setMainCategories] = useState(MAIN_CATEGORIES)
-  const [eths, setETHs] = useState([])
+  const [subCategories, setSubCategories] = useState(categories)
 
   const {
     data: { accounts }
@@ -369,24 +386,6 @@ export default ({ match, history }) => {
     FirebaseService.getCategories(setCategories, 'createdAt')
   }, [])
 
-  useEffect(() => {
-    const CATGORIES = MAIN_CATEGORIES.map((cat, index) => {
-      let children = allCategories.filter(
-        (_, _index) => _index >= (index - 1) * 3 && _index < index * 3
-      )
-      children = children.map(ele => ({
-        key: ele.name,
-        label: ele.name
-      }))
-      return {
-        ...cat,
-        children
-      }
-    })
-
-    setMainCategories(CATGORIES)
-  }, [allCategories.length])
-
   const HEADER_MENUS = [
     {
       key: 'categories',
@@ -402,16 +401,86 @@ export default ({ match, history }) => {
     }
   ]
 
-  const [current, setCurrent] = useState()
   const handleClickMenu = e => {
-    console.log('click ', e.key)
-    setCurrent(e.key)
-    FirebaseService.getEthereums(e.key, 0, 24, setETHs)
+    const index = MAIN_CATEGORIES.findIndex(cat => cat.key === e.key)
+    const _categories = allCategories.filter(
+      (_, _index) => _index >= (index - 1) * 3 && _index < index * 3
+    )
+    setSubCategories(index === 0 ? allCategories : _categories)
   }
 
-  const handleClickMore = () => {
-    history.push(`/category/${current}`)
+  const handleClickMore = key => {
+    history.push(`/category/${key.name}`)
   }
+
+  const tableColumns = [
+    {
+      title: 'Category',
+      dataIndex: 'name',
+      render: (_, record) => (
+        <div onClick={() => viewDetails(record)}>
+          <a href="#" title={record.name}>
+            <div className="d-flex">
+              <AvatarStatus
+                size={60}
+                type="square"
+                src={record.imageUrl}
+                name={record.name}
+                subTitle={record.description}
+              />
+            </div>
+          </a>
+        </div>
+      )
+    },
+    {
+      title: 'Floor',
+      dataIndex: 'floorprice_decimal',
+      render: floorprice_decimal => (
+        <div className="space-align-block">
+          <Space align="center" size={2}>
+            <Image
+              height={13}
+              src={'/img/icons/ethereum-icon-28.png'}
+              name={`${floorprice_decimal / Math.pow(10, 18)}`}
+            />
+            <NumberFormat
+              displayType={'text'}
+              value={floorprice_decimal / Math.pow(10, 18)}
+              prefix={''}
+              thousandSeparator={true}
+            />
+          </Space>
+        </div>
+      )
+    },
+    {
+      title: 'Owners',
+      dataIndex: 'owners'
+    },
+    {
+      title: 'Supply',
+      dataIndex: 'count',
+      render: (_, record) => (
+        <div>{`${record.count - record.available} / ${record.count}`}</div>
+      )
+    },
+    {
+      title: 'Tags',
+      dataIndex: 'strTags'
+    },
+    {
+      title: '',
+      dataIndex: 'actions',
+      render: (_, record) => (
+        <Button
+          type="primary"
+          icon={<EyeOutlined />}
+          onClick={() => handleClickMore(record)}
+        />
+      )
+    }
+  ]
 
   return (
     <Hero>
@@ -426,22 +495,33 @@ export default ({ match, history }) => {
           alt="SEK9 logo"
         />
         <SearchInput />
-        <Nav>
-          {accounts?.length > 0 && !isReadOnly && (
-            <NavLink
-              active={url === '/address/' + accounts[0]}
-              to={'/address/' + accounts[0]}
-            >
-              {t('c.mynames')}
-            </NavLink>
-          )}
-          <NavLink to="/categories">{t('c.category')}</NavLink>
-          <NavLink to="/favourites">{t('c.favourites')}</NavLink>
-          <ExternalLink href={aboutPageURL()}>{t('c.about')}</ExternalLink>
-        </Nav>
         {/* <MainPageBannerContainer>
           <DAOBannerContent />
         </MainPageBannerContainer> */}
+        <div
+          style={{ display: 'flex', justifyContent: 'sapce-between', flex: 1 }}
+        >
+          <Nav style={{ flex: 1 }}>
+            {accounts?.length > 0 && !isReadOnly && (
+              <NavLink
+                active={url === '/address/' + accounts[0]}
+                to={'/address/' + accounts[0]}
+              >
+                {t('c.mynames')}
+              </NavLink>
+            )}
+            <NavLink to="/categories">{t('c.category')}</NavLink>
+            <NavLink to="/favourites">{t('c.favourites')}</NavLink>
+            <ExternalLink href={aboutPageURL()}>{t('c.about')}</ExternalLink>
+          </Nav>
+          <Space>
+            <Button>Connect Wallet</Button>
+            <Input.Group compact style={{ display: 'flex' }}>
+              <Input placeholder="Email" />
+              <Button>Newsletter</Button>
+            </Input.Group>
+          </Space>
+        </div>
       </Layout.Header>
       <Content style={{ padding: 20 }}>
         {/* <NetworkStatus>
@@ -534,42 +614,28 @@ export default ({ match, history }) => {
             </Card>
           </Col>
         </Row>
-        <PermanentRegistrarLogo
+        {/* <PermanentRegistrarLogo
           initial={animation.initial}
           animate={animation.animate}
-        />
-        <Search />
-        <Menu mode="horizontal" style={{ marginTop: 20 }}>
-          {mainCaegories.map(category => (
-            <Menu.SubMenu key={category.key} title={category.label}>
-              {category.children &&
-                category.children.length > 0 &&
-                category.children.map(ecat => (
-                  <Menu.Item key={ecat.key} onClick={handleClickMenu}>
-                    {ecat.label}
-                  </Menu.Item>
-                ))}
-            </Menu.SubMenu>
+        /> */}
+        {/* <Search /> */}
+        <Menu mode="horizontal" style={{ marginTop: 20, borderRadius: 5 }}>
+          {MAIN_CATEGORIES.map(category => (
+            <Menu.Item
+              key={category.key}
+              title={category.label}
+              onClick={handleClickMenu}
+            >
+              {category.label}
+            </Menu.Item>
           ))}
         </Menu>
-        <Row gutter={16} style={{ marginTop: 20 }}>
-          {eths &&
-            eths.length > 0 &&
-            eths.map(elm => (
-              <Col xs={12} sm={12} lg={6} xl={6} xxl={6} key={elm.id}>
-                <EthCard
-                  data={elm}
-                  hoverable
-                  onClick={() => history.push(`/name/${elm.name}.eth`)}
-                />
-              </Col>
-            ))}
-        </Row>
-        {eths.length > 0 && (
-          <Button onClick={handleClickMore} style={{ alignSelf: 'center' }}>
-            See more
-          </Button>
-        )}
+        <Table
+          style={{ marginTop: 20 }}
+          columns={tableColumns}
+          dataSource={subCategories}
+          rowKey="objectId"
+        />
       </Content>
     </Hero>
   )
