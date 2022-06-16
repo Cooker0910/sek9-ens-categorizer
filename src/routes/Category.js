@@ -76,7 +76,7 @@ function Category() {
 
   const [categories, setCategories] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(12)
+  const [pageSize, setPageSize] = useState(24)
 
   // const handlePagination=(currentPage)=>{
   //   setPagination({...pagination, currentPage})
@@ -147,7 +147,8 @@ function Category() {
         current={currentPage}
         pageSize={pageSize}
         showSizeChanger
-        pageSizeOptions={[12, 15, 18]}
+        defaultPageSize={24}
+        pageSizeOptions={[15, 18, 24]}
         onShowSizeChange={handleSizeChange}
         onChange={handlePagination}
       />

@@ -26,7 +26,7 @@ function SingleCategory({
   const [domains, setDomains] = useState([])
   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(12)
+  const [pageSize, setPageSize] = useState(24)
 
   const handleChangePage = value => {
     setCurrentPage(value)
@@ -34,7 +34,6 @@ function SingleCategory({
   const handleSizeChange = (current, pageSize) => {
     setCurrentPage(current)
     setPageSize(pageSize)
-    console.log(current, pageSize)
   }
   const currentDomains = domains.filter(
     (_, index) =>
@@ -50,7 +49,6 @@ function SingleCategory({
 
   const setEthereums = data => {
     setLoading(false)
-    console.log('ata===', data)
     setDomains(data)
   }
 
@@ -63,7 +61,7 @@ function SingleCategory({
         <>
           <Row gutter={16}>
             {currentDomains.map(elm => (
-              <Col xs={24} sm={24} lg={8} xl={8} xxl={6} key={elm.id}>
+              <Col span={8} key={elm.id}>
                 <EthCard
                   data={elm}
                   hoverable
@@ -78,7 +76,8 @@ function SingleCategory({
             current={currentPage}
             pageSize={pageSize}
             showSizeChanger
-            pageSizeOptions={[12, 15, 18]}
+            defaultPageSize={24}
+            pageSizeOptions={[15, 18, 24]}
             onShowSizeChange={handleSizeChange}
             onChange={handleChangePage}
           />

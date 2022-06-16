@@ -28,7 +28,7 @@ import bg from '../assets/heroBG.jpg'
 import TextBubbleDefault from '../components/Icons/TextBubble'
 import QuestionMarkDefault from '../components/Icons/QuestionMark'
 import HowToUseDefault from '../components/HowToUse/HowToUse'
-import ENSLogo from '../components/HomePage/images/sek9-white-logo.png'
+import ENSLogo from '../assets/sek9-full-logo-white.png'
 import { aboutPageURL } from '../utils/utils'
 import { connectProvider, disconnectProvider } from '../utils/providerUtils'
 import { gql } from '@apollo/client'
@@ -268,6 +268,7 @@ const QuestionMark = styled(QuestionMarkDefault)`
 const LogoLarge = styled(motion.img)`
   width: 200px;
   object-fit: cover;
+  margin-right: 20px;
   ${mq.medium`
     width: 150px;
   `}
@@ -385,6 +386,10 @@ export default ({ match, history }) => {
     FirebaseService.getCategories(setAllCategories)
     FirebaseService.getCategories(setCategories, 'createdAt')
   }, [])
+
+  useEffect(() => {
+    setSubCategories(allCategories)
+  }, [allCategories.length])
 
   const HEADER_MENUS = [
     {

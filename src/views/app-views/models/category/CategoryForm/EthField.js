@@ -136,7 +136,7 @@ const EthFeild = props => {
   const [list, setList] = useState([])
   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(12)
+  const [pageSize, setPageSize] = useState(24)
 
   useEffect(() => {
     if (props.category) {
@@ -224,6 +224,7 @@ const EthFeild = props => {
           current={currentPage}
           pageSize={pageSize}
           showSizeChanger
+          defaultPageSize={24}
           pageSizeOptions={[15, 18, 24]}
           onShowSizeChange={handleSizeChange}
           onChange={handleChangePage}

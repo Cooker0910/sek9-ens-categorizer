@@ -80,8 +80,11 @@ const ItemMember = ({ data }) => (
   </>
 )
 
-const EthCard = ({ data ,...props }) => (
-  <Card {...props}>
+const EthCard = ({ data, ...props }) => (
+  <Card
+    style={{ backgroundColor: data.labelHash ? 'white' : '#8080803b' }}
+    {...props}
+  >
     <Flex alignItems="center" justifyContent="between">
       <ItemHeader name={`${data.name}.eth`} />
       <ItemInfo
