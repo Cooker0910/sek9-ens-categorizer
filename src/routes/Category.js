@@ -128,9 +128,9 @@ function Category() {
 
   return (
     <CategoryContainer data-testid="favourites-container">
-      <NonMainPageBannerContainer>
+      {/* <NonMainPageBannerContainer>
         <DAOBannerContent />
-      </NonMainPageBannerContainer>
+      </NonMainPageBannerContainer> */}
       <H2>{t('category.categoryTitle')}</H2>
       <Row>
         {currentCategories &&

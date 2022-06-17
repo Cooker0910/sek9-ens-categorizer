@@ -551,7 +551,7 @@ export default ({ match, history }) => {
                 itemLayout="horizontal"
                 dataSource={categories}
                 renderItem={category => (
-                  <List.Item>
+                  <List.Item onClick={() => handleClickMore(category)}>
                     <List.Item.Meta
                       avatar={<Avatar src={category.imageUrl} />}
                       title={category.name}
@@ -570,7 +570,7 @@ export default ({ match, history }) => {
                 itemLayout="horizontal"
                 dataSource={categories}
                 renderItem={category => (
-                  <List.Item>
+                  <List.Item onClick={() => handleClickMore(category)}>
                     <List.Item.Meta
                       avatar={<Avatar src={category.imageUrl} />}
                       title={category.name}
@@ -589,7 +589,7 @@ export default ({ match, history }) => {
                 itemLayout="horizontal"
                 dataSource={categories}
                 renderItem={category => (
-                  <List.Item>
+                  <List.Item onClick={() => handleClickMore(category)}>
                     <List.Item.Meta
                       avatar={<Avatar src={category.imageUrl} />}
                       title={category.name}
@@ -608,7 +608,7 @@ export default ({ match, history }) => {
                 itemLayout="horizontal"
                 dataSource={categories}
                 renderItem={category => (
-                  <List.Item>
+                  <List.Item onClick={() => handleClickMore(category)}>
                     <List.Item.Meta
                       avatar={<Avatar src={category.imageUrl} />}
                       title={category.name}
@@ -640,6 +640,13 @@ export default ({ match, history }) => {
           columns={tableColumns}
           dataSource={subCategories}
           rowKey="objectId"
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: event => {
+                handleClickMore(record)
+              } // click row
+            }
+          }}
         />
       </Content>
     </Hero>
