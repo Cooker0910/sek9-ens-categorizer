@@ -21388,6 +21388,11 @@ span.ant-radio + * {
   width: 1em;
   height: 1em;
 }
+
+.white-spin > span > i {
+  background-color: #fff;
+}
+
 .ant-spin-dot-item {
   position: absolute;
   display: block;

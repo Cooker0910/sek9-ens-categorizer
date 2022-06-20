@@ -1,7 +1,15 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled/macro'
+import { motion } from 'framer-motion'
+import ENSLogo from 'assets/sek9-full-logo-white.png'
+import { Link, useHistory } from 'react-router-dom'
+import { gql } from '@apollo/client'
+import { aboutPageURL } from 'utils/utils'
 
+import { Avatar, Layout, Menu, Button, Table, Image, Space, Input } from 'antd'
+import SearchInput from '../SearchName/SearchInput'
+import { useQuery } from '@apollo/client'
 import mq, { useMediaMin, useMediaMax } from '../../mediaQuery'
 
 import DefaultLogo from '../Logo'
@@ -56,6 +64,12 @@ const Header = styled('header')`
   `}
 `
 
+const ExternalLink = styled('a')`
+  margin-left: 20px;
+  &:first-child {
+    margin-left: 0;
+  }
+`
 const SearchHeader = styled(Search)`
   margin-top: 50px;
   width: 100%;
@@ -92,16 +106,84 @@ const Logo = styled(DefaultLogo)`
   `}
 `
 
+const LogoLarge = styled(motion.img)`
+  width: 200px;
+  object-fit: cover;
+  margin-right: 20px;
+  cursor: pointer;
+  ${mq.medium`
+    width: 150px;
+  `}
+`
+
+const Nav = styled('nav')`
+  display: flex;
+  margin-left: 20px;
+  justify-content: center;
+  ${mq.small`
+    justify-content: flex-start;
+  `}
+  a {
+    font-weight: 300;
+    color: white;
+  }
+`
+
+const NavLink = styled(Link)`
+  margin-left: 20px;
+  &:first-child {
+    margin-left: 0;
+  }
+`
+
+const animation = {
+  initial: {
+    scale: 0,
+    opacity: 0
+  },
+  animate: {
+    opacity: 1,
+    scale: 1
+  }
+}
+
+export const GET_ACCOUNT = gql`
+  query getAccounts @client {
+    accounts
+  }
+`
+
+export const HOME_DATA = gql`
+  query getHomeData($address: string) @client {
+    network
+    displayName(address: $address)
+    isReadOnly
+    isSafeApp
+  }
+`
+
 function HeaderContainer() {
+  const url = ''
+  const history = useHistory()
   const [isMenuOpen, setMenuOpen] = useState(false)
   const mediumBP = useMediaMin('medium')
   const mediumBPMax = useMediaMax('medium')
   const toggleMenu = () => setMenuOpen(!isMenuOpen)
   const { t } = useTranslation()
 
+  const {
+    data: { accounts }
+  } = useQuery(GET_ACCOUNT)
+
+  const {
+    data: { network, displayName, isReadOnly, isSafeApp }
+  } = useQuery(HOME_DATA, {
+    variables: { address: accounts?.[0] }
+  })
+
   return (
     <>
-      <Header isMenuOpen={isMenuOpen}>
+      {/* <Header isMenuOpen={isMenuOpen}>
         <Logo isMenuOpen={isMenuOpen} />
         {mediumBP ? (
           <SearchHeader />
@@ -132,7 +214,47 @@ function HeaderContainer() {
           <SideNav isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
           <SearchHeader />
         </>
-      )}
+      )} */}
+      <Layout.Header
+        className="header"
+        style={{ background: 'transparent', alignItems: 'center', height: 90 }}
+      >
+        <LogoLarge
+          onClick={() => history.push('/')}
+          initial={animation.initial}
+          animate={animation.animate}
+          src={ENSLogo}
+          alt="SEK9 logo"
+        />
+        <SearchInput />
+        {/* <MainPageBannerContainer>
+          <DAOBannerContent />
+        </MainPageBannerContainer> */}
+        <div
+          style={{ display: 'flex', justifyContent: 'sapce-between', flex: 1 }}
+        >
+          <Nav style={{ flex: 1 }}>
+            {accounts?.length > 0 && !isReadOnly && (
+              <NavLink
+                active={url === '/address/' + accounts[0]}
+                to={'/address/' + accounts[0]}
+              >
+                {t('c.mynames')}
+              </NavLink>
+            )}
+            <NavLink to="/categories">{t('c.category')}</NavLink>
+            <NavLink to="/favourites">{t('c.favourites')}</NavLink>
+            <ExternalLink href={aboutPageURL()}>{t('c.about')}</ExternalLink>
+          </Nav>
+          <Space>
+            <Button>Connect Wallet</Button>
+            <Input.Group compact style={{ display: 'flex' }}>
+              <Input placeholder="Email" />
+              <Button>Newsletter</Button>
+            </Input.Group>
+          </Space>
+        </div>
+      </Layout.Header>
     </>
   )
 }

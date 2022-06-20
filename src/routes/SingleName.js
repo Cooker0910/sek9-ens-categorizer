@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { gql } from '@apollo/client'
+import { Spin } from 'antd'
 
 import { validateName, parseSearchTerm } from '../utils/utils'
 import { useScrollTo } from '../components/hooks'
@@ -70,7 +71,14 @@ function SingleName({
   }, [searchTerm, isENSReady])
 
   if (valid) {
-    if (loading) return <Loader large center />
+    if (loading)
+      return (
+        <Spin
+          style={{ margin: 'auto', width: '100%' }}
+          size="large"
+          className="white-spin"
+        />
+      )
     if (error) return <div>{(console.log(error), JSON.stringify(error))}</div>
     if (data?.singleName)
       return (
@@ -96,7 +104,13 @@ function SingleName({
       <SearchErrors errors={[errorMessage]} searchTerm={name || searchTerm} />
     )
   } else {
-    return <Loader large center />
+    return (
+      <Spin
+        style={{ margin: 'auto', width: '100%' }}
+        size="large"
+        className="white-spin"
+      />
+    )
   }
 }
 

@@ -82,7 +82,7 @@ const ItemMember = ({ data }) => (
 
 const EthCard = ({ data, ...props }) => (
   <Card
-    style={{ backgroundColor: data.labelHash ? 'white' : '#8080803b' }}
+    style={{ backgroundColor: data.labelHash ? 'white' : '#8080803d' }}
     {...props}
   >
     <Flex alignItems="center" justifyContent="between">

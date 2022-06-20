@@ -53,15 +53,21 @@ function SingleCategory({
   }
 
   return (
-    <div>
-      <Typography.Title>{searchTerm}</Typography.Title>
+    <>
+      <Typography.Title style={{ textAlign: 'center', color: '#FFF' }}>
+        {searchTerm}
+      </Typography.Title>
       {loading ? (
-        <Spin />
+        <Spin
+          style={{ margin: 'auto', width: '100%' }}
+          size="large"
+          className="white-spin"
+        />
       ) : (
         <>
           <Row gutter={16}>
             {currentDomains.map(elm => (
-              <Col span={8} key={elm.id}>
+              <Col span={6} key={elm.id}>
                 <EthCard
                   data={elm}
                   hoverable
@@ -83,7 +89,7 @@ function SingleCategory({
           />
         </>
       )}
-    </div>
+    </>
   )
 }
 

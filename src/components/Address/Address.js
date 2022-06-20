@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
 import { useTranslation, Trans } from 'react-i18next'
 import moment from 'moment'
+import { Spin } from 'antd'
 import { useAccount } from '../QueryAccount'
 
 import {
@@ -272,7 +273,13 @@ export default function Address({
   }
 
   if (loading) {
-    return <Loader withWrap large />
+    return (
+      <Spin
+        style={{ margin: 'auto', width: '100%' }}
+        size="large"
+        className="white-spin"
+      />
+    )
   }
 
   let normalisedDomains = []

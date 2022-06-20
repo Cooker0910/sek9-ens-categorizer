@@ -13,7 +13,7 @@ import {
   DAOBannerContent
 } from '../components/Banner/DAOBanner'
 import CategoryItem from 'components/CategoryItem'
-import { Row, Col, Button, Pagination } from 'antd'
+import { Row, Col, Typography, Pagination, Spin } from 'antd'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { first, last } from 'lodash-es'
 
@@ -77,6 +77,7 @@ function Category() {
   const [categories, setCategories] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(24)
+  const [loading, setLoading] = useState(false)
 
   // const handlePagination=(currentPage)=>{
   //   setPagination({...pagination, currentPage})
@@ -100,62 +101,78 @@ function Category() {
   const handleSizeChange = (current, pageSize) => {
     setCurrentPage(current)
     setPageSize(pageSize)
-    console.log(current, pageSize)
   }
   const currentCategories = categories.filter(
     (_, index) =>
       index >= (currentPage - 1) * pageSize && index < currentPage * pageSize
   )
 
-  console.log('current categories---', currentCategories)
   useEffect(() => {
     // showCategoryLoading();
-    FirebaseService.getCategories(setCategories)
+    setLoading(true)
+
+    FirebaseService.getCategories(getCategories)
   }, [])
 
-  if (!categories || categories.length === 0) {
-    return (
-      <CategoryContainer data-testid="favourites-container">
-        <H2>{t('category.categoryTitle')}</H2>
-        <NoDomains>
-          <LargeHeart />
-          <h2>{t('category.noCategories.title')}</h2>
-          <p>{t('category.noCategories.text')}</p>
-        </NoDomains>
-      </CategoryContainer>
-    )
+  const getCategories = data => {
+    setLoading(false)
+    setCategories(data)
   }
+  // if (!categories || categories.length === 0) {
+  //   return (
+  //     <CategoryContainer data-testid="favourites-container">
+  //       <H2>{t('category.categoryTitle')}</H2>
+  //       <NoDomains>
+  //         <LargeHeart />
+  //         <h2>{t('category.noCategories.title')}</h2>
+  //         <p>{t('category.noCategories.text')}</p>
+  //       </NoDomains>
+  //     </CategoryContainer>
+  //   )
+  // }
 
   return (
-    <CategoryContainer data-testid="favourites-container">
+    <>
       {/* <NonMainPageBannerContainer>
         <DAOBannerContent />
       </NonMainPageBannerContainer> */}
-      <H2>{t('category.categoryTitle')}</H2>
-      <Row>
-        {currentCategories &&
-          currentCategories.length > 0 &&
-          currentCategories.map(category => (
-            <Col span={8}>
-              <CategoryItem category={category} />
-            </Col>
-          ))}
-      </Row>
-      <Pagination
-        defaultCurrent={1}
-        total={categories.length}
-        current={currentPage}
-        pageSize={pageSize}
-        showSizeChanger
-        defaultPageSize={24}
-        pageSizeOptions={[15, 18, 24]}
-        onShowSizeChange={handleSizeChange}
-        onChange={handlePagination}
-      />
-      {/*       
+      <Typography.Title style={{ textAlign: 'center', color: '#FFF' }}>
+        {t('category.categoryTitle')}
+      </Typography.Title>
+      {loading ? (
+        <Spin
+          style={{ margin: 'auto', width: '100%' }}
+          size="large"
+          className="white-spin"
+        />
+      ) : (
+        <>
+          <Row gutter={16}>
+            {currentCategories &&
+              currentCategories.length > 0 &&
+              currentCategories.map(category => (
+                <Col span={6}>
+                  <CategoryItem category={category} />
+                </Col>
+              ))}
+          </Row>
+          <Pagination
+            defaultCurrent={1}
+            total={categories.length}
+            current={currentPage}
+            pageSize={pageSize}
+            showSizeChanger
+            defaultPageSize={24}
+            pageSizeOptions={[15, 18, 24]}
+            onShowSizeChange={handleSizeChange}
+            onChange={handlePagination}
+          />
+          {/*       
       <Button type="primary" onClick={handlePrev} icon={<LeftOutlined />}/>
       <Button type="primary" onClick={handleNext} icon={<RightOutlined />}/> */}
-    </CategoryContainer>
+        </>
+      )}
+    </>
   )
 }
 

@@ -374,7 +374,7 @@ export default ({ match, history }) => {
   const {
     data: { accounts }
   } = useQuery(GET_ACCOUNT)
-
+  console.log('accounts===', accounts)
   const {
     data: { network, displayName, isReadOnly, isSafeApp }
   } = useQuery(HOME_DATA, {
@@ -423,7 +423,7 @@ export default ({ match, history }) => {
       title: 'Category',
       dataIndex: 'name',
       render: (_, record) => (
-        <div onClick={() => viewDetails(record)}>
+        <div onClick={() => handleClickMore(record)}>
           <a href="#" title={record.name}>
             <div className="d-flex">
               <AvatarStatus
@@ -551,7 +551,10 @@ export default ({ match, history }) => {
                 itemLayout="horizontal"
                 dataSource={categories}
                 renderItem={category => (
-                  <List.Item onClick={() => handleClickMore(category)}>
+                  <List.Item
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleClickMore(category)}
+                  >
                     <List.Item.Meta
                       avatar={<Avatar src={category.imageUrl} />}
                       title={category.name}
@@ -570,7 +573,10 @@ export default ({ match, history }) => {
                 itemLayout="horizontal"
                 dataSource={categories}
                 renderItem={category => (
-                  <List.Item onClick={() => handleClickMore(category)}>
+                  <List.Item
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleClickMore(category)}
+                  >
                     <List.Item.Meta
                       avatar={<Avatar src={category.imageUrl} />}
                       title={category.name}
@@ -589,7 +595,10 @@ export default ({ match, history }) => {
                 itemLayout="horizontal"
                 dataSource={categories}
                 renderItem={category => (
-                  <List.Item onClick={() => handleClickMore(category)}>
+                  <List.Item
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleClickMore(category)}
+                  >
                     <List.Item.Meta
                       avatar={<Avatar src={category.imageUrl} />}
                       title={category.name}
@@ -608,7 +617,10 @@ export default ({ match, history }) => {
                 itemLayout="horizontal"
                 dataSource={categories}
                 renderItem={category => (
-                  <List.Item onClick={() => handleClickMore(category)}>
+                  <List.Item
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleClickMore(category)}
+                  >
                     <List.Item.Meta
                       avatar={<Avatar src={category.imageUrl} />}
                       title={category.name}
