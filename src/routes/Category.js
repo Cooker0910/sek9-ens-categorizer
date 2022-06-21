@@ -7,7 +7,7 @@ import mq from '../mediaQuery'
 import { H2 as DefaultH2 } from '../components/Typography/Basic'
 import LargeHeart from '../components/Icons/LargeHeart'
 import FirebaseService from 'services/FirebaseService'
-import { apiGetCategories } from 'api/category'
+import { apiGetCategories } from 'api/rest/category'
 import {
   NonMainPageBannerContainer,
   DAOBannerContent
