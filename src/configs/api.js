@@ -1,7 +1,6 @@
 export const restApiSettings = {
-  // baseURL: process.env.REACT_APP_API_BASE_URL || 'https://www.sek9.com/api/v1',
-  baseURL:
-    process.env.REACT_APP_API_BASE_URL || 'http://192.168.0.121:8000/api/v1'
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'https://www.sek9.com/api/v1'
+  // baseURL: process.env.REACT_APP_API_BASE_URL || 'http://192.168.0.121:8000/api/v1'
 }
 
 export const notifyExceptionUrlPrefixs = [
