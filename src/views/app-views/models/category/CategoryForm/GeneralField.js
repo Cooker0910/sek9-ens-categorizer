@@ -150,8 +150,6 @@ const GeneralField = props => {
     fileListProps.fileList = props.uploadedFiles
   }
 
-  console.log('==== tags: ', tags)
-
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={17}>
