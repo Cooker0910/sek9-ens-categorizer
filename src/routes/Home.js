@@ -40,7 +40,13 @@ import {
 import EthCard from 'components/EthCard'
 import AvatarStatus from 'components/shared-components/AvatarStatus'
 import { EyeOutlined } from '@ant-design/icons'
-
+import {
+  apiGetCategories,
+  apiGetNewestCategories,
+  apiGetMostViewedCategories,
+  apiGetMostPurchasedCategories
+} from 'api/rest/category'
+import { apiGetTags } from 'api/rest/tag'
 import utils from 'utils'
 
 const HeroTop = styled(Layout.Header)`
@@ -371,6 +377,13 @@ export default ({ match, history }) => {
   const [allCategories, setAllCategories] = useState([])
   const [subCategories, setSubCategories] = useState(categories)
 
+  const [newestCategories, setNewestCategories] = useState([])
+  const [mostViewed24HrsCategories, setMostViewed24HrsCategories] = useState([])
+  const [mostViewed7DaysCategories, setMostViewed7DaysCategories] = useState([])
+  const [mostPurchasedCategories, setMostPurchasedCategories] = useState([])
+  const [tags, setTags] = useState(['General'])
+  const [selectedTag, setSelectedTag] = useState('General')
+
   const {
     data: { accounts }
   } = useQuery(GET_ACCOUNT)
@@ -383,13 +396,71 @@ export default ({ match, history }) => {
 
   useEffect(() => {
     // showCategoryLoading();
-    FirebaseService.getCategories(setAllCategories)
-    FirebaseService.getCategories(setCategories, 'createdAt')
+    // FirebaseService.getCategories(setAllCategories)
+    // FirebaseService.getCategories(setCategories, 'createdAt')
+    getCategories()
+    getNewestCategories()
+    getMostViewed24HrsCategories()
+    getMostViewed7DaysCategories()
+    getMostPurchasedCategories({ per_page: 5 })
+    getTags()
   }, [])
 
   useEffect(() => {
-    setSubCategories(allCategories)
-  }, [allCategories.length])
+    let tagParam = {}
+    if (selectedTag !== 'General') {
+      tagParam = { tag: selectedTag }
+    }
+    getCategories(tagParam)
+  }, [selectedTag])
+
+  const getTags = async () => {
+    const res = await apiGetTags({ per_page: 100 })
+
+    if (res || res.error) {
+      const tagArray = res.dataset.map(t => t.name)
+      setTags(['General', ...tagArray])
+    }
+  }
+
+  const getCategories = async params => {
+    const res = await apiGetCategories(params)
+    if (res && !res.error) {
+      setCategories(res.dataset)
+    }
+  }
+
+  const getNewestCategories = async () => {
+    const res = await apiGetNewestCategories({ per_page: 5 })
+    if (res && !res.error) {
+      setNewestCategories(res.dataset)
+    }
+  }
+
+  const getMostViewed24HrsCategories = async () => {
+    const res = await apiGetMostViewedCategories({ per_page: 5, hours: 24 })
+    if (res && !res.error) {
+      setMostViewed24HrsCategories(res.dataset)
+    }
+  }
+
+  const getMostViewed7DaysCategories = async () => {
+    const res = await apiGetMostViewedCategories({ per_page: 5, hours: 24 * 7 })
+    if (res && !res.error) {
+      setMostViewed7DaysCategories(res.dataset)
+    }
+  }
+
+  const getMostPurchasedCategories = async () => {
+    const res = await apiGetMostPurchasedCategories({ per_page: 5 })
+    if (res && !res.error) {
+      setMostPurchasedCategories(res.dataset)
+    }
+  }
+
+  // useEffect(() => {
+  //   setSubCategories(allCategories)
+  // }, [allCategories.length])
 
   const HEADER_MENUS = [
     {
@@ -406,12 +477,9 @@ export default ({ match, history }) => {
     }
   ]
 
-  const handleClickMenu = e => {
-    const index = MAIN_CATEGORIES.findIndex(cat => cat.key === e.key)
-    const _categories = allCategories.filter(
-      (_, _index) => _index >= (index - 1) * 3 && _index < index * 3
-    )
-    setSubCategories(index === 0 ? allCategories : _categories)
+  const handleClickMenu = index => {
+    console.log('==== index: ', index, tags[index])
+    setSelectedTag(tags[index])
   }
 
   const handleClickMore = key => {
@@ -429,7 +497,7 @@ export default ({ match, history }) => {
               <AvatarStatus
                 size={60}
                 type="square"
-                src={record.imageUrl}
+                src={record.image_url}
                 name={record.name}
                 subTitle={record.description}
               />
@@ -472,7 +540,8 @@ export default ({ match, history }) => {
     },
     {
       title: 'Tags',
-      dataIndex: 'strTags'
+      dataIndex: 'tags',
+      render: (_, record) => <div>{_.join()}</div>
     },
     {
       title: '',
@@ -549,14 +618,14 @@ export default ({ match, history }) => {
             <Card title="Newest Categories" bordered={false}>
               <List
                 itemLayout="horizontal"
-                dataSource={categories}
+                dataSource={newestCategories}
                 renderItem={category => (
                   <List.Item
                     style={{ cursor: 'pointer' }}
                     onClick={() => handleClickMore(category)}
                   >
                     <List.Item.Meta
-                      avatar={<Avatar src={category.imageUrl} />}
+                      avatar={<Avatar src={category.image_url} />}
                       title={category.name}
                     />
                   </List.Item>
@@ -568,14 +637,14 @@ export default ({ match, history }) => {
             <Card title="Most Viewed - 24 hours" bordered={false}>
               <List
                 itemLayout="horizontal"
-                dataSource={categories}
+                dataSource={mostViewed24HrsCategories}
                 renderItem={category => (
                   <List.Item
                     style={{ cursor: 'pointer' }}
                     onClick={() => handleClickMore(category)}
                   >
                     <List.Item.Meta
-                      avatar={<Avatar src={category.imageUrl} />}
+                      avatar={<Avatar src={category.image_url} />}
                       title={category.name}
                     />
                   </List.Item>
@@ -587,14 +656,14 @@ export default ({ match, history }) => {
             <Card title="Most Viewed - 7 days" bordered={false}>
               <List
                 itemLayout="horizontal"
-                dataSource={categories}
+                dataSource={mostViewed7DaysCategories}
                 renderItem={category => (
                   <List.Item
                     style={{ cursor: 'pointer' }}
                     onClick={() => handleClickMore(category)}
                   >
                     <List.Item.Meta
-                      avatar={<Avatar src={category.imageUrl} />}
+                      avatar={<Avatar src={category.image_url} />}
                       title={category.name}
                     />
                   </List.Item>
@@ -606,14 +675,14 @@ export default ({ match, history }) => {
             <Card title="Most Purchased - 24 hours" bordered={false}>
               <List
                 itemLayout="horizontal"
-                dataSource={categories}
+                dataSource={mostPurchasedCategories}
                 renderItem={category => (
                   <List.Item
                     style={{ cursor: 'pointer' }}
                     onClick={() => handleClickMore(category)}
                   >
                     <List.Item.Meta
-                      avatar={<Avatar src={category.imageUrl} />}
+                      avatar={<Avatar src={category.image_url} />}
                       title={category.name}
                     />
                   </List.Item>
@@ -628,21 +697,21 @@ export default ({ match, history }) => {
         /> */}
         {/* <Search /> */}
         <Menu mode="horizontal" style={{ marginTop: 20, borderRadius: 5 }}>
-          {MAIN_CATEGORIES.map(category => (
+          {tags.map((tag, index) => (
             <Menu.Item
-              key={category.key}
-              title={category.label}
-              onClick={handleClickMenu}
+              key={index}
+              title={tag}
+              onClick={() => handleClickMenu(index)}
             >
-              {category.label}
+              {tag}
             </Menu.Item>
           ))}
         </Menu>
         <Table
           style={{ marginTop: 20 }}
           columns={tableColumns}
-          dataSource={subCategories}
-          rowKey="objectId"
+          dataSource={categories}
+          rowKey="id"
           onRow={(record, rowIndex) => {
             return {
               onClick: event => {

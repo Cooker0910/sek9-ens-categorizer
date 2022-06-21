@@ -19,3 +19,15 @@ export async function apiCreateCategory(data) {
 export async function apiDeleteCategory(id) {
   return await jsonQuery(`/category/${id}/`, 'DELETE')
 }
+
+export async function apiGetNewestCategories(searchParams) {
+  return await query('/category/newest/', { searchParams })
+}
+
+export async function apiGetMostViewedCategories(searchParams) {
+  return await query('/category/most_viewd/', { searchParams })
+}
+
+export async function apiGetMostPurchasedCategories(searchParams) {
+  return await query('/category/most_purchased/', { searchParams })
+}
