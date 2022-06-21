@@ -21,6 +21,8 @@ import {
 } from '@ant-design/icons'
 import NumberFormat from 'react-number-format'
 import FirebaseService from 'services/FirebaseService'
+import { apiGetEthereums } from 'api/rest/ethereum'
+
 import Flex from 'components/shared-components/Flex'
 import AvatarStatus from 'components/shared-components/AvatarStatus'
 
@@ -93,14 +95,11 @@ const ListItem = ({ data }) => (
         <Col xs={24} sm={24} md={8}>
           <ItemHeader
             name={`${data.name}.eth`}
-            category={`${data.startingPrice_decimal / Math.pow(10, 18)}`}
+            category={`${data.starting_price}`}
           />
         </Col>
         <Col xs={24} sm={24} md={6}>
-          <ItemInfo
-            price={`${data.startingPrice_decimal / Math.pow(10, 18)}`}
-            statusColor={'orange'}
-          />
+          <ItemInfo price={`${data.starting_price}`} statusColor={'orange'} />
         </Col>
         <Col xs={24} sm={24} md={5} />
         <Col xs={24} sm={24} md={3} />
@@ -119,10 +118,7 @@ const GridItem = ({ data }) => (
     <Card style={{ backgroundColor: data.labelHash ? 'white' : '#8080803b' }}>
       <Flex alignItems="center" justifyContent="between">
         <ItemHeader name={`${data.name}.eth`} />
-        <ItemInfo
-          price={`${data.startingPrice_decimal / Math.pow(10, 18)}`}
-          statusColor={'orange'}
-        />
+        <ItemInfo price={`${data.starting_price}`} statusColor={'orange'} />
       </Flex>
       <div className="mt-2 text-right">
         <ItemMember eth={data} />
@@ -141,9 +137,22 @@ const EthFeild = props => {
   useEffect(() => {
     if (props.category) {
       setLoading(true)
-      FirebaseService.getEthereums(props.category, 0, '', setEthereums)
+      // FirebaseService.getEthereums(props.category, 0, '', setEthereums)
+      getEthereums()
     }
   }, [props])
+
+  const getEthereums = async () => {
+    console.log('==== props: ', props)
+    const res = await apiGetEthereums({
+      per_page: 1000,
+      category_id: props.category.id
+    })
+    console.log('==== getCategoryList: res: ', res)
+    if (res && !res.error) {
+      setEthereums(res.dataset)
+    }
+  }
 
   const setEthereums = data => {
     setLoading(false)

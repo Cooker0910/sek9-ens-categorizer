@@ -6,6 +6,11 @@ import Flex from 'components/shared-components/Flex'
 import GeneralField from './GeneralField'
 import EthField from './EthField'
 import FirebaseService from 'services/FirebaseService'
+import {
+  apiGetCategoryById,
+  apiCreateCategory,
+  apiUpdateCategoryById
+} from 'api/rest/category'
 import moment from 'moment'
 import { setCategories, showCategoryLoading } from 'redux/actions/Category'
 
@@ -27,24 +32,37 @@ const CategoryForm = props => {
   useEffect(() => {
     console.log('param', param)
     console.log('props', props)
+
     if (mode === EDIT) {
       console.log('is edit')
-      const { id } = param
-      const objectId = id
-      const categoryData = propsCategories.categories.filter(
-        category => category.objectId === objectId
-      )
-      const cat = categoryData[0]
-      if (!cat) return
-      form.setFieldsValue({
-        ...cat,
-        floorprice_decimal: cat.floorprice_decimal / Math.pow(10, 18)
-      })
-      setImage(cat.imageUrl)
-      setFiles(cat.files ? cat.files : [])
-      setCategory(cat)
+      getCategory()
     }
   }, [form, mode, param, props])
+
+  const getCategory = async () => {
+    const { id } = param
+    const objectId = parseInt(id)
+    if (!id) return
+    const categoryData = propsCategories.categories.filter(
+      category => category.id === objectId
+    )
+    let cat = categoryData[0]
+    if (!cat) {
+      const res = await apiGetCategoryById(objectId)
+      console.log('=== cat: ', res)
+      if (res || res.error) {
+        return
+      }
+      cat = res
+    }
+    form.setFieldsValue({
+      ...cat,
+      floor: cat.floor / Math.pow(10, 18)
+    })
+    setImage(cat.image_url)
+    setFiles(cat.files ? cat.files : [])
+    setCategory(cat)
+  }
 
   const handleUploadChange = info => {
     if (info.file.status === 'uploading') {
@@ -76,7 +94,6 @@ const CategoryForm = props => {
         file,
         metadata
       )
-      console.log('==== csvUrl: ', csvUrl)
       onSuccess && onSuccess(null, csvUrl)
     } catch (e) {
       onError && onError(e)
@@ -125,75 +142,63 @@ const CategoryForm = props => {
     setSubmitLoading(true)
     form
       .validateFields()
-      .then(values => {
+      .then(async values => {
         if (mode === ADD) {
+          console.log('==== values: ', values)
           let newValue = {
-            objectId: '',
             category: 0,
-            frontendSorting: 0,
             name: '',
             description: '',
-            shortName: '',
-            imageUrl: '',
-            listed: true,
-            synced: true,
-            createdAt: '',
-            updatedAt: '',
+            short_name: '',
+            image_url: '',
             available: 0,
             count: 0,
             owners: 0,
-            totalVolume: 0,
             tags: [],
-            communityDiscord: '',
-            communityTwitter: '',
-            floorprice: '',
-            floorprice_decimal: 0,
-            regularExpression: '',
-            wikiUrl: '',
+            community_discord: '',
+            community_twitter: '',
+            floor: 0,
+            regular_expression: '',
+            wiki_url: '',
             ...values
           }
-          newValue.floorprice_decimal =
-            values.floorprice_decimal * Math.pow(10, 18)
-          newValue.floorprice = `${newValue.floorprice_decimal}`
-          newValue.createdAt = `${moment().format('YYYY-mm-DDTHH:MM:SS')}.00Z`
-          newValue.updatedAt = newValue.createdAt
+          newValue.floor = values.floor
           if (!!uploadedImg) {
-            newValue.imageUrl = uploadedImg
+            newValue.image_url = uploadedImg
           }
           if (uploadedFiles && uploadedFiles.length > 0) {
             newValue.files = uploadedFiles
           }
-          FirebaseService.addCategory(newValue)
+          console.log('==== newValue: ', newValue)
+          // FirebaseService.addCategory(newValue)
+          const res = await apiCreateCategory(newValue)
+          const newValueTags = newValue.tags
         }
         if (mode === EDIT) {
           const { id } = param
-          const objectId = id
+          const objectId = parseInt(id)
           const categoryData = propsCategories.categories.filter(
-            cat => cat.objectId === objectId
+            cat => cat.id === objectId
           )
           const cat = categoryData[0]
           let updatedValue = {
             ...cat,
             ...values
           }
-          updatedValue.floorprice_decimal =
-            values.floorprice_decimal * Math.pow(10, 18)
-          updatedValue.floorprice = `${updatedValue.floorprice_decimal}`
-          updatedValue.updatedAt = `${moment().format(
-            'YYYY-mm-DDTHH:MM:SS'
-          )}.00Z`
-          updatedValue.communityDiscord = updatedValue.communityDiscord || ''
-          updatedValue.communityTwitter = updatedValue.communityTwitter || ''
-          updatedValue.wikiUrl = updatedValue.wikiUrl || ''
-          updatedValue.regularExpression = updatedValue.regularExpression || ''
+          updatedValue.floor = values.floor
+          updatedValue.community_discord = updatedValue.community_discord || ''
+          updatedValue.community_twitter = updatedValue.community_twitter || ''
+          updatedValue.wiki_url = updatedValue.wiki_url || ''
+          updatedValue.regular_expression =
+            updatedValue.regular_expression || ''
           if (!!uploadedImg) {
-            updatedValue.imageUrl = uploadedImg
+            updatedValue.image_url = uploadedImg
           }
-          if (uploadedFiles && uploadedFiles.length >= 0) {
+          if (uploadedFiles && uploadedFiles.length > 0) {
             updatedValue.files = uploadedFiles
           }
-          console.log('==== updatedValue: ', updatedValue)
-          FirebaseService.updateCategory(updatedValue)
+          // FirebaseService.updateCategory(updatedValue)
+          const res = await apiUpdateCategoryById(cat.id, updatedValue)
         }
 
         setTimeout(() => {
@@ -258,13 +263,14 @@ const CategoryForm = props => {
                 uploadedImg={uploadedImg}
                 uploadedFiles={uploadedFiles}
                 uploadLoading={uploadLoading}
+                category={category}
                 handleUploadChange={handleUploadChange}
                 handleCsvUploadChange={handleCsvUploadChange}
                 handleCsvCustomUpload={handleCsvCustomUpload}
               />
             </TabPane>
             <TabPane tab="ETH" key="2">
-              <EthField category={category ? category.name : ''} />
+              <EthField category={category || null} />
             </TabPane>
           </Tabs>
         </div>

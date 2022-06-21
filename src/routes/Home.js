@@ -488,8 +488,8 @@ export default ({ match, history }) => {
   ]
 
   return (
-    <Hero>
-      <Layout.Header
+    <>
+      {/* <Layout.Header
         className="header"
         style={{ background: 'transparent', alignItems: 'center', height: 90 }}
       >
@@ -500,9 +500,9 @@ export default ({ match, history }) => {
           alt="SEK9 logo"
         />
         <SearchInput />
-        {/* <MainPageBannerContainer>
+        <MainPageBannerContainer>
           <DAOBannerContent />
-        </MainPageBannerContainer> */}
+        </MainPageBannerContainer>
         <div
           style={{ display: 'flex', justifyContent: 'sapce-between', flex: 1 }}
         >
@@ -527,8 +527,8 @@ export default ({ match, history }) => {
             </Input.Group>
           </Space>
         </div>
-      </Layout.Header>
-      <Content style={{ padding: 20 }}>
+      </Layout.Header> */}
+      <main>
         {/* <NetworkStatus>
           <Network>
             {`${network} ${t('c.network')}`}
@@ -565,10 +565,7 @@ export default ({ match, history }) => {
             </Card>
           </Col>
           <Col span={6}>
-            <Card
-              title="Most Viewed Categories - Last 24 hours"
-              bordered={false}
-            >
+            <Card title="Most Viewed - 24 hours" bordered={false}>
               <List
                 itemLayout="horizontal"
                 dataSource={categories}
@@ -587,10 +584,7 @@ export default ({ match, history }) => {
             </Card>
           </Col>
           <Col span={6}>
-            <Card
-              title="Most Viewed Categories - Last 24 hours"
-              bordered={false}
-            >
+            <Card title="Most Viewed - 7 days" bordered={false}>
               <List
                 itemLayout="horizontal"
                 dataSource={categories}
@@ -609,10 +603,7 @@ export default ({ match, history }) => {
             </Card>
           </Col>
           <Col span={6}>
-            <Card
-              title="Most Purchased Categories - Last 24 hours"
-              bordered={false}
-            >
+            <Card title="Most Purchased - 24 hours" bordered={false}>
               <List
                 itemLayout="horizontal"
                 dataSource={categories}
@@ -660,7 +651,7 @@ export default ({ match, history }) => {
             }
           }}
         />
-      </Content>
-    </Hero>
+      </main>
+    </>
   )
 }

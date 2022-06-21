@@ -15,7 +15,6 @@ const themes = {
   light: `${process.env.PUBLIC_URL}/css/light-theme.css`
 }
 
-
 const TestRegistrar = lazy(() =>
   import(
     /* webpackChunkName: "TestRegistrar", webpackPrefetch:true */
@@ -154,7 +153,7 @@ const App = () => {
     >
       <Router>
         <Switch>
-          <Route exact path="/" component={Home} layout={HomePageLayout} />
+          <Route exact path="/" component={Home} />
           <Route path="/test-registrar" component={TestRegistrar} />
           <Route path="/favourites" component={Favourites} />
           <Route path="/categories" component={Category} />

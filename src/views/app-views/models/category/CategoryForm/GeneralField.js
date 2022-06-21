@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import {
   Input,
   Row,
@@ -17,6 +18,7 @@ import CustomIcon from 'components/util-components/CustomIcon'
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons'
 import momenttz from 'moment-timezone'
 import FirebaseService from 'services/FirebaseService'
+import { apiGetTags } from 'api/rest/tag'
 
 const { Dragger } = Upload
 const { Option } = Select
@@ -34,13 +36,13 @@ const rules = {
       message: 'Please enter category description'
     }
   ],
-  shortName: [
+  short_name: [
     {
       required: true,
       message: 'Please enter category short name'
     }
   ],
-  floorprice_decimal: [
+  floor: [
     {
       required: false,
       message: 'Please enter floorprice price. Default is 0.'
@@ -58,25 +60,25 @@ const rules = {
       message: 'Please enter available numbers. Default is 0.'
     }
   ],
-  communityDiscord: [
+  community_discord: [
     {
       required: false,
       message: 'Please enter name of Discord.'
     }
   ],
-  communityTwitter: [
+  community_twitter: [
     {
       required: false,
       message: 'Please enter name of Twitter.'
     }
   ],
-  regularExpression: [
+  regular_expression: [
     {
       required: false,
       message: 'Please enter general regular expression of ETH names.'
     }
   ],
-  wikiUrl: [
+  wiki_url: [
     {
       required: false,
       message: 'Please enter Wikipedia or website url including ETH names.'
@@ -122,14 +124,34 @@ const imageUploadProps = {
   action: ''
 }
 
-const tags = ['numbers', 'letters', 'emojis', '0x']
+// const tags = ['numbers', 'letters', 'emojis', '0x']
 
 const GeneralField = props => {
+  const propsCategory = props.category
+  console.log('==== propsCategory: ', propsCategory)
+  const [tags, setTags] = useState([])
+
+  useEffect(() => {
+    getTags()
+  }, [])
+
+  const getTags = async () => {
+    const res = await apiGetTags({ per_page: 100 })
+
+    if (res || res.error) {
+      console.log('==== res: ', res.dataset)
+      const tagArray = res.dataset.map(t => t.name)
+      setTags(tagArray)
+    }
+  }
+
   let fileListProps = {}
   if (props.uploadedFiles.length > 0) {
     fileListProps.fileList = props.uploadedFiles
   }
-  console.log('==== fileListProps: ', fileListProps)
+
+  console.log('==== tags: ', tags)
+
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={17}>
@@ -142,24 +164,63 @@ const GeneralField = props => {
             label="Description"
             rules={rules.description}
           >
-            <Input.TextArea rows={4} />
+            <Input.TextArea rows={2} />
           </Form.Item>
           <Form.Item
-            name="shortName"
+            name="short_name"
             label="Short Name"
-            rules={rules.shortName}
+            rules={rules.short_name}
           >
             <Input placeholder="Short Name" />
+          </Form.Item>
+        </Card>
+        <Card title="Organization">
+          {tags && tags.length > 0 && (
+            <Form.Item name="tags" label="Tags">
+              <Select mode="tags" style={{ width: '100%' }} placeholder="Tags">
+                {tags.map(elm => (
+                  <Option key={elm}>{elm}</Option>
+                ))}
+              </Select>
+            </Form.Item>
+          )}
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={12}>
+              <Form.Item
+                name="community_discord"
+                label="Community Discord"
+                rules={rules.community_discord}
+              >
+                <Input placeholder="Community Discord" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={12}>
+              <Form.Item
+                name="community_twitter"
+                label="Community Twitter"
+                rules={rules.community_twitter}
+              >
+                <Input placeholder="Community Twitter" />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Card>
+        <Card title="List of Ethereum Names">
+          <Form.Item
+            name="regular_expression"
+            label="Regular Expression"
+            rules={rules.regular_expression}
+          >
+            <Input placeholder="Regular Expression" />
+          </Form.Item>
+          <Form.Item name="wiki_url" label="Wiki URL" rules={rules.wiki_url}>
+            <Input placeholder="Wiki URL" />
           </Form.Item>
         </Card>
         <Card title="Pricing">
           <Row gutter={16}>
             <Col xs={24} sm={24} md={12}>
-              <Form.Item
-                name="floorprice_decimal"
-                label="Price"
-                rules={rules.floorprice_decimal}
-              >
+              <Form.Item name="floor" label="Price" rules={rules.floor}>
                 <InputNumber
                   className="w-100"
                   formatter={value =>
@@ -240,41 +301,6 @@ const GeneralField = props => {
             )}
           </Dragger>
         </Card>
-        <Card title="Organization">
-          <Form.Item name="tags" label="Tags">
-            <Select mode="tags" style={{ width: '100%' }} placeholder="Tags">
-              {tags.map(elm => (
-                <Option key={elm}>{elm}</Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="communityDiscord"
-            label="Community Discord"
-            rules={rules.communityDiscord}
-          >
-            <Input placeholder="Community Discord" />
-          </Form.Item>
-          <Form.Item
-            name="communityTwitter"
-            label="Community Twitter"
-            rules={rules.communityTwitter}
-          >
-            <Input placeholder="Community Twitter" />
-          </Form.Item>
-        </Card>
-        <Card title="List of Ethereum Names">
-          <Form.Item
-            name="regularExpression"
-            label="Regular Expression"
-            rules={rules.regularExpression}
-          >
-            <Input placeholder="Regular Expression" />
-          </Form.Item>
-          <Form.Item name="wikiUrl" label="Wiki URL" rules={rules.wikiUrl}>
-            <Input placeholder="Wiki URL" />
-          </Form.Item>
-        </Card>
         <Card title="List files">
           <Upload
             accept=".txt, .csv"
@@ -291,4 +317,14 @@ const GeneralField = props => {
   )
 }
 
-export default GeneralField
+const mapStateToProps = ({ category }) => {
+  return { propsCategories: category }
+}
+
+const mapDispatchToProps = {}
+
+// export default GeneralField
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GeneralField)

@@ -16177,7 +16177,7 @@ _:-ms-fullscreen
 .ant-list-item-meta {
   display: flex;
   flex: 1;
-  align-items: flex-start;
+  align-items: center;
   max-width: 100%;
 }
 .ant-list-item-meta-avatar {

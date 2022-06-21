@@ -163,13 +163,13 @@ export const HOME_DATA = gql`
 `
 
 function HeaderContainer() {
-  const url = ''
   const history = useHistory()
   const [isMenuOpen, setMenuOpen] = useState(false)
   const mediumBP = useMediaMin('medium')
   const mediumBPMax = useMediaMax('medium')
   const toggleMenu = () => setMenuOpen(!isMenuOpen)
   const { t } = useTranslation()
+  const url = ''
 
   const {
     data: { accounts }
@@ -242,16 +242,17 @@ function HeaderContainer() {
                 {t('c.mynames')}
               </NavLink>
             )}
-            <NavLink to="/categories">{t('c.category')}</NavLink>
+            <NavLink to="/categories">{t('c.categories')}</NavLink>
             <NavLink to="/favourites">{t('c.favourites')}</NavLink>
-            <ExternalLink href={aboutPageURL()}>{t('c.about')}</ExternalLink>
+            <NavLink to="/about">{t('c.about')}</NavLink>
+            {/* <ExternalLink href={aboutPageURL()}>{t('c.about')}</ExternalLink> */}
           </Nav>
           <Space>
             <Button>Connect Wallet</Button>
-            <Input.Group compact style={{ display: 'flex' }}>
-              <Input placeholder="Email" />
-              <Button>Newsletter</Button>
-            </Input.Group>
+            <Button>Sign up</Button>
+            {/* <Input.Group compact style={{ display: 'flex' }}>
+              <Input placeholder="Email Newsletter" />
+            </Input.Group> */}
           </Space>
         </div>
       </Layout.Header>

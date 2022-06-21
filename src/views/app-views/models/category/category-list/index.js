@@ -26,6 +26,7 @@ import NumberFormat from 'react-number-format'
 import { useHistory } from 'react-router-dom'
 import utils from 'utils'
 import FirebaseService from 'services/FirebaseService'
+import { apiGetCategories, apiDeleteCategory } from 'api/rest/category'
 import { setCategories, showCategoryLoading } from 'redux/actions/Category'
 
 const { Option } = Select
@@ -39,9 +40,21 @@ const CategoryList = props => {
   const [selectedRows, setSelectedRows] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
+  const getCategoryList = async () => {
+    const res = await apiGetCategories({
+      per_page: 100,
+      order_by: 'created_at',
+      order_type: '-'
+    })
+    if (res && !res.error) {
+      setCategoryList(res.dataset)
+    }
+  }
+
   useEffect(() => {
     showCategoryLoading()
-    FirebaseService.getCategories(setCategoryList)
+    getCategoryList()
+    // FirebaseService.getCategories(setCategoryList)
   }, [])
 
   const setCategoryList = cats => {
@@ -75,7 +88,7 @@ const CategoryList = props => {
   }
 
   const viewDetails = row => {
-    history.push(`/app/models/category/edit-category/${row.objectId}`)
+    history.push(`/app/models/category/edit-category/${row.id}`)
   }
 
   const deleteRow = row => {
@@ -86,12 +99,14 @@ const CategoryList = props => {
         data = utils.deleteArrayRow(data, objKey, elm.id)
         setList(data)
         setSelectedRows([])
-        FirebaseService.deleteCategory(elm)
+        // FirebaseService.deleteCategory(elm)
+        apiDeleteCategory(elm.id)
       })
     } else {
       data = utils.deleteArrayRow(data, objKey, row.id)
       setList(data)
-      FirebaseService.deleteCategory(row)
+      // FirebaseService.deleteCategory(row)
+      apiDeleteCategory(row.id)
     }
   }
 
@@ -106,7 +121,7 @@ const CategoryList = props => {
               <AvatarStatus
                 size={60}
                 type="square"
-                src={record.imageUrl}
+                src={record.image_url}
                 name={record.name}
                 subTitle={record.description}
               />
@@ -118,25 +133,25 @@ const CategoryList = props => {
     },
     {
       title: 'Floor',
-      dataIndex: 'floorprice_decimal',
-      render: floorprice_decimal => (
+      dataIndex: 'floor',
+      render: floor => (
         <div className="space-align-block">
           <Space align="center" size={2}>
             <Image
               height={13}
               src={'/img/icons/ethereum-icon-28.png'}
-              name={`${floorprice_decimal / Math.pow(10, 18)}`}
+              name={`${floor}`}
             />
             <NumberFormat
               displayType={'text'}
-              value={floorprice_decimal / Math.pow(10, 18)}
+              value={floor}
               prefix={''}
               thousandSeparator={true}
             />
           </Space>
         </div>
       ),
-      sorter: (a, b) => utils.antdTableSorter(a, b, 'floorprice_decimal')
+      sorter: (a, b) => utils.antdTableSorter(a, b, 'floor')
     },
     {
       title: 'Owners',
@@ -238,7 +253,7 @@ const CategoryList = props => {
           <Table
             columns={tableColumns}
             dataSource={list}
-            rowKey="objectId"
+            rowKey="id"
             rowSelection={{
               selectedRowKeys: selectedRowKeys,
               type: 'checkbox',
