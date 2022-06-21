@@ -110,13 +110,16 @@ function Category() {
   useEffect(() => {
     // showCategoryLoading();
     setLoading(true)
-
-    FirebaseService.getCategories(getCategories)
+    getCategories({ per_page: 100 })
+    // FirebaseService.getCategories(getCategories)
   }, [])
 
-  const getCategories = data => {
+  const getCategories = async (params = {}) => {
+    const res = await apiGetCategories(params)
+    if (res && !res.error) {
+      setCategories(res.dataset)
+    }
     setLoading(false)
-    setCategories(data)
   }
   // if (!categories || categories.length === 0) {
   //   return (

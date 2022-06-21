@@ -16,6 +16,8 @@ import {
   Typography
 } from 'antd'
 import EthCard from 'components/EthCard'
+import { apiGetCategoryById } from 'api/rest/category'
+import { apiGetEthereums } from 'api/rest/ethereum'
 
 function SingleCategory({
   match: {
@@ -23,10 +25,12 @@ function SingleCategory({
   }
 }) {
   const history = useHistory()
-  const [domains, setDomains] = useState([])
+  const [eths, setEths] = useState([])
   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(24)
+  const [category, setCategory] = useState({ name: '' })
+  // const [eths, setEths] = useState([])
 
   const handleChangePage = value => {
     setCurrentPage(value)
@@ -35,7 +39,7 @@ function SingleCategory({
     setCurrentPage(current)
     setPageSize(pageSize)
   }
-  const currentDomains = domains.filter(
+  const currentDomains = eths.filter(
     (_, index) =>
       index >= (currentPage - 1) * pageSize && index < currentPage * pageSize
   )
@@ -43,19 +47,36 @@ function SingleCategory({
   useEffect(() => {
     if (searchTerm) {
       setLoading(true)
-      FirebaseService.getEthereums(searchTerm, 0, '', setEthereums)
+      // FirebaseService.getEthereums(searchTerm, 0, '', setEthereums)
+      getCategory(searchTerm)
+      getEthereums(searchTerm)
     }
   }, [searchTerm])
 
-  const setEthereums = data => {
+  const getCategory = async category_id => {
+    const res = await apiGetCategoryById(category_id, {
+      per_page: 1000
+    })
+    if (res && !res.error) {
+      setCategory(res)
+    }
+  }
+
+  const getEthereums = async category_id => {
+    const res = await apiGetEthereums({
+      per_page: 1000,
+      category_id: category_id
+    })
+    if (res && !res.error) {
+      setEths(res.dataset)
+    }
     setLoading(false)
-    setDomains(data)
   }
 
   return (
     <>
       <Typography.Title style={{ textAlign: 'center', color: '#FFF' }}>
-        {searchTerm}
+        {category.name}
       </Typography.Title>
       {loading ? (
         <Spin
@@ -78,7 +99,7 @@ function SingleCategory({
           </Row>
           <Pagination
             defaultCurrent={1}
-            total={domains.length}
+            total={eths.length}
             current={currentPage}
             pageSize={pageSize}
             showSizeChanger

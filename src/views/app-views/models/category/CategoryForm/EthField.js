@@ -148,7 +148,6 @@ const EthFeild = props => {
       per_page: 1000,
       category_id: props.category.id
     })
-    console.log('==== getCategoryList: res: ', res)
     if (res && !res.error) {
       setEthereums(res.dataset)
     }
