@@ -92,7 +92,7 @@ function SingleCategory({
                 <EthCard
                   data={elm}
                   hoverable
-                  onClick={() => history.push(`/name/${elm.name}.eth`)}
+                  onClick={() => history.push(`/name/${elm.eth_name}`)}
                 />
               </Col>
             ))}

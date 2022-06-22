@@ -56,7 +56,7 @@ const ItemInfo = ({ price, statusColor }) => (
       />
       <NumberFormat
         displayType={'text'}
-        value={(Math.round(price * 100) / 100).toFixed(2)}
+        value={(Math.round(price * 1000) / 1000).toFixed(3)}
         prefix={''}
         thousandSeparator={true}
         className="ml-2 font-weight-semibold"

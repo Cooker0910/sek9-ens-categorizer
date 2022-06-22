@@ -508,18 +508,18 @@ export default ({ match, history }) => {
     },
     {
       title: 'Floor',
-      dataIndex: 'floorprice_decimal',
-      render: floorprice_decimal => (
+      dataIndex: 'floor',
+      render: floor => (
         <div className="space-align-block">
           <Space align="center" size={2}>
             <Image
               height={13}
               src={'/img/icons/ethereum-icon-28.png'}
-              name={`${floorprice_decimal / Math.pow(10, 18)}`}
+              name={`${round(floor * 100) / 100}`}
             />
             <NumberFormat
               displayType={'text'}
-              value={floorprice_decimal / Math.pow(10, 18)}
+              value={round(floor * 100) / 100}
               prefix={''}
               thousandSeparator={true}
             />

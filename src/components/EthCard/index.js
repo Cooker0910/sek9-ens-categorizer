@@ -51,7 +51,7 @@ const ItemInfo = ({ price, statusColor }) => (
       />
       <NumberFormat
         displayType={'text'}
-        value={(Math.round(price * 100) / 100).toFixed(2)}
+        value={Math.round(price * 1000) / 1000}
         prefix={''}
         thousandSeparator={true}
         className="ml-2 font-weight-semibold"
@@ -82,15 +82,12 @@ const ItemMember = ({ data }) => (
 
 const EthCard = ({ data, ...props }) => (
   <Card
-    style={{ backgroundColor: data.labelHash ? 'white' : '#8080803d' }}
+    style={{ backgroundColor: data.address ? 'white' : '#8080803d' }}
     {...props}
   >
     <Flex alignItems="center" justifyContent="between">
-      <ItemHeader name={`${data.name}.eth`} />
-      <ItemInfo
-        price={`${data.startingPrice_decimal / Math.pow(10, 18)}`}
-        statusColor={'orange'}
-      />
+      <ItemHeader name={`${data.eth_name}`} />
+      <ItemInfo price={data.balance} statusColor={'orange'} />
     </Flex>
     <div className="mt-2 text-right">
       <ItemMember eth={data} />

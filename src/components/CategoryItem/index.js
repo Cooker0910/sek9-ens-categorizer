@@ -35,7 +35,10 @@ const CategoryItem = ({ category, domain, className, loading }) => {
       />
       <Row>
         <Col span={8}>
-          <Label label="Floor:" text={Math.round(category.floor * 100) / 100} />
+          <Label
+            label="Floor:"
+            text={(Math.round(category.floor * 1000) / 1000).toFixed(3)}
+          />
         </Col>
         <Col span={16}>
           <Label
