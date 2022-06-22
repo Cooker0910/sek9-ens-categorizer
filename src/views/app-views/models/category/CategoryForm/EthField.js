@@ -115,10 +115,10 @@ const ListItem = ({ data }) => (
 
 const GridItem = ({ data }) => (
   <a href={`/name/${data.name}.eth/details`} target="_blank">
-    <Card style={{ backgroundColor: data.labelHash ? 'white' : '#8080803b' }}>
+    <Card style={{ backgroundColor: data.address ? 'white' : '#8080803b' }}>
       <Flex alignItems="center" justifyContent="between">
-        <ItemHeader name={`${data.name}.eth`} />
-        <ItemInfo price={`${data.starting_price}`} statusColor={'orange'} />
+        <ItemHeader name={`${data.eth_name}`} />
+        <ItemInfo price={`${data.balance}`} statusColor={'orange'} />
       </Flex>
       <div className="mt-2 text-right">
         <ItemMember eth={data} />
@@ -146,7 +146,8 @@ const EthFeild = props => {
     console.log('==== props: ', props)
     const res = await apiGetEthereums({
       per_page: 1000,
-      category_id: props.category.id
+      category_id: props.category.id,
+      domain_name: 'eth'
     })
     if (res && !res.error) {
       setEthereums(res.dataset)

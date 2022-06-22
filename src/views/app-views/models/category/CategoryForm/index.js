@@ -57,10 +57,11 @@ const CategoryForm = props => {
     }
     form.setFieldsValue({
       ...cat,
-      floor: cat.floor / Math.pow(10, 18)
+      floor: cat.floor
     })
     setImage(cat.image_url)
-    setFiles(cat.files ? JSON.parse(cat.files) : [])
+    console.log('==== cat: ', cat)
+    setFiles(cat.files ? cat.files : [])
     setCategory(cat)
   }
 
