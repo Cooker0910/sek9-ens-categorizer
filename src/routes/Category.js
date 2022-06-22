@@ -16,57 +16,7 @@ import CategoryItem from 'components/CategoryItem'
 import { Row, Col, Typography, Pagination, Spin } from 'antd'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { first, last } from 'lodash-es'
-
-const NoDomainsContainer = styled('div')`
-  display: flex;
-  padding: 40px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: white;
-  box-shadow: 3px 4px 6px 0 rgba(229, 236, 241, 0.3);
-  border-radius: 6px;
-  margin-bottom: 40px;
-
-  h2 {
-    color: #adbbcd;
-    font-weight: 100;
-    margin-bottom: 0;
-    padding: 0;
-    margin-top: 20px;
-    text-align: center;
-    max-width: 500px;
-  }
-
-  p {
-    color: #2b2b2b;
-    font-size: 18px;
-    font-weight: 300;
-    margin-top: 20px;
-    line-height: 1.3em;
-    text-align: center;
-    max-width: 400px;
-  }
-`
-
-const H2 = styled(DefaultH2)`
-  margin-top: 50px;
-  margin-left: 20px;
-  ${mq.medium`
-    margin-left: 0;
-  `}
-`
-
-const NoDomains = () => {
-  const { t } = useTranslation()
-  return (
-    <NoDomainsContainer>
-      <LargeHeart />
-      <h2>{t('category.noCategories.title')}</h2>
-      <p>{t('category.noCategories.text')}</p>
-    </NoDomainsContainer>
-  )
-}
+import { DEFAUT_PAGINATION } from 'configs/ui'
 
 function Category() {
   const { t } = useTranslation()
@@ -75,64 +25,42 @@ function Category() {
   }, [])
 
   const [categories, setCategories] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(24)
+  const [paginating, setPaginating] = useState(false)
+  const [pagination, setPagination] = useState(DEFAUT_PAGINATION)
   const [loading, setLoading] = useState(false)
 
-  // const handlePagination=(currentPage)=>{
-  //   setPagination({...pagination, currentPage})
+  // const handleChangePage = current_page => {
+  //   setPaginating(true)
+  //   setPagination({ ...pagination, current_page })
   // }
 
-  const handleNext = () => {
-    FirebaseService.getCategories(setCategories, last(categories).objectId)
+  const handleChangePage = (current_page, per_page) => {
+    setPaginating(true)
+    setPagination({ ...pagination, current_page, per_page })
   }
-
-  const handlePrev = () => {
-    FirebaseService.getCategories(
-      setCategories,
-      null,
-      first(categories).objectId
-    )
-  }
-
-  const handlePagination = value => {
-    setCurrentPage(value)
-  }
-  const handleSizeChange = (current, pageSize) => {
-    setCurrentPage(current)
-    setPageSize(pageSize)
-  }
-  const currentCategories = categories.filter(
-    (_, index) =>
-      index >= (currentPage - 1) * pageSize && index < currentPage * pageSize
-  )
 
   useEffect(() => {
-    // showCategoryLoading();
-    setLoading(true)
-    getCategories({ per_page: 100 })
-    // FirebaseService.getCategories(getCategories)
+    paginating && getCategories()
+    setPaginating(false)
+  }, [paginating, pagination])
+
+  useEffect(() => {
+    getCategories()
   }, [])
 
-  const getCategories = async (params = {}) => {
-    const res = await apiGetCategories(params)
+  const getCategories = async () => {
+    setLoading(true)
+    const searchParams = {
+      per_page: pagination.per_page,
+      page_no: pagination.current_page
+    }
+    const res = await apiGetCategories(searchParams)
+    setLoading(false)
     if (res && !res.error) {
       setCategories(res.dataset)
+      setPagination(res.pagination)
     }
-    setLoading(false)
   }
-  // if (!categories || categories.length === 0) {
-  //   return (
-  //     <CategoryContainer data-testid="favourites-container">
-  //       <H2>{t('category.categoryTitle')}</H2>
-  //       <NoDomains>
-  //         <LargeHeart />
-  //         <h2>{t('category.noCategories.title')}</h2>
-  //         <p>{t('category.noCategories.text')}</p>
-  //       </NoDomains>
-  //     </CategoryContainer>
-  //   )
-  // }
 
   return (
     <>
@@ -151,28 +79,27 @@ function Category() {
       ) : (
         <>
           <Row gutter={16}>
-            {currentCategories &&
-              currentCategories.length > 0 &&
-              currentCategories.map(category => (
+            {categories &&
+              categories.length > 0 &&
+              categories.map(category => (
                 <Col span={6}>
-                  <CategoryItem category={category} />
+                  <CategoryItem
+                    category={category}
+                    key={category.id.toString()}
+                  />
                 </Col>
               ))}
           </Row>
           <Pagination
             defaultCurrent={1}
-            total={categories.length}
-            current={currentPage}
-            pageSize={pageSize}
+            total={Number(pagination.total_count)}
+            current={Number(pagination.current_page)}
+            pageSize={Number(pagination.per_page)}
             showSizeChanger
             defaultPageSize={24}
-            pageSizeOptions={[15, 18, 24]}
-            onShowSizeChange={handleSizeChange}
-            onChange={handlePagination}
+            pageSizeOptions={[16, 20, 24]}
+            onChange={handleChangePage}
           />
-          {/*       
-      <Button type="primary" onClick={handlePrev} icon={<LeftOutlined />}/>
-      <Button type="primary" onClick={handleNext} icon={<RightOutlined />}/> */}
         </>
       )}
     </>

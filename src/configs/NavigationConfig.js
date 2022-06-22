@@ -24,7 +24,9 @@ import {
   ShoppingCartOutlined,
   BookOutlined,
   FileUnknownOutlined,
-  ProfileOutlined
+  ProfileOutlined,
+  TagsOutlined,
+  FileOutlined
 } from '@ant-design/icons'
 import { APP_PREFIX_PATH, AUTH_PREFIX_PATH } from 'configs/AppConfig'
 
@@ -220,6 +222,22 @@ const modelsNavTree = [
         path: `${APP_PREFIX_PATH}/models/category/category-list`,
         title: 'sidenav.models.category',
         icon: BulbOutlined,
+        breadcrumb: false,
+        submenu: []
+      },
+      {
+        key: 'models-tag',
+        path: `${APP_PREFIX_PATH}/models/tag/tag-list`,
+        title: 'sidenav.models.tag',
+        icon: TagsOutlined,
+        breadcrumb: false,
+        submenu: []
+      },
+      {
+        key: 'models-domain',
+        path: `${APP_PREFIX_PATH}/models/domain/domain-list`,
+        title: 'sidenav.models.domain',
+        icon: FileOutlined,
         breadcrumb: false,
         submenu: []
       }

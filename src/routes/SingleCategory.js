@@ -1,23 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import FirebaseService from 'services/FirebaseService'
 import { useHistory } from 'react-router-dom'
-import {
-  Radio,
-  Button,
-  Row,
-  Col,
-  Tooltip,
-  Tag,
-  Avatar,
-  Card,
-  Image,
-  Pagination,
-  Spin,
-  Typography
-} from 'antd'
+import { Row, Col, Pagination, Spin, Typography } from 'antd'
 import EthCard from 'components/EthCard'
 import { apiGetCategoryById } from 'api/rest/category'
 import { apiGetEthereums } from 'api/rest/ethereum'
+import { DEFAUT_PAGINATION } from 'configs/ui'
 
 function SingleCategory({
   match: {
@@ -27,22 +15,19 @@ function SingleCategory({
   const history = useHistory()
   const [eths, setEths] = useState([])
   const [loading, setLoading] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(24)
   const [category, setCategory] = useState({ name: '' })
-  // const [eths, setEths] = useState([])
+  const [paginating, setPaginating] = useState(false)
+  const [pagination, setPagination] = useState(DEFAUT_PAGINATION)
 
-  const handleChangePage = value => {
-    setCurrentPage(value)
+  const handleChangePage = (current_page, per_page) => {
+    setPaginating(true)
+    setPagination({ ...pagination, current_page, per_page })
   }
-  const handleSizeChange = (current, pageSize) => {
-    setCurrentPage(current)
-    setPageSize(pageSize)
-  }
-  const currentDomains = eths.filter(
-    (_, index) =>
-      index >= (currentPage - 1) * pageSize && index < currentPage * pageSize
-  )
+
+  useEffect(() => {
+    paginating && getEthereums(searchTerm)
+    setPaginating(false)
+  }, [paginating, pagination])
 
   useEffect(() => {
     if (searchTerm) {
@@ -54,21 +39,22 @@ function SingleCategory({
   }, [searchTerm])
 
   const getCategory = async category_id => {
-    const res = await apiGetCategoryById(category_id, {
-      per_page: 1000
-    })
+    const res = await apiGetCategoryById(category_id)
     if (res && !res.error) {
       setCategory(res)
     }
   }
 
   const getEthereums = async category_id => {
+    setLoading(true)
     const res = await apiGetEthereums({
-      per_page: 1000,
+      per_page: pagination.per_page,
+      page_no: pagination.current_page,
       category_id: category_id
     })
     if (res && !res.error) {
       setEths(res.dataset)
+      setPagination(res.pagination)
     }
     setLoading(false)
   }
@@ -87,25 +73,26 @@ function SingleCategory({
       ) : (
         <>
           <Row gutter={16}>
-            {currentDomains.map(elm => (
-              <Col span={6} key={elm.id}>
-                <EthCard
-                  data={elm}
-                  hoverable
-                  onClick={() => history.push(`/name/${elm.eth_name}`)}
-                />
-              </Col>
-            ))}
+            {eths &&
+              eths.length > 0 &&
+              eths.map(elm => (
+                <Col span={6} key={elm.id}>
+                  <EthCard
+                    data={elm}
+                    hoverable
+                    onClick={() => history.push(`/name/${elm.eth_name}`)}
+                  />
+                </Col>
+              ))}
           </Row>
           <Pagination
             defaultCurrent={1}
-            total={eths.length}
-            current={currentPage}
-            pageSize={pageSize}
+            total={Number(pagination.total_count)}
+            current={Number(pagination.current_page)}
+            pageSize={Number(pagination.per_page)}
             showSizeChanger
             defaultPageSize={24}
-            pageSizeOptions={[15, 18, 24]}
-            onShowSizeChange={handleSizeChange}
+            pageSizeOptions={[16, 20, 24]}
             onChange={handleChangePage}
           />
         </>

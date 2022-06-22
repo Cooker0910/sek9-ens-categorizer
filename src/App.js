@@ -71,6 +71,13 @@ const Faq = lazy(() =>
   )
 )
 
+const About = lazy(() =>
+  import(
+    /* webpackChunkName: "Faq", webpackPrefetch:true */
+    './routes/About'
+  )
+)
+
 const Address = lazy(() =>
   import(
     /* webpackChunkName: "Address", webpackPrefetch:true */
@@ -159,6 +166,7 @@ const App = () => {
           <Route path="/categories" component={Category} />
           <Route path="/category/:category" component={SingleCategory} />
           <Route path="/faq" component={Faq} />
+          <Route path="/about" component={About} />
           <Route path="/my-bids" component={SearchResults} />
           <Route path="/how-it-works" component={SearchResults} />
           <Route path="/search/:searchTerm" component={SearchResults} />

@@ -244,6 +244,7 @@ function HeaderContainer() {
             )}
             <NavLink to="/categories">{t('c.categories')}</NavLink>
             <NavLink to="/favourites">{t('c.favourites')}</NavLink>
+            <NavLink to="/faq">{t('c.faq')}</NavLink>
             <NavLink to="/about">{t('c.about')}</NavLink>
             {/* <ExternalLink href={aboutPageURL()}>{t('c.about')}</ExternalLink> */}
           </Nav>

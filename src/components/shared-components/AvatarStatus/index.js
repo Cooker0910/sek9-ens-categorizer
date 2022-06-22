@@ -27,11 +27,12 @@ export const AvatarStatus = props => {
     shape,
     gap,
     text,
+    noImage,
     onNameClick
   } = props
   return (
     <div className="avatar-status d-flex align-items-center">
-      {renderAvatar({ icon, src, type, size, shape, gap, text })}
+      {!noImage && renderAvatar({ icon, src, type, size, shape, gap, text })}
       <div className="ml-2">
         <div>
           {onNameClick ? (

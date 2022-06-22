@@ -48,6 +48,7 @@ import {
 } from 'api/rest/category'
 import { apiGetTags } from 'api/rest/tag'
 import utils from 'utils'
+import { DEFAUT_PAGINATION } from 'configs/ui'
 
 const HeroTop = styled(Layout.Header)`
   padding: 20px;
@@ -324,59 +325,16 @@ const animation = {
   }
 }
 
-const MAIN_CATEGORIES = [
-  {
-    key: 'general',
-    label: 'General'
-  },
-  {
-    key: 'art/culture',
-    label: 'Art/Culture'
-  },
-  {
-    key: 'geography/places',
-    label: 'Geography/Places'
-  },
-  {
-    key: 'history',
-    label: 'History'
-  },
-  {
-    key: 'math',
-    label: 'Math'
-  },
-  {
-    key: 'science',
-    label: 'Science'
-  },
-  {
-    key: 'people',
-    label: 'People'
-  },
-  {
-    key: 'Religion',
-    label: 'Religion'
-  },
-  {
-    key: 'society',
-    label: 'Society'
-  },
-  {
-    key: 'technology',
-    label: 'Technology'
-  },
-  {
-    key: 'misc',
-    label: 'Misc'
-  }
-]
 export default ({ match, history }) => {
   const { url } = match
   const { t } = useTranslation()
   const [categories, setCategories] = useState([])
-  const [allCategories, setAllCategories] = useState([])
-  const [subCategories, setSubCategories] = useState(categories)
-
+  const [categoriesLoading, setCategoriesLoading] = useState(false)
+  const [paginating, setPaginating] = useState(false)
+  const [pagination, setPagination] = useState({
+    ...DEFAUT_PAGINATION,
+    per_page: 5
+  })
   const [newestCategories, setNewestCategories] = useState([])
   const [mostViewed24HrsCategories, setMostViewed24HrsCategories] = useState([])
   const [mostViewed7DaysCategories, setMostViewed7DaysCategories] = useState([])
@@ -387,7 +345,7 @@ export default ({ match, history }) => {
   const {
     data: { accounts }
   } = useQuery(GET_ACCOUNT)
-  console.log('accounts===', accounts)
+
   const {
     data: { network, displayName, isReadOnly, isSafeApp }
   } = useQuery(HOME_DATA, {
@@ -407,11 +365,12 @@ export default ({ match, history }) => {
   }, [])
 
   useEffect(() => {
-    let tagParam = {}
-    if (selectedTag !== 'General') {
-      tagParam = { tag: selectedTag }
-    }
-    getCategories(tagParam)
+    paginating && getCategories(selectedTag)
+    setPaginating(false)
+  }, [paginating, pagination])
+
+  useEffect(() => {
+    getCategories()
   }, [selectedTag])
 
   const getTags = async () => {
@@ -423,10 +382,20 @@ export default ({ match, history }) => {
     }
   }
 
-  const getCategories = async params => {
-    const res = await apiGetCategories(params)
+  const getCategories = async () => {
+    const searchParams = {
+      per_page: pagination.per_page,
+      page_no: pagination.current_page
+    }
+    if (selectedTag !== 'General') {
+      searchParams.tag = selectedTag
+    }
+    setCategoriesLoading(true)
+    const res = await apiGetCategories(searchParams)
+    setCategoriesLoading(false)
     if (res && !res.error) {
       setCategories(res.dataset)
+      setPagination(res.pagination)
     }
   }
 
@@ -458,27 +427,12 @@ export default ({ match, history }) => {
     }
   }
 
-  // useEffect(() => {
-  //   setSubCategories(allCategories)
-  // }, [allCategories.length])
-
-  const HEADER_MENUS = [
-    {
-      key: 'categories',
-      label: t('c.category')
-    },
-    {
-      key: 'favourites',
-      label: t('c.category')
-    },
-    {
-      key: 'aboutPageURL()',
-      label: t('c.category')
-    }
-  ]
+  const handleChangePage = (current_page, per_page) => {
+    setPaginating(true)
+    setPagination({ ...pagination, current_page, per_page })
+  }
 
   const handleClickMenu = index => {
-    console.log('==== index: ', index, tags[index])
     setSelectedTag(tags[index])
   }
 
@@ -712,6 +666,17 @@ export default ({ match, history }) => {
           columns={tableColumns}
           dataSource={categories}
           rowKey="id"
+          loading={categoriesLoading}
+          pagination={{
+            defaultCurrent: 1,
+            total: Number(pagination.total_count),
+            current: Number(pagination.current_page),
+            pageSize: Number(pagination.per_page),
+            showSizeChanger: true,
+            defaultPageSize: 5,
+            pageSizeOptions: [5, 10, 15],
+            onChange: handleChangePage
+          }}
           onRow={(record, rowIndex) => {
             return {
               onClick: event => {

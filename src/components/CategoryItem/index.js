@@ -13,7 +13,6 @@ const Label = ({ label, text }) => {
 }
 
 const CategoryItem = ({ category, domain, className, loading }) => {
-  console.log('category: ', category)
   const history = useHistory()
   if (loading) {
     return (

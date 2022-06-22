@@ -25,6 +25,7 @@ import { apiGetEthereums } from 'api/rest/ethereum'
 
 import Flex from 'components/shared-components/Flex'
 import AvatarStatus from 'components/shared-components/AvatarStatus'
+import { DEFAUT_PAGINATION } from 'configs/ui'
 
 const VIEW_LIST = 'LIST'
 const VIEW_GRID = 'GRID'
@@ -131,27 +132,34 @@ const EthFeild = props => {
   const [view, setView] = useState(VIEW_GRID)
   const [list, setList] = useState([])
   const [loading, setLoading] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(24)
+  const [paginating, setPaginating] = useState(false)
+  const [pagination, setPagination] = useState(DEFAUT_PAGINATION)
 
   useEffect(() => {
     if (props.category) {
       setLoading(true)
       // FirebaseService.getEthereums(props.category, 0, '', setEthereums)
-      getEthereums()
+      getEthereums(props.category.id)
     }
   }, [props])
 
-  const getEthereums = async () => {
-    console.log('==== props: ', props)
+  useEffect(() => {
+    paginating && getEthereums(props.category.id)
+    setPaginating(false)
+  }, [paginating, pagination])
+
+  const getEthereums = async category_id => {
+    setLoading(true)
     const res = await apiGetEthereums({
-      per_page: 1000,
-      category_id: props.category.id,
-      domain_name: 'eth'
+      per_page: pagination.per_page,
+      page_no: pagination.current_page,
+      category_id: category_id
     })
     if (res && !res.error) {
       setEthereums(res.dataset)
+      setPagination(res.pagination)
     }
+    setLoading(false)
   }
 
   const setEthereums = data => {
@@ -162,12 +170,9 @@ const EthFeild = props => {
     setView(e.target.value)
   }
 
-  const handleChangePage = value => {
-    setCurrentPage(value)
-  }
-  const handleSizeChange = (current, _pageSize) => {
-    setCurrentPage(current)
-    setPageSize(_pageSize)
+  const handleChangePage = (current_page, per_page) => {
+    setPaginating(true)
+    setPagination({ ...pagination, current_page, per_page })
   }
 
   const deleteItem = id => {
@@ -175,10 +180,6 @@ const EthFeild = props => {
     setList(data)
   }
 
-  const currentDomains = list.filter(
-    (_, index) =>
-      index >= (currentPage - 1) * pageSize && index < currentPage * pageSize
-  )
   return (
     <>
       <PageHeaderAlt className="border-bottom">
@@ -213,14 +214,14 @@ const EthFeild = props => {
         {loading ? (
           <Spin />
         ) : view === VIEW_LIST ? (
-          currentDomains &&
-          currentDomains.length > 0 &&
-          currentDomains.map(elm => <ListItem data={elm} key={elm.id} />)
+          list &&
+          list.length > 0 &&
+          list.map(elm => <ListItem data={elm} key={elm.id} />)
         ) : (
           <Row gutter={16}>
-            {currentDomains &&
-              currentDomains.length > 0 &&
-              currentDomains.map(elm => (
+            {list &&
+              list.length > 0 &&
+              list.map(elm => (
                 <Col xs={24} sm={24} lg={8} xl={8} xxl={6} key={elm.id}>
                   <GridItem data={elm} removeId={id => deleteItem(id)} />
                 </Col>
@@ -229,13 +230,12 @@ const EthFeild = props => {
         )}
         <Pagination
           defaultCurrent={1}
-          total={list.length}
-          current={currentPage}
-          pageSize={pageSize}
+          total={Number(pagination.total_count)}
+          current={Number(pagination.current_page)}
+          pageSize={Number(pagination.per_page)}
           showSizeChanger
           defaultPageSize={24}
-          pageSizeOptions={[15, 18, 24]}
-          onShowSizeChange={handleSizeChange}
+          pageSizeOptions={[12, 24, 36]}
           onChange={handleChangePage}
         />
       </div>

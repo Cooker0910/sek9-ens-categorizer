@@ -61,7 +61,13 @@ const CategoryForm = props => {
     })
     setImage(cat.image_url)
     console.log('==== cat: ', cat)
-    setFiles(cat.files ? cat.files : [])
+    setFiles(
+      cat.files
+        ? typeof cat.files === 'string'
+          ? JSON.parse(cat.files)
+          : cat.files
+        : []
+    )
     setCategory(cat)
   }
 
