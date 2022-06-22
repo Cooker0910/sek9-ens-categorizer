@@ -515,11 +515,11 @@ export default ({ match, history }) => {
             <Image
               height={13}
               src={'/img/icons/ethereum-icon-28.png'}
-              name={`${round(floor * 100) / 100}`}
+              name={`${Math.round(floor * 1000) / 1000}`}
             />
             <NumberFormat
               displayType={'text'}
-              value={round(floor * 100) / 100}
+              value={Math.round(floor * 1000) / 1000}
               prefix={''}
               thousandSeparator={true}
             />
