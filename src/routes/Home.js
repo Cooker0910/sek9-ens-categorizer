@@ -482,8 +482,8 @@ export default ({ match, history }) => {
     setSelectedTag(tags[index])
   }
 
-  const handleClickMore = key => {
-    history.push(`/category/${key.name}`)
+  const handleClickMore = cat => {
+    history.push(`/category/${cat.id}`)
   }
 
   const tableColumns = [
