@@ -9,6 +9,8 @@ import { useQuery } from '@apollo/client'
 import 'antd/dist/antd.css'
 import { ThemeSwitcherProvider } from 'react-css-theme-switcher'
 import { THEME_CONFIG } from './configs/AppConfig'
+import { Provider } from 'react-redux'
+import store from 'redux/store'
 
 const themes = {
   dark: `${process.env.PUBLIC_URL}/css/dark-theme.css`,
@@ -92,6 +94,20 @@ const Renew = lazy(() =>
   )
 )
 
+const Login = lazy(() =>
+  import(
+    /* webpackChunkName: "Renew", webpackPrefetch:true */
+    './routes/Login'
+  )
+)
+
+const Signup = lazy(() =>
+  import(
+    /* webpackChunkName: "Renew", webpackPrefetch:true */
+    './routes/Signup'
+  )
+)
+
 const Admin = lazy(() =>
   import(
     /* webpackChunkName: "Renew", webpackPrefetch:true */
@@ -153,32 +169,36 @@ const App = () => {
   }
 
   return (
-    <ThemeSwitcherProvider
-      themeMap={themes}
-      defaultTheme={THEME_CONFIG.currentTheme}
-      insertionPoint="styles-insertion-point"
-    >
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/test-registrar" component={TestRegistrar} />
-          <Route path="/favourites" component={Favourites} />
-          <Route path="/categories" component={Category} />
-          <Route path="/category/:category" component={SingleCategory} />
-          <Route path="/faq" component={Faq} />
-          <Route path="/about" component={About} />
-          <Route path="/my-bids" component={SearchResults} />
-          <Route path="/how-it-works" component={SearchResults} />
-          <Route path="/search/:searchTerm" component={SearchResults} />
-          <Route path="/name/:name" component={SingleName} />
-          <Route path="/address/:address/:domainType" component={Address} />
-          <Route path="/address/:address" component={Address} />
-          <Route path="/renew" component={Renew} />
-          <DefaultRoute path="/admin" component={Admin} />
-          <Route path="*" component={Error404} />
-        </Switch>
-      </Router>
-    </ThemeSwitcherProvider>
+    <Provider store={store}>
+      <ThemeSwitcherProvider
+        themeMap={themes}
+        defaultTheme={THEME_CONFIG.currentTheme}
+        insertionPoint="styles-insertion-point"
+      >
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/test-registrar" component={TestRegistrar} />
+            <Route path="/favourites" component={Favourites} />
+            <Route path="/categories" component={Category} />
+            <Route path="/category/:category" component={SingleCategory} />
+            <Route path="/faq" component={Faq} />
+            <Route path="/about" component={About} />
+            <Route path="/my-bids" component={SearchResults} />
+            <Route path="/how-it-works" component={SearchResults} />
+            <Route path="/search/:searchTerm" component={SearchResults} />
+            <Route path="/name/:name" component={SingleName} />
+            <Route path="/address/:address/:domainType" component={Address} />
+            <Route path="/address/:address" component={Address} />
+            <Route path="/renew" component={Renew} />
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <DefaultRoute path="/admin" component={Admin} />
+            <Route path="*" component={Error404} />
+          </Switch>
+        </Router>
+      </ThemeSwitcherProvider>
+    </Provider>
   )
 }
 export default App

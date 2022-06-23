@@ -139,7 +139,7 @@ const EthFeild = props => {
     if (props.category) {
       setLoading(true)
       // FirebaseService.getEthereums(props.category, 0, '', setEthereums)
-      getEthereums(props.category.id)
+      getEthereums(props.category.id, props.domain)
     }
   }, [props])
 
@@ -148,13 +148,19 @@ const EthFeild = props => {
     setPaginating(false)
   }, [paginating, pagination])
 
-  const getEthereums = async category_id => {
+  const getEthereums = async (category_id, domain_name) => {
     setLoading(true)
-    const res = await apiGetEthereums({
+    const searchParams = {
       per_page: pagination.per_page,
       page_no: pagination.current_page,
       category_id: category_id
-    })
+    }
+
+    if (domain_name !== 'All') {
+      searchParams.domain_name = domain_name
+    }
+
+    const res = await apiGetEthereums(searchParams)
     if (res && !res.error) {
       setEthereums(res.dataset)
       setPagination(res.pagination)
@@ -185,7 +191,7 @@ const EthFeild = props => {
       <PageHeaderAlt className="border-bottom">
         <div className="container-fluid">
           <Flex justifyContent="between" alignItems="center" className="py-2">
-            <h2>Domains</h2>
+            <h2>{props.domain}</h2>
             <div>
               <Radio.Group
                 defaultValue={VIEW_GRID}

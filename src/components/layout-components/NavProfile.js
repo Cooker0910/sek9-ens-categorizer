@@ -1,56 +1,67 @@
-import React from "react";
-import { Menu, Dropdown, Avatar } from "antd";
+import React from 'react'
+import { Menu, Dropdown, Avatar } from 'antd'
 import { connect } from 'react-redux'
-import { 
-  EditOutlined, 
-  SettingOutlined, 
-  ShopOutlined, 
-  QuestionCircleOutlined, 
-  LogoutOutlined 
-} from '@ant-design/icons';
-import Icon from 'components/util-components/Icon';
-import { signOut } from 'redux/actions/Auth';
+import {
+  EditOutlined,
+  SettingOutlined,
+  ShopOutlined,
+  QuestionCircleOutlined,
+  LogoutOutlined
+} from '@ant-design/icons'
+import Icon from 'components/util-components/Icon'
+import { signOut } from 'redux/actions/Auth'
+import { UserOutlined } from '@ant-design/icons'
 
 const menuItem = [
-	{
-		title: "Edit Profile",
-		icon: EditOutlined ,
-		path: "/"
-    },
-    
-    {
-		title: "Account Setting",
-		icon: SettingOutlined,
-		path: "/"
-    },
-    {
-		title: "Billing",
-		icon: ShopOutlined ,
-		path: "/"
-	},
-    {
-		title: "Help Center",
-		icon: QuestionCircleOutlined,
-		path: "/"
-	}
+  {
+    title: 'Edit Profile',
+    icon: EditOutlined,
+    path: '/'
+  },
+
+  {
+    title: 'Account Setting',
+    icon: SettingOutlined,
+    path: '/'
+  },
+  {
+    title: 'Billing',
+    icon: ShopOutlined,
+    path: '/'
+  },
+  {
+    title: 'Help Center',
+    icon: QuestionCircleOutlined,
+    path: '/'
+  }
 ]
 
-export const NavProfile = ({signOut}) => {
-  const profileImg = "/img/avatars/thumb-1.jpg";
+export const NavProfile = ({ signOut, profile = {} }) => {
+  const profileImg = '/img/avatars/thumb-1.jpg'
   const profileMenu = (
     <div className="nav-profile nav-dropdown">
       <div className="nav-profile-header">
         <div className="d-flex">
-          <Avatar size={45} src={profileImg} />
-          <div className="pl-3">
-            <h4 className="mb-0">Charlie Howard</h4>
-            <span className="text-muted">Frontend Developer</span>
+          <Avatar size={45} icon={<UserOutlined />} />
+          <div
+            className="pl-3"
+            style={{
+              marginLeft: 5,
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'column'
+            }}
+          >
+            <h4 className="mb-0">
+              {profile.first_name} {profile.last_name}
+            </h4>
+            {/* <span className="text-muted">Frontend Developer</span> */}
           </div>
         </div>
       </div>
       <div className="nav-profile-body">
         <Menu>
-          {menuItem.map((el, i) => {
+          {/* {menuItem.map((el, i) => {
             return (
               <Menu.Item key={i}>
                 <a href={el.path}>
@@ -59,7 +70,7 @@ export const NavProfile = ({signOut}) => {
                 </a>
               </Menu.Item>
             );
-          })}
+          })} */}
           <Menu.Item key={menuItem.length + 1} onClick={e => signOut()}>
             <span>
               <LogoutOutlined />
@@ -69,16 +80,23 @@ export const NavProfile = ({signOut}) => {
         </Menu>
       </div>
     </div>
-  );
+  )
   return (
-    <Dropdown placement="bottomRight" overlay={profileMenu} trigger={["click"]}>
-      <Menu className="d-flex align-item-center" mode="horizontal">
+    <Dropdown placement="bottomRight" overlay={profileMenu} trigger={['click']}>
+      <Menu
+        className="d-flex align-item-center"
+        mode="horizontal"
+        style={{ background: 'transparent', border: 'none' }}
+      >
         <Menu.Item key="profile">
-          <Avatar src={profileImg} />
+          <Avatar size={45} icon={<UserOutlined />} />
         </Menu.Item>
       </Menu>
     </Dropdown>
-  );
+  )
 }
 
-export default connect(null, {signOut})(NavProfile)
+export default connect(
+  null,
+  { signOut }
+)(NavProfile)

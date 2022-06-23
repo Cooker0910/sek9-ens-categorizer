@@ -60,7 +60,7 @@ const ItemInfo = ({ price, statusColor }) => (
   </Flex>
 )
 
-const ItemMember = ({ data }) => (
+const ItemMember = ({ data, isFavorite, onClick }) => (
   <>
     <Tooltip title={'Buy on OpenSea'} key={`avatar-opensea`}>
       <Avatar
@@ -70,29 +70,49 @@ const ItemMember = ({ data }) => (
         style={{ backgroundColor: 'gray' }}
       />
     </Tooltip>
-    <Tooltip title={'Add to Watchlist'} key={`avatar-watchlist`}>
+    <Tooltip
+      title={
+        !isFavorite
+          ? 'Add to the favorite list'
+          : 'Remove from the favorite list'
+      }
+      key={`avatar-watchlist`}
+    >
       <Avatar
         size={20}
         className={`ml-1 cursor-pointer`}
-        src={<HeartFilled style={{ color: '#808080' }} />}
+        src={
+          <HeartFilled style={{ color: isFavorite ? 'orange' : '#808080' }} />
+        }
+        onClick={onClick}
       />
     </Tooltip>
   </>
 )
 
-const EthCard = ({ data, ...props }) => (
-  <Card
-    style={{ backgroundColor: data.address ? 'white' : '#8080803d' }}
-    {...props}
-  >
-    <Flex alignItems="center" justifyContent="between">
-      <ItemHeader name={`${data.eth_name}`} />
-      <ItemInfo price={data.balance} statusColor={'orange'} />
-    </Flex>
-    <div className="mt-2 text-right">
-      <ItemMember eth={data} />
-    </div>
-  </Card>
-)
+const EthCard = ({ favorite, data, onFavorite, ...props }) => {
+  console.log('cr==', favorite)
+  return (
+    <Card
+      style={{ backgroundColor: data.address ? 'white' : '#8080803d' }}
+      {...props}
+    >
+      <Flex alignItems="center" justifyContent="between">
+        <ItemHeader name={`${data.eth_name}`} />
+        <ItemInfo price={data.balance} statusColor={'orange'} />
+      </Flex>
+      <div className="mt-2 text-right">
+        <ItemMember
+          eth={data}
+          isFavorite={!!favorite}
+          onClick={e => {
+            e.stopPropagation()
+            onFavorite(favorite)
+          }}
+        />
+      </div>
+    </Card>
+  )
+}
 
 export default EthCard

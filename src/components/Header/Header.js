@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled/macro'
 import { motion } from 'framer-motion'
@@ -6,8 +6,19 @@ import ENSLogo from 'assets/sek9-full-logo-white.png'
 import { Link, useHistory } from 'react-router-dom'
 import { gql } from '@apollo/client'
 import { aboutPageURL } from 'utils/utils'
+import { setFavorites, signOut } from 'redux/actions/Auth'
 
-import { Avatar, Layout, Menu, Button, Table, Image, Space, Input } from 'antd'
+import {
+  Avatar,
+  Layout,
+  Menu,
+  Button,
+  Table,
+  Image,
+  Space,
+  Input,
+  Typography
+} from 'antd'
 import SearchInput from '../SearchName/SearchInput'
 import { useQuery } from '@apollo/client'
 import mq, { useMediaMin, useMediaMax } from '../../mediaQuery'
@@ -19,6 +30,9 @@ import SideNav from '../SideNav/SideNav'
 import Banner from '../Banner'
 
 import { hasNonAscii } from '../../utils/utils'
+import { connect } from 'react-redux'
+import { apiGetFavorites } from 'api/rest/favorite'
+import { NavProfile } from 'components/layout-components/NavProfile'
 
 const StyledBanner = styled(Banner)`
   margin-bottom: 0;
@@ -162,7 +176,7 @@ export const HOME_DATA = gql`
   }
 `
 
-function HeaderContainer() {
+function HeaderContainer({ token, member, setFavorites, signOut }) {
   const history = useHistory()
   const [isMenuOpen, setMenuOpen] = useState(false)
   const mediumBP = useMediaMin('medium')
@@ -180,6 +194,19 @@ function HeaderContainer() {
   } = useQuery(HOME_DATA, {
     variables: { address: accounts?.[0] }
   })
+
+  useEffect(() => {
+    token && getFavorites()
+  }, [token])
+  const getFavorites = async () => {
+    const res = await apiGetFavorites({ user_id: member.id, per_page: 100 })
+    console.log('favorites===', res)
+    if (res && !res.error) {
+      setFavorites(res.dataset)
+    }
+  }
+
+  const handleSignout = () => {}
 
   return (
     <>
@@ -250,7 +277,20 @@ function HeaderContainer() {
           </Nav>
           <Space>
             <Button>Connect Wallet</Button>
-            <Button>Sign up</Button>
+            {token ? (
+              <>
+                {/* <Typography.Text style={{color:'white'}}>
+                Signed in: {member.first_name} {member.last_name}
+              </Typography.Text> */}
+                <NavProfile signOut={signOut} profile={member} />
+                {/* <Button onClick={signOut}>Sign out</Button> */}
+              </>
+            ) : (
+              <>
+                <Button onClick={() => history.push('/login')}>Sign in</Button>
+                {/* <Button onClick={() => history.push('/signup')}>Sign up</Button> */}
+              </>
+            )}
             {/* <Input.Group compact style={{ display: 'flex' }}>
               <Input placeholder="Email Newsletter" />
             </Input.Group> */}
@@ -261,4 +301,14 @@ function HeaderContainer() {
   )
 }
 
-export default HeaderContainer
+const mapStateToProps = ({ auth }) => {
+  const { token, member } = auth
+  return { token, member }
+}
+
+const mapDispatchToProps = { setFavorites, signOut }
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HeaderContainer)

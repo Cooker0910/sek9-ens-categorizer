@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled/macro'
 import { Input, Form, Button, Card, Typography } from 'antd'
+import { Link } from 'react-router-dom'
 
 function About() {
   const { t } = useTranslation()
@@ -18,6 +19,12 @@ function About() {
       <Typography.Title level={1} style={{ textAlign: 'center' }}>
         Contact Us
       </Typography.Title>
+      <Typography.Paragraph style={{ textAlign: 'center', marginBottom: 20 }}>
+        SeK9 was built to help our users better find their favorite domains
+        based on 100's of different categories. If you have any category
+        requests, feedback, or questions feel free to email us at{' '}
+        <a href={'mailto:contact@sek9.com'}>contact@sek9.com</a>.
+      </Typography.Paragraph>
       <Form
         name="basic"
         labelCol={{

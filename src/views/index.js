@@ -30,7 +30,7 @@ function RouteInterceptor({ children, isAuthenticated, ...rest }) {
 }
 
 export const Views = props => {
-  const { locale, token, location, direction } = props
+  const { locale, location, direction, isAdmin } = props
   const currentAppLocale = AppLocale[locale]
   useBodyClass(`dir-${direction}`)
   return (
@@ -46,7 +46,7 @@ export const Views = props => {
           <Route path={AUTH_PREFIX_PATH}>
             <AuthLayout direction={direction} />
           </Route>
-          <RouteInterceptor path={APP_PREFIX_PATH} isAuthenticated={token}>
+          <RouteInterceptor path={APP_PREFIX_PATH} isAuthenticated={isAdmin}>
             <AppLayout direction={direction} location={location} />
           </RouteInterceptor>
         </Switch>
@@ -57,8 +57,9 @@ export const Views = props => {
 
 const mapStateToProps = ({ theme, auth }) => {
   const { locale, direction } = theme
-  const { token } = auth
-  return { locale, direction, token }
+  const { member } = auth
+  const isAdmin = member.type === 'ADMIN'
+  return { locale, direction, isAdmin }
 }
 
 export default withRouter(connect(mapStateToProps)(Views))

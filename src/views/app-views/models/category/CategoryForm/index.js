@@ -13,6 +13,7 @@ import {
 } from 'api/rest/category'
 import moment from 'moment'
 import { setCategories, showCategoryLoading } from 'redux/actions/Category'
+import { apiGetDomains } from 'api/rest/domain'
 
 const { TabPane } = Tabs
 
@@ -28,6 +29,8 @@ const CategoryForm = props => {
   const [uploadLoading, setUploadLoading] = useState(false)
   const [submitLoading, setSubmitLoading] = useState(false)
   const [category, setCategory] = useState(null)
+  const [domains, setDomains] = useState(['All'])
+  const [selectedDomain, setSelectedDomain] = useState('All')
 
   useEffect(() => {
     console.log('param', param)
@@ -36,6 +39,7 @@ const CategoryForm = props => {
     if (mode === EDIT) {
       console.log('is edit')
       getCategory()
+      getDomains()
     }
   }, [form, mode, param, props])
 
@@ -69,6 +73,15 @@ const CategoryForm = props => {
         : []
     )
     setCategory(cat)
+  }
+
+  const getDomains = async () => {
+    const res = await apiGetDomains({ per_page: 100 })
+
+    if (res || res.error) {
+      const tagArray = res.dataset.map(t => t.name)
+      setDomains(['All', ...tagArray])
+    }
   }
 
   const handleUploadChange = info => {
@@ -276,9 +289,18 @@ const CategoryForm = props => {
                 handleCsvCustomUpload={handleCsvCustomUpload}
               />
             </TabPane>
-            <TabPane tab="ETH" key="2">
+            {/* <TabPane tab="ETH" key="2">
               <EthField category={category || null} />
-            </TabPane>
+            </TabPane> */}
+            {domains.map((domain, index) => (
+              <TabPane
+                tab={domain}
+                key={domain}
+                style={{ textTransform: 'capitalize' }}
+              >
+                <EthField category={category || null} domain={domain} />
+              </TabPane>
+            ))}
           </Tabs>
         </div>
       </Form>

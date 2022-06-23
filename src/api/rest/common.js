@@ -172,9 +172,11 @@ export const query = async function(
       }
     } else if (errorResponse.status === 400) {
       status = errorResponse.status
-      errorMessage = errorResponse.data.error
+      errorMessage = errorResponse.data.error || errorResponse.data
       if (isDevEnv) {
-        message = get400ErrorMessages(errorResponse.data.error)
+        message = get400ErrorMessages(
+          errorResponse.data.error || errorResponse.data
+        )
       }
     } else if (errorResponse.status === 401) {
       status = errorResponse.status
