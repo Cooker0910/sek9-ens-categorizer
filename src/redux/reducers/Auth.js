@@ -1,5 +1,5 @@
+import { getLocalToken } from 'api/rest/localStorage'
 import {
-  AUTH_TOKEN,
   AUTHENTICATED,
   SHOW_AUTH_MESSAGE,
   HIDE_AUTH_MESSAGE,
@@ -13,15 +13,15 @@ import {
   ADD_FAVORITE,
   REMOVE_FAVORITE
 } from '../constants/Auth'
+import { get } from 'lodash'
 
 const initState = {
   loading: false,
   message: '',
   showMessage: false,
   redirect: '',
-  token: null,
-  //   token: localStorage.getItem(AUTH_TOKEN),
-  member: {},
+  token: get(getLocalToken(), 'token'),
+  member: get(getLocalToken(), 'member') || {},
   favorites: [],
   error: {}
 }
@@ -50,7 +50,16 @@ const auth = (state = initState, action) => {
         showMessage: false
       }
     case SIGNOUT_SUCCESS: {
-      return initState
+      return {
+        loading: false,
+        message: '',
+        showMessage: false,
+        redirect: '',
+        token: null,
+        member: {},
+        favorites: [],
+        error: {}
+      }
     }
     case SIGNUP_SUCCESS: {
       return {

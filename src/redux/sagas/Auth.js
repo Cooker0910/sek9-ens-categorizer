@@ -5,7 +5,8 @@ import {
   SIGNOUT,
   SIGNUP,
   SIGNIN_WITH_GOOGLE,
-  SIGNIN_WITH_FACEBOOK
+  SIGNIN_WITH_FACEBOOK,
+  AUTH_MEMBER
 } from '../constants/Auth'
 import {
   showAuthMessage,
@@ -20,17 +21,17 @@ import {
 import FirebaseService from 'services/FirebaseService'
 import { apiLogin, apiLogout, apiSignup } from 'api/rest/auth'
 import { keys } from 'lodash-es'
+import { removeLocalToken, setLocalToken } from 'api/rest/localStorage'
 
 export function* signInWithFBEmail() {
   yield takeEvery(SIGNIN, function*({ payload }) {
     try {
       const user = yield call(apiLogin, payload)
-      console.log('login ===', user)
       if (user.error) {
         yield put(setError(user.error))
         yield typeof user.error === 'string' && put(showAuthMessage(user.error))
       } else {
-        localStorage.setItem(AUTH_TOKEN, user.token)
+        setLocalToken(user)
         yield put(authenticated(user.token, user.member))
       }
     } catch (err) {
@@ -43,9 +44,8 @@ export function* signOut() {
   yield takeEvery(SIGNOUT, function*() {
     try {
       const signOutUser = yield call(apiLogout)
-      console.log('sss==', signOutUser)
       if (!keys(signOutUser).length) {
-        localStorage.removeItem(AUTH_TOKEN)
+        removeLocalToken()
         yield put(signOutSuccess(signOutUser))
       } else {
         yield put(showAuthMessage(signOutUser.message))
@@ -77,7 +77,6 @@ export function* signInWithFBGoogle() {
   yield takeEvery(SIGNIN_WITH_GOOGLE, function*() {
     try {
       const user = yield call(FirebaseService.signInGoogleRequest)
-      console.log('==== social user: ', user)
       if (user.message) {
         yield put(showAuthMessage(user.message))
       } else {

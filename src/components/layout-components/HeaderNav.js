@@ -125,10 +125,10 @@ export const HeaderNav = props => {
             </ul>
           </div>
           <div className="nav-right">
-            <NavNotification />
-            <NavLanguage />
+            {/* <NavNotification />
+            <NavLanguage /> */}
             <NavProfile profile={auth.member} />
-            <NavPanel direction={direction} />
+            {/* <NavPanel direction={direction} /> */}
           </div>
           <NavSearch active={searchActive} close={onSearchClose} />
         </div>

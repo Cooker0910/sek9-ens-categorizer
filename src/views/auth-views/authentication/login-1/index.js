@@ -31,14 +31,7 @@ const LoginOne = props => {
                 </div>
                 <Row justify="center">
                   <Col xs={24} sm={24} md={20} lg={20}>
-                    <LoginForm
-                      initialCredential={{
-                        email: 'admin@email.com',
-                        password: '123qweasd'
-                      }}
-                      {...props}
-                      otherSignIn={false}
-                    />
+                    <LoginForm {...props} />
                   </Col>
                 </Row>
               </div>

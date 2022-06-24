@@ -37,7 +37,9 @@ export const LoginForm = props => {
     initialCredential,
     message,
     allowRedirect,
+    member,
     goBack,
+    onSuccess,
     error
   } = props
 
@@ -63,15 +65,20 @@ export const LoginForm = props => {
   }
 
   useEffect(() => {
-    if (token && allowRedirect) {
-      goBack ? history.goBack() : history.push(redirect)
-    }
     if (showMessage) {
       setTimeout(() => {
         hideAuthMessage()
       }, 3000)
     }
   })
+
+  useEffect(() => {
+    if (token && member.id) {
+      onSuccess(member, redirect)
+      // goBack ? history.goBack() : history.push(redirect)
+    }
+  }, [token, member])
+
   useEffect(() => {
     const errorKeys = keys(error)
     const errors = []
@@ -196,8 +203,8 @@ LoginForm.defaultProps = {
 }
 
 const mapStateToProps = ({ auth }) => {
-  const { loading, message, showMessage, token, redirect, error } = auth
-  return { loading, message, showMessage, token, redirect, error }
+  const { loading, message, showMessage, token, redirect, error, member } = auth
+  return { loading, message, showMessage, token, member, redirect, error }
 }
 
 const mapDispatchToProps = {

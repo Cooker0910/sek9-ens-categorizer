@@ -5,6 +5,8 @@
   "sidenav.dashboard.default": "Default",
   "sidenav.dashboard.analytic": "Analytic",
   "sidenav.dashboard.sales": "Sales",
+  "sidenav.dashboard.feedback": "Feedbacks",
+  "sidenav.dashboard.newsletter": "Newsletters",
 
   "sidenav.models": "Models",
   "sidenav.models.category": "Categories",

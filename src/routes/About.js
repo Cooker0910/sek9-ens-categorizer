@@ -1,18 +1,29 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled/macro'
-import { Input, Form, Button, Card, Typography } from 'antd'
+import { Input, Form, Button, Card, Typography, message } from 'antd'
 import { Link } from 'react-router-dom'
+import { apiCreateFeedback } from 'api/rest/feedback'
 
 function About() {
   const { t } = useTranslation()
+  const [loading, setLoading] = useState(false)
 
-  const onFinish = values => {
-    console.log('Success:', values)
+  const onFinish = async values => {
+    setLoading(true)
+    const res = await apiCreateFeedback(values)
+    setLoading(false)
+    if (res && !res.error) {
+      message.success('Sent feedback successfully')
+    } else {
+      res.error && message.error(res.error)
+      !res.error && message.error('Faild to send feedback')
+    }
   }
 
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo)
+    message.error(errorInfo)
   }
   return (
     <FaqContainer>
@@ -39,7 +50,7 @@ function About() {
       >
         <Form.Item
           label="Email"
-          name="email"
+          name="sender"
           rules={[
             {
               required: true,
@@ -49,7 +60,6 @@ function About() {
         >
           <Input />
         </Form.Item>
-
         <Form.Item
           label="Message"
           name="message"
@@ -69,7 +79,7 @@ function About() {
             span: 20
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={loading}>
             Submit
           </Button>
         </Form.Item>

@@ -5,7 +5,10 @@ import { Card, Typography } from 'antd'
 export default function Signup(props) {
   return (
     <Card>
-      <Typography.Title>Sek9 Sign Up</Typography.Title>
+      <Typography.Title>Sign Up</Typography.Title>
+      <Typography.Paragraph>
+        Do you have the account? <a href="/login">Sign in</a>
+      </Typography.Paragraph>
       <RegisterForm />
     </Card>
   )

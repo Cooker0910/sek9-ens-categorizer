@@ -293,11 +293,7 @@ const CategoryForm = props => {
               <EthField category={category || null} />
             </TabPane> */}
             {domains.map((domain, index) => (
-              <TabPane
-                tab={domain}
-                key={domain}
-                style={{ textTransform: 'capitalize' }}
-              >
+              <TabPane tab={domain} key={domain}>
                 <EthField category={category || null} domain={domain} />
               </TabPane>
             ))}

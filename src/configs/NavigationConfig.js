@@ -20,6 +20,7 @@ import {
   CommentOutlined,
   RobotOutlined,
   PlusCircleOutlined,
+  QuestionOutlined,
   FundOutlined,
   ShoppingCartOutlined,
   BookOutlined,
@@ -202,6 +203,22 @@ const dashBoardNavTree = [
         path: `${APP_PREFIX_PATH}/dashboards/sales`,
         title: 'sidenav.dashboard.sales',
         icon: FundOutlined,
+        breadcrumb: false,
+        submenu: []
+      },
+      {
+        key: 'dashboards-feedback',
+        path: `${APP_PREFIX_PATH}/dashboards/feedback`,
+        title: 'sidenav.dashboard.feedback',
+        icon: QuestionOutlined,
+        breadcrumb: false,
+        submenu: []
+      },
+      {
+        key: 'dashboards-newsletter',
+        path: `${APP_PREFIX_PATH}/dashboards/newsletter`,
+        title: 'sidenav.dashboard.newsletter',
+        icon: MessageOutlined,
         breadcrumb: false,
         submenu: []
       }

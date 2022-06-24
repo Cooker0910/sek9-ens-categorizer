@@ -1,11 +1,11 @@
 export const getLocalToken = () =>
-  localStorage.getItem('userInfo') != null
-    ? JSON.parse(localStorage.getItem('userInfo'))
+  localStorage.getItem('AUTH_INFO') != null
+    ? JSON.parse(localStorage.getItem('AUTH_INFO'))
     : null
 
-export const setLocalToken = userInfo =>
-  localStorage.setItem('userInfo', userInfo)
+export const setLocalToken = info =>
+  localStorage.setItem('AUTH_INFO', JSON.stringify(info))
 
 export const removeLocalToken = () => {
-  localStorage.removeItem('userInfo')
+  localStorage.removeItem('AUTH_INFO')
 }

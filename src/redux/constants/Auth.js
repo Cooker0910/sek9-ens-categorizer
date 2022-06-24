@@ -9,6 +9,7 @@ export const SHOW_AUTH_MESSAGE = 'SHOW_AUTH_MESSAGE'
 export const HIDE_AUTH_MESSAGE = 'HIDE_AUTH_MESSAGE'
 export const SHOW_LOADING = 'SHOW_LOADING'
 export const AUTH_TOKEN = 'auth_token'
+export const AUTH_MEMBER = 'auth_member'
 export const SIGNIN_WITH_GOOGLE = 'SIGNIN_WITH_GOOGLE'
 export const SIGNIN_WITH_GOOGLE_AUTHENTICATED =
   'SIGNIN_WITH_GOOGLE_AUTHENTICATED'

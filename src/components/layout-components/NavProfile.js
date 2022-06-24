@@ -83,7 +83,7 @@ export const NavProfile = ({ signOut, profile = {} }) => {
   )
   return (
     <Dropdown placement="bottomRight" overlay={profileMenu} trigger={['click']}>
-      <Menu
+      {/* <Menu
         className="d-flex align-item-center"
         mode="horizontal"
         style={{ background: 'transparent', border: 'none' }}
@@ -91,7 +91,8 @@ export const NavProfile = ({ signOut, profile = {} }) => {
         <Menu.Item key="profile">
           <Avatar size={45} icon={<UserOutlined />} />
         </Menu.Item>
-      </Menu>
+      </Menu> */}
+      <Avatar size={45} icon={<UserOutlined />} />
     </Dropdown>
   )
 }

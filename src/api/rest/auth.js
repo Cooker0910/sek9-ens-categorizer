@@ -1,4 +1,3 @@
-import { setLocalToken, removeLocalToken } from './localStorage'
 import { jsonQuery, query } from './common'
 
 export async function apiSignup(data) {
@@ -8,13 +7,11 @@ export async function apiSignup(data) {
 
 export async function apiLogin(data) {
   const res = await jsonQuery('/auth/login/', 'POST', data, false)
-  setLocalToken(JSON.stringify(res))
   return res
 }
 
 export async function apiLogout() {
   const res = await query('/auth/logout/', { method: 'POST' })
-  removeLocalToken()
   return res
 }
 
