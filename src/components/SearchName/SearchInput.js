@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import styled from '@emotion/styled/macro'
 import { useTranslation } from 'react-i18next'
 import { gql } from '@apollo/client'
@@ -78,12 +79,13 @@ const SEARCH_QUERY = gql`
   }
 `
 
-function SearchInput({ history, className, style }) {
+function SearchInput({ className, style }) {
   const { t } = useTranslation()
   const [inputValue, setInputValue] = useState(null)
   const {
     data: { isENSReady }
   } = useQuery(SEARCH_QUERY)
+  const history = useHistory()
   let input
 
   const handleParse = e => {
@@ -94,19 +96,22 @@ function SearchInput({ history, className, style }) {
         .join('.')
     )
   }
-  const hasSearch = isENSReady
+  const hasSearch = true // isENSReady
   return (
     <Input.Search
       placeholder={t('search.placeholder')}
       allowClear
       disabled={!hasSearch}
       onSearch={async e => {
-        console.log(e.target.value)
-        e.preventDefault()
+        console.log('==== e: ', e)
+        // console.log(e.target.value)
+        // e.preventDefault()
+        console.log('==== hasSearch: ', hasSearch, inputValue)
         if (!hasSearch) return
         const type = await parseSearchTerm(inputValue)
+        console.log('==== type: ', type, input)
         let searchTerm
-        if (input && input.value) {
+        if (inputValue) {
           // inputValue doesn't have potential whitespace
           searchTerm = inputValue.toLowerCase()
         }
@@ -119,7 +124,7 @@ function SearchInput({ history, className, style }) {
           return
         }
 
-        input.value = ''
+        // input.value = ''
         if (type === 'supported' || type === 'short') {
           history.push(`/name/${searchTerm}`)
           return
