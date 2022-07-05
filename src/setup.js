@@ -58,7 +58,8 @@ export const getProvider = async reconnect => {
     ) {
       const { providerObject } = await setup({
         reloadOnAccountsChange: false,
-        customProvider: 'http://localhost:8545',
+        customProvider:
+          process.env.REACT_APP_CUSTOM_PROVIDER || 'http://localhost:8545',
         ensAddress: process.env.REACT_APP_ENS_ADDRESS
       })
       provider = providerObject

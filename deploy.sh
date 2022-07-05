@@ -18,6 +18,8 @@ docker run \
   -v ${PWD}:/app \
   -v /app/node_modules \
   -p 3000:3000 \
+  -p 8545:8545 \
+  -p 7545:7545 \
   -e CHOKIDAR_USEPOLLING=true \
   -d sek9_ens_categorizer
 
