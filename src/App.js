@@ -126,6 +126,7 @@ const Admin = lazy(() =>
 
 import { NetworkError, Error404 } from './components/Error/Errors'
 import DefaultLayout from './components/Layout/DefaultLayout'
+import AuthLayout from './components/Layout/AuthLayout'
 import { pageview, setupAnalytics } from './utils/analytics'
 import useReactiveVarListeners from './hooks/useReactiveVarListeners'
 import { GET_ERRORS } from './graphql/queries'
@@ -191,8 +192,8 @@ const App = () => {
             <Route path="/address/:address/:domainType" component={Address} />
             <Route path="/address/:address" component={Address} />
             <Route path="/renew" component={Renew} />
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
+            <Route path="/login" component={Login} layout={AuthLayout} />
+            <Route path="/signup" component={Signup} layout={AuthLayout} />
             <DefaultRoute path="/admin" component={Admin} />
             <Route path="*" component={Error404} />
           </Switch>
