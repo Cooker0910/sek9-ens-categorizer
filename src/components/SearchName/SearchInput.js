@@ -97,7 +97,7 @@ function SearchInput({ className, style }) {
         .join('.')
     )
   }
-  const hasSearch = true // isENSReady
+  const hasSearch = isENSReady
   return (
     <Input.Search
       placeholder={t('search.placeholder')}
