@@ -15,6 +15,7 @@ import { connect } from 'react-redux'
 import { apiGetFavorites } from 'api/rest/favorite'
 import { NavProfile } from 'components/layout-components/NavProfile'
 import { apiCreateNewsletter } from 'api/rest/newsletter'
+import { connectProvider, disconnectProvider } from 'utils/providerUtils'
 
 const LogoLarge = styled(motion.img)`
   width: 200px;
@@ -41,7 +42,7 @@ const Nav = styled('nav')`
 
 const NavLink = styled(Link)`
   margin-left: 20px;
-  &:first-child {
+  &:first-of-type{
     margin-left: 0;
   }
 `
@@ -132,7 +133,7 @@ function HeaderContainer({ token, member, setFavorites, signOut }) {
         <Nav style={{ flex: 1 }}>
           {accounts?.length > 0 && !isReadOnly && (
             <NavLink
-              active={url === '/address/' + accounts[0]}
+              active={isReadOnly ? url === '/address/' + accounts[0] : ""}
               to={'/address/' + accounts[0]}
             >
               {t('c.mynames')}
@@ -161,7 +162,11 @@ function HeaderContainer({ token, member, setFavorites, signOut }) {
               </Form.Item>
             </Input.Group>
           </Form> */}
-          <Button>Connect wallet</Button>
+          <Button onClick={isReadOnly ? connectProvider : disconnectProvider}>
+            {
+              isReadOnly ? "Connect Wallet" : "Disconnect"
+            }
+          </Button>
           {token ? (
             <NavProfile signOut={signOut} profile={member} />
           ) : (

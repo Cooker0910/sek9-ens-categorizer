@@ -408,6 +408,7 @@ export default ({ match, history }) => {
 
   const getMostViewed24HrsCategories = async () => {
     const res = await apiGetMostViewedCategories({ per_page: 5, hours: 24 })
+    console.log('most view', res)
     if (res && !res.error) {
       setMostViewed24HrsCategories(res.dataset)
     }

@@ -100,7 +100,7 @@ const CategoryForm = props => {
     }
     const categoryName = category
       ? category.name
-      : momenttz.tz('America/New_York').format('x')
+      : moment.tz('America/New_York').format('x')
     let existFile = uploadedFiles.find(uf => uf.name == file.name)
     if (existFile && existFile.status == 'done') {
       onError && onError('File already exist')

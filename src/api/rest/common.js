@@ -152,7 +152,7 @@ export const query = async function(
     if (!skipNetworkStatus) {
       checkAndUpdateNetworkStatus(options.method, url, false)
     }
-    console.log('===== error: ', error, error.response)
+    console.log('===== error 1: ', error, error.response)
     const errorResponse = error.response
 
     let message = 'Erreur - Merci de contacter notre service technique'

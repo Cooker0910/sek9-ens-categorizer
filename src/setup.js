@@ -58,8 +58,7 @@ export const getProvider = async reconnect => {
     ) {
       const { providerObject } = await setup({
         reloadOnAccountsChange: false,
-        customProvider:
-          process.env.REACT_APP_CUSTOM_PROVIDER || 'http://localhost:8545',
+        customProvider: 'http://localhost:8545',
         ensAddress: process.env.REACT_APP_ENS_ADDRESS
       })
       provider = providerObject
@@ -91,6 +90,7 @@ export const getProvider = async reconnect => {
     }
 
     const { providerObject } = await setup({
+      customProvider: 'https://web3.ens.domains/v1/mainnet',
       reloadOnAccountsChange: false,
       enforceReadOnly: true,
       enforceReload: false
@@ -109,6 +109,7 @@ export const getProvider = async reconnect => {
 
   try {
     const { providerObject } = await setup({
+      customProvider: 'https://web3.ens.domains/v1/mainnet',
       reloadOnAccountsChange: false,
       enforceReadOnly: true,
       enforceReload: false

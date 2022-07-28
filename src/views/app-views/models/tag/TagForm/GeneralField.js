@@ -15,7 +15,7 @@ import {
 import { ImageSvg } from 'assets/svg/icon'
 import CustomIcon from 'components/util-components/CustomIcon'
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons'
-import momenttz from 'moment-timezone'
+import moment from 'moment-timezone'
 import FirebaseService from 'services/FirebaseService'
 
 const { Dragger } = Upload
@@ -56,7 +56,7 @@ const customUpload = async ({ onError, onSuccess, file }) => {
   const metadata = {
     contentType: file.type
   }
-  const fileName = momenttz.tz('America/New_York').format('x')
+  const fileName = moment.tz('America/New_York').format('x')
   const ext = file.name.split('.').pop()
   try {
     const imageUrl = await FirebaseService.uploadFile(
