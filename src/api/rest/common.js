@@ -12,7 +12,7 @@ import {
   networkStatusExceptionUrlPrefixs
 } from '../../configs/api'
 import { getGeneralErrorMessages, get400ErrorMessages } from './errorUtils'
-// import { staticStore } from '../redux/configureStore';
+import { staticStore } from '../redux/configureStore';
 import { getLocalToken, removeLocalToken } from './localStorage'
 
 const getUrl = function(path, params = {}) {
