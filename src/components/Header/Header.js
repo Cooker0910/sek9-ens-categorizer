@@ -99,6 +99,7 @@ function HeaderContainer({ token, member, setFavorites, signOut }) {
 
   const getFavorites = async () => {
     const res = await apiGetFavorites({ user_id: member.id, per_page: 100 })
+    console.log('res', res)
     if (res && !res.error) {
       setFavorites(res.dataset)
     }
