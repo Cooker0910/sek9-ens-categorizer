@@ -19,7 +19,7 @@ const TabLink = styled(Link)`
   &:visited {
     color: ${({ active }) => (active ? 'white' : '#D2D2D2')};
   }
-  &:first-child {
+  &:first-of-type {
     border-radius: 4px 0 0 4px;
   }
 

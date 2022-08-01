@@ -152,7 +152,7 @@ const HLTheme = {
   "attr-value .punctuation": {
     "color": "#a5c261"
   },
-  "attr-value .punctuation:first-child": {
+  "attr-value .punctuation:first-of-type": {
     "color": "#a9b7c6"
   },
   "url": {

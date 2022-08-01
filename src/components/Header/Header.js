@@ -75,7 +75,7 @@ export const HOME_DATA = gql`
 
 function HeaderContainer({ token, member, setFavorites, signOut }) {
   const history = useHistory()
-  const [form] = Form.useForm()
+  // const [form] = Form.useForm()
   const [isMenuOpen, setMenuOpen] = useState(false)
   const mediumBP = useMediaMin('medium')
   const mediumBPMax = useMediaMax('medium')
@@ -104,11 +104,12 @@ function HeaderContainer({ token, member, setFavorites, signOut }) {
       setFavorites(res.dataset)
     }
   }
-  useEffect(() => {
-    setTimeout(() => {
-      form.setFields([])
-    }, 3000)
-  })
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log('form', form)
+  //     form.setFields([])
+  //   }, 3000)
+  // })
 
   const handleRequestNewsletter = async values => {
     // const res = await apiCreateNewsletter({m})

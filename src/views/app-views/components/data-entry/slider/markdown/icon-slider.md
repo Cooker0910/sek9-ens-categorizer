@@ -61,7 +61,7 @@ ReactDOM.render(<IconSlider min={0} max={20} />, mountNode);
   color: rgba(0, 0, 0, 0.25);
 }
 
-.icon-wrapper .anticon:first-child {
+.icon-wrapper .anticon:first-of-type {
   left: 0;
 }
 

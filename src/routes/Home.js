@@ -109,14 +109,14 @@ const Nav = styled('nav')`
 
 const NavLink = styled(Link)`
   margin-left: 20px;
-  &:first-child {
+  &:first-of-type {
     margin-left: 0;
   }
 `
 
 const ExternalLink = styled('a')`
   margin-left: 20px;
-  &:first-child {
+  &:first-of-type {
     margin-left: 0;
   }
 `
